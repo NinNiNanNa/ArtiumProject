@@ -10,4 +10,6 @@ public class ParameterDTO {
 	private String searchKeyword;
 	private int start;
 	private int end;
+	// 전시상태를 구분
+	private int status;
 }

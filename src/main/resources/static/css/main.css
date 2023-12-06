@@ -1,0 +1,116 @@
+@charset "utf-8";
+
+/* section1 - start ///////////////////////////////////////////////////////////////////////////////////////////////////// */
+
+#main #section1 { position:relative; width:100%; height:969px; background:url(../img/imgBg.jpg) no-repeat 100% 20% fixed; background-size:cover; }
+#main #section1:before { position:absolute; top:0; left:0; content:''; display:block; width:100%; height:100%; background:rgba(0,0,0, .5); }
+
+#main #section1 .main-title { position:relative; top:27%; left:0; width:100%; text-align:center; }
+#main #section1 .main-title .smallTitle { margin-bottom:2.01754386%; padding:4px 17px; display:inline-block; font-size:13px; font-weight:500; line-height:177%; color:#fff; background:#D8B75F; }
+#main #section1 .main-title h2 { font-size:90px; font-weight:700; letter-spacing: .5rem; line-height:100%; color:#fff; }
+#main #section1 .main-title p { margin:2.368421053% 0; font-size:20px; font-weight:300; line-height:147%; color:#fff; }
+#main #section1 .main-title span { display:inline-block; margin-top:2.01754386%; }
+#main #section1 .main-title span a { padding:10px 22px; transition:all .3s; border:4px solid #fff; display:inline-block; font-size:14px; font-weight:600; line-height:143%; letter-spacing:1px; color:#fff; }
+#main #section1 .main-title span a:hover { color:#000; background:#fff; }
+
+/* section2 - start ///////////////////////////////////////////////////////////////////////////////////////////////////// */
+
+#main #section2 { width:100%; padding:130px 0; background:#f6f6f6; overflow:hidden; }
+#main #section2 .wrap .gap { margin:0; }
+
+#main #section2 .content { width:100%; }
+#main #section2 .content ul { width:100%; }
+#main #section2 .content ul li { position:relative; float:left; width:33.33333333%; }
+#main #section2 .content ul li > div { margin:15px; }
+#main #section2 .content ul li > div h2 { font-size: 25px; font-weight: bold; color: #000; }
+#main #section2 .content ul li > div hr { margin: 15px 0; border: 1.5px solid #000; }
+#main #section2 .content ul li > div .s2Image { width:100%; }
+#main #section2 .content ul li > div .s2Image a { width:100%; }
+#main #section2 .content ul li > div .s2Image a img { width:100%; transition:all .3s; }
+#main #section2 .content ul li > div .s2Image a:hover img { filter:grayscale(90%); }
+#main #section2 .content ul li > div .s2Text { margin-top:15px; }
+#main #section2 .content ul li > div .s2Text > p { margin-bottom:9px; font-size:20px; font-weight:600; line-height:147%; color:#373737; }
+#main #section2 .content ul li > div .s2Text > div { width: 100%; text-align: right; }
+#main #section2 .content ul li > div .s2Text > div a { display: inline-block; }
+#main #section2 .content ul li > div .s2Text > div a i { margin-left: 15px; }
+
+/* section3 - start ///////////////////////////////////////////////////////////////////////////////////////////////////// */
+
+#main #section3 { width:100%; }
+#main #section3 .content { width:100%; }
+#main #section3 .content > ul { width:100%; }
+#main #section3 .content > ul > li { float:left; width:50%; height: 743px; background:#000; }
+#main #section3 .content > ul > li .info { padding:15% 11%; }
+#main #section3 .content > ul > li .info h2 { margin-bottom: 2rem; font-size: 40px; font-weight: bold; line-height: 120%; }
+#main #section3 .content > ul > li .info p { font-size: 22px; line-height: 150%; }
+#main #section3 .content > ul > li:last-child { background:url(../img/sImg3.jpg) no-repeat 0 55%; background-size:cover; }
+
+/* 반응형 - start /////////////////////////////////////////////////////////////////////////////////////////////////////// */
+
+@media all and (max-width:1199px){
+
+	.wrap1440 { max-width:970px; }
+
+	#main #section1 .main-title { top:24%; width:80%; margin:0 auto; }
+
+	#main #section2 { padding:110px 0; }
+	#main #section2 .content ul li > div .s2Text > p { font-size:15px; }
+
+	#main #section3 .content > ul > li { float:none; width:100%; }
+	#main #section3 .content > ul > li:first-child { height: auto; }
+	#main #section3 .content > ul > li:last-child { height: 600px; }
+	#main #section3 .content > ul > li .info { padding:8%; }
+
+	#footer { padding:110px 0; }
+	.footer_row1 { float: none; width: 100%; }
+	.footer_row2 { float: none; width: 100%; margin-top: 100px; }
+
+}
+
+@media all and (max-width:990px){
+	
+	#main #section2 { padding:80px 0; }
+	#main #section2 .content ul li > div h2 { font-size: 20px; }
+	#main #section2 .content ul li > div .s2Text > p { font-size:12px; }
+
+}
+
+@media all and (max-width:767px){
+
+	#main #section1 .main-title { top:34%; width:100%; }
+	#main #section1 .main-title .smallTitle { margin-bottom:6%; }
+	#main #section1 .main-title h2 { font-size:40px; }
+	#main #section1 .main-title p { margin:1% 0 4%; font-size:11px; }
+
+	#main #section2 { padding:50px 0; }
+	#main #section2 .content ul li { float:none; width:100%; }
+	#main #section2 .content ul li > div h2 { font-size: 25px; }
+	#main #section2 .content ul li > div .s2Text > p { font-size: 15px; }
+
+	#main #section3 .content > ul > li:last-child { height: 400px; }
+	#main #section3 .content > ul > li .info h2 { font-size: 30px; }
+	#main #section3 .content > ul > li .info p { font-size: 20px; }
+
+}
+
+@media all and (max-width:640px){
+
+	#main #section1 .main-title { top:42%; }
+	#main #section1 .main-title h2 { font-size:30px; }
+
+}
+
+@media all and (max-width:582px){
+
+	#main #section3 .content > ul > li:last-child { height: 300px; }
+	#main #section3 .content > ul > li .info h2 { font-size: 25px; }
+	#main #section3 .content > ul > li .info p { font-size: 15px; }
+
+}
+
+@media all and (max-width:335px){
+
+	#main #section1 .main-title { top:35%; }
+	#main #section1 .main-title h2 { font-size:40px; }
+
+}

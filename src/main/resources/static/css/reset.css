@@ -1,0 +1,32 @@
+@charset "utf-8";
+
+/* 초기화 스타일 reset.css */
+* { padding:0; margin:0; }
+html, body { width:100%; height:100%; }
+html { overflow-y:scroll; }
+html.addScroll { overflow-y:hidden; }
+body { font:normal 14px/1 'Montserrat';  -webkit-text-size-adjust:100%; text-size-adjust:100%; color:#fff; background:#fff; word-wrap:break-word; }
+header,main,footer,section,article,nav,aside { display:block; }
+h1,h2,h3,h4,h5,h6 { font-size:14px; font-weight:normal; margin: 0; }
+i,em,address { font-style:normal; }
+img { vertical-align:top; }
+a { display:inline-block; text-decoration:none; color:#626262;  }
+a:focus { outline:1px solid rgba(200,200,200, .4); outline-offset:5px; }
+ul,li { list-style:none; margin: 0; padding: 0; }
+.txtSkip { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+
+.clearfix:after { content:''; display:block; clear:both; }
+.hidden { display:none; }
+.blind { display:block; text-indent:-2000px; overflow:hidden; }
+#skip { z-index:4; position:absolute; top:0; left:0; width:100%; }
+#skip li { width:100%; }
+#skip li a { display:block; font-size:0; padding:0; text-align:center; color:#fff; background:#222; }
+#skip li a:focus { font-size:18px; padding:15px 0; }
+
+
+input[type='date'] { position: relative; }
+input[type='date']::-webkit-calendar-picker-indicator { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: transparent; color: transparent; cursor: pointer; }
+/* input[type='date']는 placeholder속성이 적용안됨 - input태그의 placeholder 속성값을 가져와서 content로 사용 */
+input[type='date']::before { content: attr(placeholder); width: 100%; height: 100%; }
+/* placeholder를 사용하면 날짜선택 시 placehloder의 내용을 지우기위해 사용 */
+input[type='date']:valid::before { display: none; }

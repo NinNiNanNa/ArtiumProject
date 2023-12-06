@@ -1,0 +1,100 @@
+@charset "utf-8";
+
+input[type='text'],
+input[type='password'] { color:#919191; outline: 0; transition: border-color .4s; padding:0 15px; -webkit-appearance:none; appearance:none; box-shadow:none; text-shadow:none; border-radius:0; box-sizing:border-box; border:2px solid #ddd; background:#fff; width:100%; height:45px; }
+input[type='radio'] { -webkit-appearance:none; appearance:none; cursor:pointer; }
+
+
+
+/* header - start ////////////////////////////////////////////////////////////////////////////////////////////////////// */
+
+#header { z-index:3; position:fixed; top:0; left:0; width:100%; height:75px; border-bottom:1px solid rgba(255,255,255,.15); background:rgba(0,0,0, 1); transition:all .3s; }
+#header.addFixed { height:60px; border-bottom:0; }
+
+/* section - start ///////////////////////////////////////////////////////////////////////////////////////////////////// */
+
+#main { padding-top: 75px; color: #000; }
+
+/* 프로필 부분 - start */
+#section1 { width: 100%; margin-top: 50px; }
+#section1 .profile_wrap { width: 100%; }
+#section1 .profile_wrap img { width: 100%; max-width: 120px; }
+#section1 .profile_wrap .profile_info { width: 100%; padding: 15px 0 30px; }
+#section1 .profile_wrap .profile_info span { display: inline-block; padding: 8px 15px; font-size: 12px; color: #fff; background-color: #000; border-radius: 20px; }
+#section1 .profile_wrap .profile_info h2 { margin: 10px 0; font-size: 20px; font-weight: bold; }
+#section1 .profile_wrap .profile_info ul { width: 100%; }
+#section1 .profile_wrap .profile_info ul li { display: inline-block; padding: 0 15px; border-right: 1px solid #aaa; }
+#section1 .profile_wrap .profile_info ul li:first-child { padding-left: 0; }
+#section1 .profile_wrap .profile_info ul li:last-child { border-right: 0; }
+/* 프로필 부분 - end */
+
+/* 프로필 메뉴 버튼 부분 - start */
+#section1 .nav { border-bottom: 1px solid #000; }
+.nav-item { margin-right: 15px; margin-bottom: 20px; }
+.tabColor { padding: 15px 20px; font-weight: bold; color: #aaa; border: 1px solid #ddd; background-color: transparent; }
+.tabColor:hover { color: #fff; border: 1px solid #4f4f4f; background-color: #4f4f4f; }
+.nav-pills .nav-link { border-radius: 100px; }
+.nav-pills .nav-link.active { color: #fff; border: 1px solid #4f4f4f; background-color: #2d2a2a; }
+/* 프로필 메뉴 버튼 부분 - end */
+
+/* 회원정보수정 - start */
+.wrap470 { width:100%; max-width:440px; margin:30px auto 50px; }
+.wrap470 .content_wrap { width: 100%; }
+.wrap470 .content_wrap ul { width: 100%; }
+
+.wrap470 .content_wrap ul li h2 { display: inline-block; padding-right: 15px; font-weight: 200; background: url(../img/icon_necd.svg) no-repeat right top; }
+.wrap470 .content_wrap ul li .inputBox { position: relative; margin: 10px 0 20px; }
+
+.wrap470 .content_wrap ul li:first-child { text-align: center; }
+.wrap470 .content_wrap ul li:first-child .profileUpload { position: relative; }
+.wrap470 .content_wrap ul li:first-child .profileUpload img { width: 128px; height: 128px; border-radius: 100%; object-fit: cover; }
+.wrap470 .content_wrap ul li:first-child .profileUpload input[type="file"] { display: none; }
+.wrap470 .content_wrap ul li:first-child .profileUpload label { position: absolute; bottom: 0; left: 35%; }
+.wrap470 .content_wrap ul li:first-child .profileUpload .uploadBtn { background-color: #000; padding: 10px; border-radius: 100%; border: 2px solid #fff; box-sizing: border-box; }
+.wrap470 .content_wrap ul li:first-child .profileUpload .uploadBtn i { font-size: 15px; color: #fff; }
+
+.wrap470 .content_wrap ul li .inputBox.inputBoxId input[type="text"] { background-color: #eee; border: 0; }
+.wrap470 .content_wrap ul li .inputBox input[type="text"],
+.wrap470 .content_wrap ul li .inputBox input[type="password"] { height: 52px; border: 1px solid #eee; border-radius: 10px; font-size: 14px; color: #111; }
+.wrap470 .content_wrap ul li .inputBox input[type="text"]::placeholder { font-weight: 100; color: #aaa; }
+.wrap470 .content_wrap ul li .inputBox input[type="password"]::placeholder { font-weight: 100; color: #aaa; }
+.wrap470 .content_wrap ul li .inputBox input[type="text"]:focus { border-color: #111; }
+.wrap470 .content_wrap ul li .inputBox input[type="password"]:focus { border-color: #111; }
+.wrap470 .content_wrap ul li .inputBox input[type="text"].addInputWrong { border: 1px solid #ff0000; }
+.wrap470 .content_wrap ul li .inputBox input[type="password"].addInputWrong { border: 1px solid #ff0000; }
+
+.wrap470 .content_wrap ul.inputText_wrap li .inputBox > a { display: block; position: absolute; top: 0; margin: 16px 0; }
+.wrap470 .content_wrap ul.inputText_wrap li .inputBox > a.addChkBtn { display: block; top: -5px; right: 15px; padding: 10px 15px; font-size: 12px; font-weight: 100; color: #111; border-radius: 5px; background-color: #f8f8f8; }
+.wrap470 .content_wrap ul.inputText_wrap li .inputBox > a.delBtn { right: 15px; }
+.wrap470 .content_wrap ul.inputText_wrap li:nth-child(2) .inputBox > a.delBtn,
+.wrap470 .content_wrap ul.inputText_wrap li:nth-child(7) .inputBox > a.delBtn { right: 100px; }
+.wrap470 .content_wrap ul.inputText_wrap li .inputBox > a.pwBtn  { right: 50px; }
+.wrap470 .content_wrap ul.inputText_wrap li .inputBox > a img { width: 20px; height: 20px; }
+.wrap470 .content_wrap ul.inputText_wrap li .inputBox > p { display: none; margin-top: 10px; font-size: 12px; font-weight: 100; color: #ff0000; }
+.wrap470 .content_wrap ul.inputText_wrap li .inputBox > p.addInputWrong { display: block; }
+
+
+.wrap470 .content_wrap ul li label span { font-size: 12px; line-height: 18px; }
+label { display: inline-block; cursor: pointer; margin-right: 20px; }
+label span { float: left; margin-left: 10px; font-size: 14px; font-weight: 100; line-height: 22px; }
+label input[type='radio'] { float: left; outline: 0; width:22px; height: 22px; border:1px solid #ddd; border-radius: 50%; box-sizing: border-box; transition: all .3s; }
+label input[type='radio']:checked { border:6px solid #1A1D20; }
+
+
+.wrap470 .content_wrap ul.button_wrap { width: 100%; padding-top: 30px; border-top: 1px solid #ddd; }
+.wrap470 .content_wrap ul.button_wrap li { float: left; width: 50%; text-align: center; }
+.wrap470 .content_wrap ul.button_wrap li:first-child div { margin-right: 5px; }
+.wrap470 .content_wrap ul.button_wrap li:last-child  div { margin-left: 5px; }
+.wrap470 .content_wrap ul.button_wrap li div a { width: 100%; padding: 15px 0; border-radius: 5px; transition: all .3s; }
+.wrap470 .content_wrap ul.button_wrap li div a.joinCanBtn { color: #2d2a2a; background-color: #eee; }
+.wrap470 .content_wrap ul.button_wrap li div a.joinCanBtn:hover { color: #fff; background-color: #565656; }
+.wrap470 .content_wrap ul.button_wrap li div a.joinConBtn { color: #fff; background-color: #2f2f2f; }
+.wrap470 .content_wrap ul.button_wrap li div a.joinConBtn:hover { background-color: #1a1a1a; }
+/* 회원정보수정 - end */
+
+#mypage2 { margin-top: 15px; }
+#mypage3 { margin-top: 15px; }
+
+
+#section6 .table tbody tr td { padding: 1rem; }
+#section7 .table tbody tr td { padding: .5rem; }

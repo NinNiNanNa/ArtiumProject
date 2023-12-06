@@ -1,0 +1,46 @@
+@charset "utf-8";
+
+#main { color: #000; }
+
+/* section1 - start ///////////////////////////////////////////////////////////////////////////////////////////////////// */
+
+#section1 { position:relative; width:100%; background:url(../img/mtListMain.jpg) no-repeat 0 -170px fixed; background-size:cover; }
+#section1:before { position:absolute; top:0; left:0; content:''; display:block; width:100%; height:100%; background:rgba(0,0,0, .6); }
+
+#section1 .main-title { width:100%; text-align:center; padding: 13% 0; }
+#section1 .main-title h2 { font-size:70px; font-weight: 600; font-family: "Montserrat"; line-height:100%; color:#fff; }
+#section1 .main-title p { margin:2.368421053% 0; font-size:25px; font-weight:300; line-height:147%; color:#fff; }
+
+/* section2 - start ///////////////////////////////////////////////////////////////////////////////////////////////////// */
+
+#section2 { padding: 50px 0; }
+#section2 .nav { border-bottom: 1px solid #000; }
+.nav-item { margin-right: 15px; margin-bottom: 30px; }
+.tabColor { padding: 15px 30px; font-size: 14px; font-weight: bold; color: #aaa; border: 1px solid #ddd; background-color: transparent; }
+.tabColor:hover { color: #fff; border: 1px solid #4f4f4f; background-color: #4f4f4f; }
+.nav-pills .nav-link { border-radius: 100px; }
+.nav-pills .nav-link.active { color: #fff; border: 1px solid #4f4f4f; background-color: #4f4f4f; }
+
+/* 반응형 - start /////////////////////////////////////////////////////////////////////////////////////////////////////// */
+
+@media all and (max-width:1199px){
+
+    #section1 .main-title { padding: 120px 0; }
+    #section1 .main-title h2 { font-size:50px; }
+    #section1 .main-title p { font-size:20px; }
+
+}
+
+@media all and (max-width:990px){
+
+    #section1 .main-title h2 { font-size:40px; }
+    #section1 .main-title p { margin:15px 0; font-size:20px; }
+
+}
+
+@media all and (max-width:767px){
+
+    #section1 .main-title h2 { font-size:35px; }
+    #section1 .main-title p { font-size:18px; }
+    
+}

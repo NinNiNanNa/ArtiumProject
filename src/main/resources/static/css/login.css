@@ -1,0 +1,65 @@
+@charset "utf-8";
+
+input[type='text'],
+input[type='password'] { color:#919191; outline: 0; transition: border-color .4s; padding:0 15px; -webkit-appearance:none; appearance:none; box-shadow:none; text-shadow:none; border-radius:0; box-sizing:border-box; border:2px solid #ddd; background:#fff; width:100%; height:45px; }
+input[type='checkbox'] { -webkit-appearance:none; appearance:none; cursor:pointer; width:auto; height:auto; }
+
+/* header - start ////////////////////////////////////////////////////////////////////////////////////////////////////// */
+
+#header { z-index:3; position:fixed; top:0; left:0; width:100%; height:75px; border-bottom:1px solid rgba(255,255,255,.15); background:rgba(0,0,0, 1); transition:all .3s; }
+#header.addFixed { height:60px; border-bottom:0; }
+
+/* section - start ///////////////////////////////////////////////////////////////////////////////////////////////////// */
+
+#section { padding-top: 75px; color: #000; }
+#section .wrap470 { width:100%; max-width:440px; margin:80px auto; }
+#section .title_wrap { text-align: center; padding-bottom: 40px; }
+#section .title_wrap h1 { font-size: 30px; font-weight: bold; line-height: 1.2em; }
+
+#section .content_wrap { width: 100%; }
+#section .content_wrap ul { width: 100%; }
+#section .content_wrap ul li { text-align: center; }
+#section .content_wrap ul li:nth-child(1),
+#section .content_wrap ul li:nth-child(2),
+#section .content_wrap ul li:nth-child(3) { text-align: left; }
+
+#section .content_wrap ul li h2 { display: inline-block; padding-right: 15px; font-weight: 200; background: url(../img/icon_necd.svg) no-repeat right top; }
+#section .content_wrap ul li .inputBox { position: relative; margin: 10px 0 20px; }
+#section .content_wrap ul li .inputBox input[type="text"],
+#section .content_wrap ul li .inputBox input[type="password"] { height: 52px; border: 1px solid #eee; border-radius: 10px; font-size: 14px; color: #111; }
+#section .content_wrap ul li .inputBox input[type="text"]::placeholder { font-weight: 100; color: #aaa; }
+#section .content_wrap ul li .inputBox input[type="password"]::placeholder { font-weight: 100; color: #aaa; }
+#section .content_wrap ul li .inputBox input[type="text"]:focus { border-color: #111; }
+#section .content_wrap ul li .inputBox input[type="password"]:focus { border-color: #111; }
+#section .content_wrap ul li .inputBox input[type="text"].addInputWrong { border: 1px solid #ff0000; }
+#section .content_wrap ul li .inputBox input[type="password"].addInputWrong { border: 1px solid #ff0000; }
+#section .content_wrap ul li .inputBox > p.addInputWrong { display: block; }
+
+
+#section .content_wrap ul li label input[type='checkbox'] { width: 18px; height: 18px; }
+#section .content_wrap ul li label span { font-size: 12px; line-height: 18px; }
+label { display: inline-block; cursor: pointer; margin-bottom: 20px; }
+label span { float: left; margin-left: 10px; font-size: 14px; font-weight: 100; line-height: 22px; }
+label input[type='checkbox'] { float: left; outline: 0; width:22px; height: 22px; border:1px solid #ddd; border-radius: 50%; box-sizing: border-box; background: #fff url(../img/icon_chk_gy.svg) no-repeat 50% 50%; }
+label input[type="checkbox"].addIDCheck { border:1px solid #4C3D3B; background: #4C3D3B url(../img/icon_chk_wh.svg) no-repeat 50% 50%; } 
+
+
+#section .content_wrap ul li .inputBox > a { display: none; position: absolute; top: 0; margin: 16px 0; }
+#section .content_wrap ul li .inputBox > a.delBtn { right: 15px; }
+#section .content_wrap ul li .inputBox > a.pwBtn  { right: 50px; }
+#section .content_wrap ul li .inputBox > a img { width: 20px; height: 20px; }
+#section .content_wrap ul li .inputBox > p { display: none; margin-top: 10px; font-size: 12px; font-weight: 100; color: #ff0000; }
+
+
+#section .content_wrap ul li .buttons { display: block; margin-bottom: 10px; padding: 15px 0; font-size: 18px; font-weight: bold; line-height: 24px; border-radius: 8px; transition: all .3s; }
+#section .content_wrap ul li .loginBtn { background-color: #2f2f2f; color: #fff; }
+#section .content_wrap ul li .kakaoBtn { background-color: #FEE500; color: #391B1B; }
+#section .content_wrap ul li .naverBtn { background-color: #03C75A; color: #fff; }
+#section .content_wrap ul li .joinBtn { background-color: #eee; color: #aaa; }
+#section .content_wrap ul li .searchBtn { background-color: #eee; color: #aaa; }
+
+#section .content_wrap ul li .loginBtn:hover { background-color: #1a1a1a; }
+#section .content_wrap ul li .kakaoBtn:hover { background-color: #fecf00; }
+#section .content_wrap ul li .naverBtn:hover { background-color: #00ad4e; }
+#section .content_wrap ul li .joinBtn:hover { background-color: #2f2f2f; }
+#section .content_wrap ul li .searchBtn:hover { background-color: #2f2f2f; }

@@ -49,5 +49,33 @@
 	<update id="visitCount" parameterType="com.edu.springboot.jdbc.ExhibitionDTO">
 		UPDATE exhibition SET ex_visitcount=ex_visitcount+1 WHERE ex_seq=#{ex_seq}
 	</update>
+	
+	
+	
+	<!-- 한줄평 목록 가져오기 -->
+	<select id="getSimpleReviewList" resultType="com.edu.springboot.jdbc.ExSimpleReviewDTO">
+	    SELECT * FROM simple_review
+	    WHERE ex_seq = #{ex_seq}
+	</select>
+	
+	<!-- 한줄평 총 갯수 가져오기 -->
+	<select id="getSimpleReviewCount" resultType="int">
+	    SELECT COUNT(*) FROM simple_review
+	    WHERE ex_seq = #{ex_seq}
+	</select>
+	
+	<!-- 한줄평 작성 -->
+	<insert id="writeSimpleReview" parameterType="com.edu.springboot.jdbc.ExSimpleReviewDTO">
+	    INSERT INTO simple_review (srv_id, ex_seq, user_id, srv_star, srv_content, srv_postdate)
+	    VALUES (seq_board_num.nextval, #{ex_seq}, #{user_id}, #{srv_star}, #{srv_content}, sysdate)
+	</insert>
+	
+	<!-- 
+	<insert id="srWrite" parameterType="com.edu.springboot.jdbc.ExSimpleReviewDTO">
+		insert into simple_review (srv_id, srv_star, srv_content, srv_postdate, ex_seq)
+    	values
+		(seq_board_num.nextval, #{srv_star}, #{srv_content}, sysdate, #{ex_seq})
+	</insert>
+	 -->
 
 </mapper>

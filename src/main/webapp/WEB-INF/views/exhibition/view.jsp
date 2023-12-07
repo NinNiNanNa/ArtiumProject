@@ -199,10 +199,12 @@ window.onload = function(){
 									<div id="simple" class="tab-pane fade">
 										<div class="comment_wrap">
 				                            <div class="comment_title">
-				                                <h1><i>5</i>개의 댓글을 확인해보세요!</h1>
+				                                <h1><i>${simpleReviewCount }</i>개의 댓글을 확인해보세요!</h1>
 				                            </div>
 				                            <div class="comment_content">
 												<ul class="comList_wrap">
+													<form method="POST" action="/exhibitionView/writeSimpleReview">
+													<input type="hid den" name="ex_seq" value="${exhibitionDTO.ex_seq}">
 													<li>
 														<div class="row">
 															<div class="col-lg-2 comImg_wrap">
@@ -212,24 +214,26 @@ window.onload = function(){
 																<div class="user_wrap">
 																	<div class="col-lg-3 star_wrap">
 																		<fieldset>
-																			<input type="radio" name="rating" value="5" id="rate1"><label for="rate1">⭐</label>
-																			<input type="radio" name="rating" value="4" id="rate2"><label for="rate2">⭐</label>
-																			<input type="radio" name="rating" value="3" id="rate3"><label for="rate3">⭐</label>
-																			<input type="radio" name="rating" value="2" id="rate4"><label for="rate4">⭐</label>
-																			<input type="radio" name="rating" value="1" id="rate5"><label for="rate5">⭐</label>
+																			<input type="radio" name="srv_star" value="5" id="rate1"><label for="rate1">⭐</label>
+																			<input type="radio" name="srv_star" value="4" id="rate2"><label for="rate2">⭐</label>
+																			<input type="radio" name="srv_star" value="3" id="rate3"><label for="rate3">⭐</label>
+																			<input type="radio" name="srv_star" value="2" id="rate4"><label for="rate4">⭐</label>
+																			<input type="radio" name="srv_star" value="1" id="rate5"><label for="rate5">⭐</label>
 																		</fieldset>
 																	</div>
 																</div>
 																<div class="content_wrap">
-																	<textarea name="" id="simpleLine" cols="30" rows="1" placeholder="댓글을 남겨주세요."></textarea>
+																	<textarea name="srv_content" id="simpleLine" cols="30" rows="1" placeholder="댓글을 남겨주세요."></textarea>
 																	<div id="textCnt">(0/60)</div>
 																</div>
 															</div>
 															<div class="col-lg-1 commentBtn_wrap">
-																<button type="button" class="btn btn-dark">등록</button>
+																<button type="submit" class="btn btn-dark">등록</button>
 															</div>
 														</div>
 													</li>
+													</form>
+													<c:forEach items="simpleReviewList" var="sreview" varStatus="loop">
 													<li>
 														<div class="row">
 															<div class="col-lg-2 comImg_wrap">
@@ -237,11 +241,10 @@ window.onload = function(){
 															</div>
 															<div class="col-lg-10 comText_wrap">
 																<div class="user_wrap">
-																	<span>닉네임</span>
+																	<span>${sreview.user_id} | ${sreview.srv_postdate }</span>
 																</div>
 																<div class="content_wrap">
-																	댓글 내용댓글 내용댓글 내용댓글 내용댓글 내용댓글 내용댓글 내용댓글 내용<br>
-																	댓글 내용댓글 내용댓글 내용댓글 내용댓글 내용댓글 내용<br>
+																	${sreview.srv_content }
 																</div>
 															</div>
 															<div class="btn_wrap">
@@ -250,6 +253,7 @@ window.onload = function(){
 															</div>
 														</div>
 													</li>
+													</c:forEach>
 												</ul>
 				
 				                            </div>

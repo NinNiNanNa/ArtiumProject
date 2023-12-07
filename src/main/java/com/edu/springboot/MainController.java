@@ -1,12 +1,29 @@
 package com.edu.springboot;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
+
+import com.edu.springboot.jdbc.IMemberService;
+import com.edu.springboot.jdbc.MemberDTO;
+import com.edu.springboot.smtp.RegisterMail;
 
 
 @Controller
 public class MainController {
+	
+	@Autowired
+	IMemberService dao;
+	
+	//회원가입 메일 서비스
+	@Autowired
+	RegisterMail registerMail;
 	
 	@RequestMapping("/")
 	public String main() {
@@ -16,10 +33,60 @@ public class MainController {
 	public String login() {
 		return "login";
 	}
-	@GetMapping("/join")
+	
+	//로그인
+	@ResponseBody
+	@RequestMapping(value="/login/loginCheck", method=RequestMethod.POST)
+	public int loginCheck(@RequestParam("id") String id,
+			@RequestParam("pw") String pw) {
+		MemberDTO memberDTO = new MemberDTO();
+		memberDTO.setUser_id(id);
+		memberDTO.setUser_pass(pw);
+		int result = dao.loginCheck(memberDTO);
+		return result;
+	}
+	
+	//회원가입
+	@RequestMapping(value="/join", method=RequestMethod.GET)
 	public String join() {
 		return "join";
 	}
+	
+	@RequestMapping(value="/join", method=RequestMethod.POST)
+	public String join6(MemberDTO memberDTO) {
+		int result = dao.insert(memberDTO);
+		if(result==1) System.out.println("입력되었습니다.");
+		return "login";
+	}
+	
+	//아이디 중복 확인
+	@ResponseBody
+	@RequestMapping(value="/join/idCheck", method=RequestMethod.POST)
+	public int idCheck(@RequestParam("id") String id) {
+		MemberDTO memberDTO = new MemberDTO();
+		memberDTO.setUser_id(id);
+		int cnt = dao.idCheck(memberDTO);
+		return cnt;
+	}
+	
+	//이메일 인증
+	@ResponseBody
+    @PostMapping(value = "/mail")
+    public String mailConfirm(@RequestParam(name = "email") String email) throws Exception{
+		System.out.println(email);
+        String code = registerMail.sendSimpleMessage(email);
+        System.out.println("사용자에게 발송한 인증코드 ==> " + code);
+
+        return code;
+    }
+	
+	//회원 삭제
+	@RequestMapping(value="/admin/accountUser/delete", method=RequestMethod.POST)
+	public String deleteMember(MemberDTO memberDTO) {
+		dao.delete(memberDTO);
+		return "/admin/accountUser";
+	}
+	
 	@GetMapping("/mypage")
 	public String mypage() {
 		return "mypage";
@@ -81,10 +148,14 @@ public class MainController {
 	public String accountAuthor() {
 		return "/admin/accountAuthor";
 	}
-	@GetMapping("/admin/accountUser")
-	public String accountUser() {
+	
+	//회원목록
+	@RequestMapping("/admin/accountUser")
+	public String accountUser(Model model) {
+		model.addAttribute("memberList", dao.select());
 		return "/admin/accountUser";
 	}
+	
 	@GetMapping("/admin/exComments")
 	public String exComments() {
 		return "/admin/exComments";

@@ -38,18 +38,13 @@ public class MainController {
 		return "/review/write";
 	}
 	
-	@GetMapping("/mateList")
-	public String mateList() {
-		return "/mate/list";
-	}
-	@GetMapping("/mateView")
-	public String mateView() {
-		return "/mate/view";
-	}
-	@GetMapping("/mateWrite")
-	public String mateWrite() {
-		return "/mate/write";
-	}
+	/*
+	 * @GetMapping("/mateList") public String mateList() { return "/mate/list"; }
+	 * 
+	 * @GetMapping("/mateView") public String mateView() { return "/mate/view"; }
+	 * 
+	 * @GetMapping("/mateWrite") public String mateWrite() { return "/mate/write"; }
+	 */
 	
 	@GetMapping("/galleryList")
 	public String galleryList() {

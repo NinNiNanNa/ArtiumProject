@@ -50,20 +50,6 @@ public class MainController {
 	public String mateWrite() {
 		return "/mate/write";
 	}
-	
-	@GetMapping("/galleryList")
-	public String galleryList() {
-		return "/gallery/list";
-	}
-	@GetMapping("/galleryView")
-	public String galleryView() {
-		return "/gallery/view";
-	}
-	@GetMapping("/galleryWrite")
-	public String galleryWrite() {
-		return "/gallery/write";
-	}
-	
 
 	@GetMapping("/admin")
 	public String adminLogin() {
@@ -92,14 +78,6 @@ public class MainController {
 	@GetMapping("/admin/exList")
 	public String exList() {
 		return "/admin/exList";
-	}
-	@GetMapping("/admin/gaComments")
-	public String gaComments() {
-		return "/admin/gaComments";
-	}
-	@GetMapping("/admin/gaList")
-	public String gaList() {
-		return "/admin/gaList";
 	}
 	@GetMapping("/admin/mtComments")
 	public String mtComments() {

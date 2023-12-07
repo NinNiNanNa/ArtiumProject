@@ -72,7 +72,7 @@
 
                         <div class="view_content">
                             <div>
-								<span class="status">모집중</span>
+																<span class="status">모집중</span>
                                 <h2>전시 메이트 제목</h2>
                                 <ul>
                                     <li>
@@ -110,18 +110,18 @@
                                          <span>작성일<i>2023-11-15</i></span>
                                          <span>조회수<i>22</i></span>
                                     </div>
-									<div class="bmBtn_wrap">
-										<a href="javascript:;" class="bmBtn">저장하기</a>
-									</div>
+																		<div class="bmBtn_wrap">
+																			<a href="javascript:;" class="bmBtn">저장하기</a>
+																		</div>
                                 </div>
                             </div>
                         </div>
 
-						<div class="viewBtn_wrap">
-							<a href="" class="btn btn-light">삭제하기</a>
-							<a href="" class="btn btn-secondary">수정하기</a>
-							<a href="" class="btn btn-dark">모집등록</a>
-						</div>
+												<div class="viewBtn_wrap">
+													<a href="" class="btn btn-light">삭제하기</a>
+													<a href="" class="btn btn-secondary">수정하기</a>
+													<a href="" class="btn btn-dark">모집등록</a>
+												</div>
 
                     </div>
                 </div>
@@ -138,46 +138,46 @@
                                 <h1><i>5</i>개의 댓글을 확인해보세요!</h1>
                             </div>
                             <div class="comment_content">
-								<ul class="comList_wrap">
-									<li>
-										<div class="row">
-											<div class="col-lg-2 comImg_wrap">
-												<img src="../img/profile.png" alt="">
-											</div>
-											<div class="col-lg-9 comWrite_wrap">
-												<div class="user_wrap">
-													<span>닉네임</span>
-												</div>
-												<div class="content_wrap">
-													<textarea name="" id="" cols="30" rows="2" placeholder="댓글을 남겨주세요."></textarea>
-												</div>
-											</div>
-											<div class="col-lg-1 commentBtn_wrap">
-												<button type="button" class="btn btn-dark">등록</button>
-											</div>
-										</div>
-									</li>
-									<li>
-										<div class="row">
-											<div class="col-lg-2 comImg_wrap">
-												<img src="../img/profile.png" alt="">
-											</div>
-											<div class="col-lg-10 comText_wrap">
-												<div class="user_wrap">
-													<span>닉네임</span>
-												</div>
-												<div class="content_wrap">
-													댓글 내용댓글 내용댓글 내용댓글 내용댓글 내용댓글 내용댓글 내용댓글 내용<br>
-													댓글 내용댓글 내용댓글 내용댓글 내용댓글 내용댓글 내용<br>
-												</div>
-											</div>
-											<div class="btn_wrap">
-												<a href="">수정</a>
-												<a href="">삭제</a>
-											</div>
-										</div>
-									</li>
-								</ul>
+															<ul class="comList_wrap">
+																<li>
+																	<div class="row">
+																		<div class="col-lg-2 comImg_wrap">
+																			<img src="../img/profile.png" alt="">
+																		</div>
+																		<div class="col-lg-9 comWrite_wrap">
+																			<div class="user_wrap">
+																				<span>닉네임</span>
+																			</div>
+																			<div class="content_wrap">
+																				<textarea name="" id="" cols="30" rows="2" placeholder="댓글을 남겨주세요."></textarea>
+																			</div>
+																		</div>
+																		<div class="col-lg-1 commentBtn_wrap">
+																			<button type="button" class="btn btn-dark">등록</button>
+																		</div>
+																	</div>
+																</li>
+																<li>
+																	<div class="row">
+																		<div class="col-lg-2 comImg_wrap">
+																			<img src="../img/profile.png" alt="">
+																		</div>
+																		<div class="col-lg-10 comText_wrap">
+																			<div class="user_wrap">
+																				<span>닉네임</span>
+																			</div>
+																			<div class="content_wrap">
+																				댓글 내용댓글 내용댓글 내용댓글 내용댓글 내용댓글 내용댓글 내용댓글 내용<br>
+																				댓글 내용댓글 내용댓글 내용댓글 내용댓글 내용댓글 내용<br>
+																			</div>
+																		</div>
+																		<div class="btn_wrap">
+																			<a href="">수정</a>
+																			<a href="">삭제</a>
+																		</div>
+																	</div>
+																</li>
+															</ul>
 
                             </div>
                         </div>

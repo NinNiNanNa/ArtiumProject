@@ -72,57 +72,56 @@
             <div class="wrap1440">
                 <div class="gap1440">
                     <div class="container1440">
-
+                    
+                    <form name="writeFrm" action="">
+                    	<input type="hidden" name="ga_id" value="${galleryDTO.ga_id }" />
+                    </form>
                         <div class="view_content">
                             <div>
 								<span class="status">#현대미술</span>
-                                <h2>작가 갤러리 제목</h2>
+                                <h2>${ galleryDTO.ga_title }</h2>
                                 <ul>
                                     <li>
                                         <div>
                                             <span>관람 기간</span>
-                                            <i>2023-11-01 ~ 2023-12-01</i>
+                                            <i>${ galleryDTO.ga_sdate } ~ ${ galleryDTO.ga_edate }</i>
                                         </div>
                                     </li>
                                     <li>
                                         <div>
                                             <span>작가 이름</span>
-                                            <i>신입작가</i>
+                                            <i>${ galleryDTO.user_id }</i>
                                         </div>
                                     </li>
                                 </ul>
                                 <div class="longContent">
-                                    <p>
-										작가갤러리설명작가갤러리설명작가갤러리설명작가갤러리설명작가갤러리설명<br>
-										작가갤러리설명작가갤러리설명작가갤러리설명작가갤러리설명작가갤러리설명<br>
-										작가갤러리설명작가갤러리설명작가갤러리설명작가갤러리설명작가갤러리설명<br>
-										작가갤러리설명작가갤러리설명작가갤러리설명작가갤러리설명작가갤러리설명<br>
-                                    </p>
+                                    <p>${ galleryDTO.ga_content }</p>
                                 </div>
-								<div class="galleryBtn_wrap">
-									<a href="./gaRoom.html" class="galleryBtn">ONLINE GALLERY</a>
-								</div>
+                                
+																<div class="galleryBtn_wrap">
+																	<a href="/galleryRoom" class="galleryBtn">ONLINE GALLERY</a>
+																</div>
                                 <div class="memInfo_wrap">
                                     <div class="profileImg_wrap">
                                         <img src="../img/profile.png" alt="">
                                     </div>
                                     <div class="profileInfo_wrap">
-                                        <h4>닉네임</h4>
-                                         <span>작성일<i>2023-11-15</i></span>
-                                         <span>조회수<i>22</i></span>
+                                     		 <h4>${ galleryDTO.user_id }</h4>
+                                         <span>작성일<i>${ galleryDTO.ga_postdate }</i></span>
+                                         <span>조회수<i>${ galleryDTO.ga_visitcount }</i></span>
                                     </div>
-									<div class="bmBtn_wrap">
-										<a href="javascript:;" class="bmBtn">저장하기</a>
-									</div>
+																		<div class="bmBtn_wrap">
+																			<a href="javascript:;" class="bmBtn">저장하기</a>
+																		</div>
                                 </div>
                             </div>
                         </div>
 
-						<div class="viewBtn_wrap">
-							<a href="" class="btn btn-light">삭제하기</a>
-							<a href="" class="btn btn-secondary">수정하기</a>
-							<a href="" class="btn btn-dark">모집등록</a>
-						</div>
+											<div class="viewBtn_wrap">
+												<a href="" class="btn btn-light" onclick="">삭제하기</a>
+												<a href="" class="btn btn-secondary" onclick="">수정하기</a>
+												<a href="/galleryList" class="btn btn-dark" >목록보기</a>
+											</div>
 
                     </div>
                 </div>
@@ -139,46 +138,46 @@
                                 <h1><i>5</i>개의 댓글을 확인해보세요!</h1>
                             </div>
                             <div class="comment_content">
-								<ul class="comList_wrap">
-									<li>
-										<div class="row">
-											<div class="col-lg-2 comImg_wrap">
-												<img src="../img/profile.png" alt="">
-											</div>
-											<div class="col-lg-9 comWrite_wrap">
-												<div class="user_wrap">
-													<span>닉네임</span>
-												</div>
-												<div class="content_wrap">
-													<textarea name="" id="" cols="30" rows="2" placeholder="댓글을 남겨주세요."></textarea>
-												</div>
-											</div>
-											<div class="col-lg-1 commentBtn_wrap">
-												<button type="button" class="btn btn-dark">등록</button>
-											</div>
-										</div>
-									</li>
-									<li>
-										<div class="row">
-											<div class="col-lg-2 comImg_wrap">
-												<img src="../img/profile.png" alt="">
-											</div>
-											<div class="col-lg-10 comText_wrap">
-												<div class="user_wrap">
-													<span>닉네임</span>
-												</div>
-												<div class="content_wrap">
-													댓글 내용댓글 내용댓글 내용댓글 내용댓글 내용댓글 내용댓글 내용댓글 내용<br>
-													댓글 내용댓글 내용댓글 내용댓글 내용댓글 내용댓글 내용<br>
-												</div>
-											</div>
-											<div class="btn_wrap">
-												<a href="">수정</a>
-												<a href="">삭제</a>
-											</div>
-										</div>
-									</li>
-								</ul>
+															<ul class="comList_wrap">
+																<li>
+																	<div class="row">
+																		<div class="col-lg-2 comImg_wrap">
+																			<img src="../img/profile.png" alt="">
+																		</div>
+																		<div class="col-lg-9 comWrite_wrap">
+																			<div class="user_wrap">
+																				<span>닉네임</span>
+																			</div>
+																			<div class="content_wrap">
+																				<textarea name="" id="" cols="30" rows="2" placeholder="댓글을 남겨주세요."></textarea>
+																			</div>
+																		</div>
+																		<div class="col-lg-1 commentBtn_wrap">
+																			<button type="button" class="btn btn-dark">등록</button>
+																		</div>
+																	</div>
+																</li>
+																<li>
+																	<div class="row">
+																		<div class="col-lg-2 comImg_wrap">
+																			<img src="../img/profile.png" alt="">
+																		</div>
+																		<div class="col-lg-10 comText_wrap">
+																			<div class="user_wrap">
+																				<span>닉네임</span>
+																			</div>
+																			<div class="content_wrap">
+																				댓글 내용댓글 내용댓글 내용댓글 내용댓글 내용댓글 내용댓글 내용댓글 내용<br>
+																				댓글 내용댓글 내용댓글 내용댓글 내용댓글 내용댓글 내용<br>
+																			</div>
+																		</div>
+																		<div class="btn_wrap">
+																			<a href="">수정</a>
+																			<a href="">삭제</a>
+																		</div>
+																	</div>
+																</li>
+															</ul>
 
                             </div>
                         </div>

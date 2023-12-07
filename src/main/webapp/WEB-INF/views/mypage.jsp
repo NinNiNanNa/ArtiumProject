@@ -104,104 +104,104 @@
 			</div>
 		</section>
 
-        <section id="section2">
-            <div class="wrap1440">
-                <div class="gap1440">
-                    <div class="container1440">
+    <section id="section2">
+        <div class="wrap1440">
+            <div class="gap1440">
+                <div class="container1440">
 
-							<div class="tab-content">
-								<div id="mypage1" class="tab-pane active">
+			<div class="tab-content">
+				<div id="mypage1" class="tab-pane active">
 
-									<div class="wrap470">
-										<div class="content_wrap">
-											<ul class="inputText_wrap">
-												<li>
-													<div class="profileUpload">
-														<img id="preview" src="./img/profile.png" alt="">
-														<label for="imageFile">
-															<div class="uploadBtn"><i class="fas fa-camera"></i></div>
-														</label>
-														<input type="file" name="profileUpload" id="imageFile" accept="image/gif, image/jpeg, image/png">
-													</div>
-												</li>
-												<li>
-													<h2>아이디</h2>
-													<div class="inputBox inputBoxId">
-														<input type="text" name="id" id="id" value="wlsdms3011" readonly>
-													</div>
-												</li>
-												<li>
-													<h2>비밀번호 입력</h2>
-													<div class="inputBox inputBoxPw1">
-														<input type="password" name="pw1" id="pw1" value="wlsdms24^^!">
-														<a href="javascript:void(0);" class="delBtn"><img src="./img/icon_close_circle.svg" alt=""></a>
-														<a href="javascript:void(0);" class="pwBtn"><img src="./img/icon_pw_hide.svg" alt=""></a>
-														<p></p>
-													</div>
-												</li>
-												<li>
-													<h2>비밀번호 확인</h2>
-													<div class="inputBox inputBoxPw2">
-														<input type="password" name="pw2" id="pw2" value="wlsdms24^^!">
-														<a href="javascript:void(0);" class="delBtn"><img src="./img/icon_close_circle.svg" alt=""></a>
-														<a href="javascript:void(0);" class="pwBtn"><img src="./img/icon_pw_hide.svg" alt=""></a>
-														<p></p>
-													</div>
-												</li>
-												<li>
-													<h2>닉네임</h2>
-													<div class="inputBox inputBoxName">
-														<input type="text" name="name" id="name" value="닌니난나">
-														<a href="javascript:void(0);" class="delBtn"><img src="./img/icon_close_circle.svg" alt=""></a>
-														<p></p>
-													</div>
-												</li>
-												<li>
-													<h2>성별</h2>
-													<div class="inputBox">
-														<label for='genderM' class="clearfix">
-															<input type='radio' name='gender' id='genderM' value='' checked>
-															<span>남성</span>
-														</label>
-														<label for='genderW' class="clearfix">
-															<input type='radio' name='gender' id='genderW' value=''>
-															<span>여성</span>
-														</label>
-													</div>
-												</li>
-												<li>
-													<h2>이메일</h2>
-													<div class="inputBox inputBoxEmail">
-														<input type="text" name="email" id="email" value="wlsdms3011@gmail.com">
-														<a href="javascript:void(0);" class="delBtn"><img src="./img/icon_close_circle.svg" alt=""></a>
-														<a href="javascript:void(0);" class="addChkBtn">본인인증</a>
-														<p></p>
-													</div>
-												</li>
-											</ul>
-				
-											<ul class="button_wrap clearfix">
-												<li>
-													<div>
-														<a href="javascript:void(0);" class="joinCanBtn">취소</a>
-													</div>
-												</li>
-												<li>
-													<div>
-														<a href="javascript:void(0);" class="joinConBtn">확인</a>
-													</div>
-												</li>
-											</ul>
-										</div>
+					<div class="wrap470">
+						<div class="content_wrap">
+							<ul class="inputText_wrap">
+								<li>
+									<div class="profileUpload">
+										<img id="preview" src="./img/profile.png" alt="">
+										<label for="imageFile">
+											<div class="uploadBtn"><i class="fas fa-camera"></i></div>
+										</label>
+										<input type="file" name="profileUpload" id="imageFile" accept="image/gif, image/jpeg, image/png">
 									</div>
+								</li>
+								<li>
+									<h2>아이디</h2>
+									<div class="inputBox inputBoxId">
+										<input type="text" name="id" id="id" value="wlsdms3011" readonly>
+									</div>
+								</li>
+								<li>
+									<h2>비밀번호 입력</h2>
+									<div class="inputBox inputBoxPw1">
+										<input type="password" name="pw1" id="pw1" value="wlsdms24^^!">
+										<a href="javascript:void(0);" class="delBtn"><img src="./img/icon_close_circle.svg" alt=""></a>
+										<a href="javascript:void(0);" class="pwBtn"><img src="./img/icon_pw_hide.svg" alt=""></a>
+										<p></p>
+									</div>
+								</li>
+								<li>
+									<h2>비밀번호 확인</h2>
+									<div class="inputBox inputBoxPw2">
+										<input type="password" name="pw2" id="pw2" value="wlsdms24^^!">
+										<a href="javascript:void(0);" class="delBtn"><img src="./img/icon_close_circle.svg" alt=""></a>
+										<a href="javascript:void(0);" class="pwBtn"><img src="./img/icon_pw_hide.svg" alt=""></a>
+										<p></p>
+									</div>
+								</li>
+								<li>
+									<h2>닉네임</h2>
+									<div class="inputBox inputBoxName">
+										<input type="text" name="name" id="name" value="닌니난나">
+										<a href="javascript:void(0);" class="delBtn"><img src="./img/icon_close_circle.svg" alt=""></a>
+										<p></p>
+									</div>
+								</li>
+								<li>
+									<h2>성별</h2>
+									<div class="inputBox">
+										<label for='genderM' class="clearfix">
+											<input type='radio' name='gender' id='genderM' value='' checked>
+											<span>남성</span>
+										</label>
+										<label for='genderW' class="clearfix">
+											<input type='radio' name='gender' id='genderW' value=''>
+											<span>여성</span>
+										</label>
+									</div>
+								</li>
+								<li>
+									<h2>이메일</h2>
+									<div class="inputBox inputBoxEmail">
+										<input type="text" name="email" id="email" value="wlsdms3011@gmail.com">
+										<a href="javascript:void(0);" class="delBtn"><img src="./img/icon_close_circle.svg" alt=""></a>
+										<a href="javascript:void(0);" class="addChkBtn">본인인증</a>
+										<p></p>
+									</div>
+								</li>
+							</ul>
 
-								</div>
-							</div>
+							<ul class="button_wrap clearfix">
+								<li>
+									<div>
+										<a href="javascript:void(0);" class="joinCanBtn">취소</a>
+									</div>
+								</li>
+								<li>
+									<div>
+										<a href="javascript:void(0);" class="joinConBtn">확인</a>
+									</div>
+								</li>
+							</ul>
+						</div>
+					</div>
 
-                    </div>
+				</div>
+			</div>
+
                 </div>
             </div>
-        </section>
+        </div>
+    </section>
 
 		<section id="section3">
 			<div class="wrap1440">

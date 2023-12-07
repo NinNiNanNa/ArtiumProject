@@ -105,7 +105,7 @@ public class MateController {
 		//글쓰기가 완료되면 목록으로 이동한다. 
 		return "redirect:mateList";       
 	}
-	
+	 
 	 
 	//상세보기 페이지 로딩
 	 @GetMapping("/mateView") public String mateView() { return "/mate/view"; }

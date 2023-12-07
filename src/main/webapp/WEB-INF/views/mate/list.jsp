@@ -1,5 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+
 <!DOCTYPE HTML>
 <html lang='ko' class=''>
 <head>
@@ -41,6 +43,7 @@
 
 </head>
 <body>
+
 <div id='wrap'>
 	
 	<ul id='skip'>
@@ -99,16 +102,18 @@
 									</div>
 								</div>
 								<div class="writeBtn_wrap">
-									<a href="./mtWrite.html">모집 등록</a>
+									<a href="/mateWrite">모집 등록</a>
 								</div>
-
+	
 								<div class="col">
 
 									<div class="tab-content" style="padding-top:30px;">
 										<div id="current" class="tab-pane active">
 
 											<ul class="list_wrap row">
+											<c:forEach items="${ lists }" var="row" varStatus="loop">  
 												<li class="col-lg-3">
+													
 													<div class="listInfo">
 														<div class="image_wrap">
 															<img src="../img/imgex1.jpg" alt="">
@@ -120,21 +125,23 @@
 														</div>
 														<div class="title_wrap">
 															<div>
-																<a class="txtSkip" href="./mtView.html">전시회 제목</a>
-																<h6 class="txtSkip">전시회 장소</h6>
-																<h5>2023-11-01 ~ 2023-12-30</h5>
+																<a class="txtSkip" href="/mateView">${row.mt_title}</a>
+																<h6 class="txtSkip">${row.mt_location}</h6>
+																<h5>${row.mt_viewdate}</h5>
 																<ul class="info_wrap">
 																	<li>
-																		<span>조회수 <i>22</i></span>
+																		<span>조회수<i>${row.mt_visitcount}</i></span>
 																	</li>
 																	<li>
-																		<span>북마크 <i>5</i></span>
+																		<span>북마크<i>${row.mt_bmcount}</i></span>
 																	</li>
 																</ul>
 															</div>
 														</div>
 													</div>
+													
 												</li>
+												</c:forEach>
 											</ul>
 
 										</div>

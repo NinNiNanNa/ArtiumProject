@@ -58,7 +58,7 @@
                 <div class="gap1440">
                     <div class="container1440">
 
-                        <form action="">
+                        <form action="./mateWrite" onsubmit="return validateForm(this);">
                         <div class="writeForm_wrap">
                             <ul>
                                 <li class="row">
@@ -66,7 +66,7 @@
                                         <h2>모집상태</h2>
                                     </div>
                                     <div class="col-lg-2 write_wrap">
-                                        <select name="" class="form-select">
+                                        <select name="_mt_status" class="form-select">
                                             <option value="">모집중</option>
                                             <option value="">모집완료</option>
                                         </select>
@@ -77,7 +77,7 @@
                                         <h2>제목</h2>
                                     </div>
                                     <div class="col-lg-10 write_wrap">
-                                        <input type="text" class="form-control" placeholder="제목을 입력하세요.">
+                                        <input type="text" name="mt_title" class="form-control" placeholder="제목을 입력하세요.">
                                     </div>
                                 </li>
                                 <li class="row">
@@ -93,7 +93,7 @@
                                         <h2>관람 예정일</h2>
                                     </div>
                                     <div class="col-lg-2 write_wrap">
-                                        <input type="date" class="form-control" placeholder="날짜 선택" required>
+                                        <input type="date" name="mt_viewdate" class="form-control" placeholder="날짜 선택" required>
                                     </div>
                                 </li>
                                 <li class="row">
@@ -101,7 +101,7 @@
                                         <h2>메이트 성별</h2>
                                     </div>
                                     <div class="col-lg-2 write_wrap">
-                                        <select name="" class="form-select">
+                                        <select name="mt_gender" class="form-select">
                                             <option value="">성별무관</option>
                                             <option value="">남성</option>
                                             <option value="">여성</option>
@@ -113,7 +113,7 @@
                                         <h2>메이트 나이</h2>
                                     </div>
                                     <div class="col-lg-2 write_wrap">
-                                        <select name="" class="form-select">
+                                        <select name="mt_age" class="form-select">
                                             <option value="">연령무관</option>
                                             <option value="">20대 초반</option>
                                             <option value="">20대 중반</option>
@@ -128,7 +128,7 @@
                                     </div>
                                         ~
                                     <div class="col-lg-2 write_wrap">
-                                        <select name="" class="form-select">
+                                        <select name="mt_age" class="form-select">
                                             <option value="">연령무관</option>
                                             <option value="">20대 초반</option>
                                             <option value="">20대 중반</option>
@@ -147,7 +147,7 @@
                                         <h2>내용</h2>
                                     </div>
                                     <div class="col-lg-10 write_wrap">
-                                        <textarea name="" id="" cols="30" rows="10"></textarea>
+                                        <textarea name="mt_content" id="" cols="30" rows="10"></textarea>
                                     </div>
                                 </li>
                             </ul>
@@ -155,7 +155,8 @@
 
                         <div class="button_wrap">
                             <a href="" class="btn btn-light cancelBtn">취소하기</a>
-                            <a href="" class="btn btn-dark registBtn">등록하기</a>
+                            <button type="submit" class="btn btn-dark registBtn">등록하기</button>
+                            <!-- <a href="" class="btn btn-dark registBtn">등록하기</a> -->
                         </div>
 
                         </form>

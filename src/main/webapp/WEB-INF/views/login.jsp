@@ -38,6 +38,27 @@
 
 	<!-- 아이콘 -->
     <link href="./vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
+    
+    	<script type="text/javascript">
+	    function loginCheck(){
+	        $.ajax({
+	            url:"/login/loginCheck",
+	            type:"post",
+	            data:{"id" : $("#id").val(),
+	            	"pw" : $("#pw").val()},
+	            success: function(result){
+	            	if(result == 0){
+	            		alert("로그인 실패");
+	            	} else{
+	            		alert("로그인 성공");
+	            		window.location.href = "../";
+	            	}
+	            },
+	            error:function(request,status,error){        alert("code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error);       }
+	            
+	        });
+	    }
+	    </script>
 
 </head>
 <body>
@@ -89,7 +110,7 @@
                                         </label>
 									</li>
 									<li>
-										<a href="javascript:void(0);" class="buttons loginBtn">로그인</a>
+										<a href="javascript:void(0);" class="buttons loginBtn" onclick="loginCheck()">로그인</a>
 										<a href="javascript:void(0);" class="buttons kakaoBtn"><img src="./img/icon_kakao_02.svg" alt="icon_kakao"> 카카오 로그인</a>
 										<a href="javascript:void(0);" class="buttons naverBtn"><img src="./img/icon_naver_02.svg" alt="icon_naver"> 네이버 로그인</a>
 									</li>

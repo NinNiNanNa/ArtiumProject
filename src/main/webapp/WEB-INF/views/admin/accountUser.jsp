@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ taglib uri="jakarta.tags.core" prefix="c" %>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -27,6 +28,29 @@
 
     <!-- 부트스트랩5 CDN -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    
+    <script type="text/javascript">
+    
+	    function removeCheck(user_id) {
+	    	 if (confirm("정말 삭제하시겠습니까??") == true){    //확인
+	    		 deleteMember(user_id);
+	    	 }else{   //취소
+	    	     return false;
+	    	 }
+	    	}
+    	
+	    function deleteMember(user_id){
+	        $.ajax({
+	            url:"/admin/accountUser/delete",
+	            type:"post",
+	            data:{"user_id" : user_id},
+	            success: function(data){
+	            	location.reload();
+	                alert("삭제 완료 ");
+	            }
+	        });
+	    }
+    </script>
 
 </head>
 
@@ -92,38 +116,25 @@
                                             </tr>
                                         </thead>
                                         <tbody>
+                                        <c:forEach items="${memberList }" var="row" varStatus="loop">
                                             <tr>
-                                                <td>1</td>
-                                                <td>wlsdms3011</td>
-                                                <td>닌니난나</td>
-                                                <td>wlsdms3011@naver.com</td>
-                                                <td>여</td>
-                                                <td>2023-11-23</td>
+                                                <td>${loop.count}</td>
+                                                <td>${row.user_id}</td>
+                                                <td>${row.user_name}</td>
+                                                <td>${row.user_email}</td>
+                                                <td>${row.user_gender}</td>
+                                                <td>${row.user_regidate}</td>
                                                 <td>
-                                                    <button type="button" class="btn btn-danger">삭제</button>
+                                                    <button type="button" class="btn btn-danger" onclick="removeCheck('${row.user_id}')">삭제</button>
                                                 </td>
                                             </tr>
-                                            <tr>
-                                                <td>2</td>
-                                                <td>wlsdms3011</td>
-                                                <td>닌니난나</td>
-                                                <td>wlsdms3011@naver.com</td>
-                                                <td>여</td>
-                                                <td>2023-11-23</td>
-                                                <td>
-                                                    <button type="button" class="btn btn-danger">삭제</button>
-                                                </td>
-                                            </tr>
+                                        </c:forEach>
                                         </tbody>
                                     </table>
-
                                 </div>
                             </div>
-
                         </div>
-
                     </div>
-
                 </div>
                 <!-- /.container-fluid -->
 

@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ taglib uri="jakarta.tags.core" prefix="c" %>
 <!DOCTYPE HTML>
 <html lang='ko' class=''>
 <head>
@@ -77,6 +78,7 @@
 
 							<!-- Content Row -->
 							<div class="row">
+								
 								<ul class="nav nav-pills mb-4" style="justify-content: left; font-size: 17px; " role="tablist">
 									<li class="nav-item">
 										<a class="nav-link active tabColor" data-bs-toggle="pill" href="#a">#현대미술</a>
@@ -108,8 +110,9 @@
 									</div>
 								</div>
 								<div class="writeBtn_wrap">
-									<a href="./gaWrite.html">작품 등록</a>
+									<a href="/galleryWrite">작품 등록</a>
 								</div>
+								
 
 								<div class="col">
 
@@ -117,6 +120,7 @@
 										<div id="a" class="tab-pane active">
 
 											<ul class="list_wrap row">
+												<c:forEach items="${ galleryList }" var="gallery" varStatus="loop">
 												<li class="col-lg-3">
 													<div class="listInfo">
 														<div class="image_wrap">
@@ -129,28 +133,29 @@
 														</div>
 														<div class="title_wrap">
 															<div>
-																<a class="txtSkip" href="./gaView.html">전시회 제목</a>
-																<h6 class="txtSkip">전시회 장소</h6>
-																<h5>2023-11-01 ~ 2023-12-30</h5>
+																<a class="txtSkip" href="/galleryView?ga_id=${ gallery.ga_id }">${ gallery.ga_title }</a>
+																<h6 class="txtSkip">${ gallery.user_id } </h6>
+																<h5>${ gallery.ga_sdate } ~ ${ gallery.ga_edate }</h5>
 																<ul class="info_wrap">
 																	<li>
-																		<span>조회수 <i>22</i></span>
+																		<span>조회수 <i>${ gallery.ga_visitcount }</i></span>
 																	</li>
 																	<li>
-																		<span>북마크 <i>5</i></span>
+																		<span>북마크 <i>${ gallery.ga_bmcount }</i></span>
 																	</li>
 																</ul>
 															</div>
 														</div>
 													</div>
 												</li>
+												</c:forEach>
 											</ul>
-
 										</div>
 
 										<div id="b" class="tab-pane fade">
 
 											<ul class="list_wrap row">
+											<c:forEach items="${ galleryList }" var="gallery" varStatus="loop">
 												<li class="col-lg-3">
 													<div class="listInfo">
 														<div class="image_wrap">
@@ -163,21 +168,22 @@
 														</div>
 														<div class="title_wrap">
 															<div>
-																<a class="txtSkip" href="javascript:;">전시회 제목</a>
-																<h6 class="txtSkip">전시회 장소</h6>
-																<h5>2023-11-01 ~ 2023-12-30</h5>
+																<a class="txtSkip" href="/galleryView?ga_id=${ gallery.ga_id }">${ gallery.ga_title }</a>
+																<h6 class="txtSkip">${ gallery.user_id } </h6>
+																<h5>${ gallery.ga_sdate } ~ ${ gallery.ga_edate }</h5>
 																<ul class="info_wrap">
 																	<li>
-																		<span>조회수 <i>22</i></span>
+																		<span>조회수<i>${ gallery.ga_visitcount }</i></span>
 																	</li>
 																	<li>
-																		<span>북마크 <i>5</i></span>
+																		<span>북마크<i>${ gallery.ga_bmcount } </i></span>
 																	</li>
 																</ul>
 															</div>
 														</div>
 													</div>
 												</li>
+												</c:forEach>
 											</ul>
 
 										</div>
@@ -185,10 +191,11 @@
 										<div id="c" class="tab-pane fade">
 
 											<ul class="list_wrap row">
+											<c:forEach items="${ galleryList }" var="gallery" varStatus="loop">
 												<li class="col-lg-3">
 													<div class="listInfo">
 														<div class="image_wrap">
-															<img src="../img/imgex2.jpg" alt="">
+															<img src="../img/imgex3.jpg" alt="">
 															<div class="listBtn_wrap">
 																<a href="#" class="bookMarkBtn">
 																	<i class="fas fa-bookmark"></i>
@@ -197,21 +204,22 @@
 														</div>
 														<div class="title_wrap">
 															<div>
-																<a class="txtSkip" href="javascript:;">전시회 제목</a>
-																<h6 class="txtSkip">전시회 장소</h6>
-																<h5>2023-11-01 ~ 2023-12-30</h5>
+																<a class="txtSkip" href="/galleryView?ga_id=${ gallery.ga_id }">${ gallery.ga_title }</a>
+																<h6 class="txtSkip">${ gallery.user_id } </h6>
+																<h5>${ gallery.ga_sdate } ~ ${ gallery.ga_edate }</h5>
 																<ul class="info_wrap">
 																	<li>
-																		<span>조회수 <i>22</i></span>
+																		<span>조회수<i>${ gallery.ga_visitcount }</i></span>
 																	</li>
 																	<li>
-																		<span>북마크 <i>5</i></span>
+																		<span>북마크<i>${ gallery.ga_bmcount } </i></span>
 																	</li>
 																</ul>
 															</div>
 														</div>
 													</div>
 												</li>
+												</c:forEach>
 											</ul>
 
 										</div>
@@ -219,10 +227,11 @@
 										<div id="d" class="tab-pane fade">
 
 											<ul class="list_wrap row">
+											<c:forEach items="${ galleryList }" var="gallery" varStatus="loop">
 												<li class="col-lg-3">
 													<div class="listInfo">
 														<div class="image_wrap">
-															<img src="../img/imgex2.jpg" alt="">
+															<img src="../img/imgex4.png" alt="">
 															<div class="listBtn_wrap">
 																<a href="#" class="bookMarkBtn">
 																	<i class="fas fa-bookmark"></i>
@@ -231,21 +240,22 @@
 														</div>
 														<div class="title_wrap">
 															<div>
-																<a class="txtSkip" href="javascript:;">전시회 제목</a>
-																<h6 class="txtSkip">전시회 장소</h6>
-																<h5>2023-11-01 ~ 2023-12-30</h5>
+																<a class="txtSkip" href="/galleryView?ga_id=${ gallery.ga_id }">${ gallery.ga_title }</a>
+																<h6 class="txtSkip">${ gallery.user_id } </h6>
+																<h5>${ gallery.ga_sdate } ~ ${ gallery.ga_edate }</h5>
 																<ul class="info_wrap">
 																	<li>
-																		<span>조회수 <i>22</i></span>
+																		<span>조회수<i>${ gallery.ga_visitcount }</i></span>
 																	</li>
 																	<li>
-																		<span>북마크 <i>5</i></span>
+																		<span>북마크<i>${ gallery.ga_bmcount } </i></span>
 																	</li>
 																</ul>
 															</div>
 														</div>
 													</div>
 												</li>
+												</c:forEach>
 											</ul>
 
 										</div>
@@ -253,10 +263,11 @@
 										<div id="e" class="tab-pane fade">
 
 											<ul class="list_wrap row">
+											<c:forEach items="${ galleryList }" var="gallery" varStatus="loop">
 												<li class="col-lg-3">
 													<div class="listInfo">
 														<div class="image_wrap">
-															<img src="../img/imgex2.jpg" alt="">
+															<img src="../img/imgex5.jpg" alt="">
 															<div class="listBtn_wrap">
 																<a href="#" class="bookMarkBtn">
 																	<i class="fas fa-bookmark"></i>
@@ -265,29 +276,32 @@
 														</div>
 														<div class="title_wrap">
 															<div>
-																<a class="txtSkip" href="javascript:;">전시회 제목</a>
-																<h6 class="txtSkip">전시회 장소</h6>
-																<h5>2023-11-01 ~ 2023-12-30</h5>
+																<a class="txtSkip" href="/galleryView?ga_id=${ gallery.ga_id }">${ gallery.ga_title }</a>
+																<h6 class="txtSkip">${ gallery.user_id } </h6>
+																<h5>${ gallery.ga_sdate } ~ ${ gallery.ga_edate }</h5>
 																<ul class="info_wrap">
 																	<li>
-																		<span>조회수 <i>22</i></span>
+																		<span>조회수<i>${ gallery.ga_visitcount }</i></span>
 																	</li>
 																	<li>
-																		<span>북마크 <i>5</i></span>
+																		<span>북마크<i>${ gallery.ga_bmcount } </i></span>
 																	</li>
 																</ul>
 															</div>
 														</div>
 													</div>
 												</li>
+												</c:forEach>
 											</ul>
 
 										</div>
 									</div>
 								</div>
-
+							</div> <!-- row -->
+							<div align="center">
+								<p>${ pagingImg }</p>
 							</div>
-
+							
 						</div>
 
 					</div>

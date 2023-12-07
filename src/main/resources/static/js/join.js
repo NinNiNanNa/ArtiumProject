@@ -127,10 +127,21 @@
                 $('.inputBoxEmail p').removeClass('addInputWrong');
                 $('.inputBoxEmail .delBtn').show();
             });
+            $('#email2').keydown(function(){
+                $('.inputBoxEmail2 input').removeClass('addInputWrong');
+                $('.inputBoxEmail2 p').removeClass('addInputWrong');
+                $('.inputBoxEmail2 .delBtn').show();
+            });
             // 이메일 delBtn 누르면 입력한 내용과 delBtn 삭제
             $('.inputBoxEmail .delBtn').on({
                 click: function(){
                     $('#email').val('');
+                    $(this).hide();
+                }
+            });
+            $('.inputBoxEmail2 .delBtn').on({
+                click: function(){
+                    $('#email2').val('');
                     $(this).hide();
                 }
             });
@@ -194,11 +205,20 @@
                         $('.inputBoxEmail p').addClass('addInputWrong').text('잘못된 이메일 형식입니다.');
                         $('#email').focus();
                     }
+                    
+                    if( $('#email2').val()=='' ){
+                        $('.inputBoxEmail2 input').addClass('addInputWrong');
+                        $('.inputBoxEmail2 p').addClass('addInputWrong').text('인증번호를 입력해 주세요.');
+                        $('#email2').focus();
+                    }
+                    else if( !isEmail($('#email2').val()) ){
+                        $('.inputBoxEmail2 input').addClass('addInputWrong');
+                        $('.inputBoxEmail2 p').addClass('addInputWrong').text('잘못된 인증번호 입니다.');
+                        $('#email2').focus();
+                    }
                 }
             });
-
         }
-
     }
     join.init();
 

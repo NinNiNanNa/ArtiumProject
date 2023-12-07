@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ taglib uri="jakarta.tags.core" prefix="c" %>
 <!DOCTYPE HTML>
 <html lang='ko' class=''>
 <head>
@@ -72,48 +73,45 @@
 
                         <div class="view_content">
                             <div>
-                                <h2>전시 리뷰 제목</h2>
+                                <h2>${reviewDTO.rv_title }</h2>
                                 <ul>
                                     <li>
                                         <div>
                                             <span>관람일</span>
-                                            <i>2023-11-01</i>
+                                            <i>${reviewDTO.rv_date }</i>
                                         </div>
                                     </li>
                                     <li>
                                         <div>
                                             <span>관람시간</span>
-                                            <i>13시 ~ 14시</i>
+                                            <i>${reviewDTO.rv_stime } ~ ${reviewDTO.rv_etime }</i>
                                         </div>
                                     </li>
                                     <li>
                                         <div>
                                             <span>혼잡도</span>
-                                            <i>북적거림</i>
+                                            <i>${reviewDTO.rv_congestion }</i>
                                         </div>
                                     </li>
                                     <li>
                                         <div>
                                             <span>교통수단</span>
-                                            <i>지하철</i>
+                                            <i>${reviewDTO.rv_transportation }</i>
                                         </div>
                                     </li>
                                     <li>
                                         <div>
                                             <span>재방문 의향</span>
-                                            <i>조금 있다</i>
+                                            <i>${reviewDTO.rv_revisit }</i>
                                         </div>
                                     </li>
                                 </ul>
                                 <div class="slide_wrap">
-                                    <!-- 이미지 슬라이드 넣을곳 -->
+                                    ${reviewDTO.rv_image }
                                 </div>
                                 <div class="longContent">
                                     <p>
-                                        전시리뷰내용전시리뷰내용전시리뷰내용전시리뷰내용전시리뷰내용전시리뷰내용<br>
-                                        전시리뷰내용전시리뷰내용전시리뷰내용전시리뷰내용전시리뷰내용전시리뷰내용전시리뷰내용전시<br>
-                                        전시리뷰내용전시리뷰내용전시리뷰내용전시리뷰내용전시리뷰내용전시리뷰내용<br>
-                                        전시리뷰내용전시리뷰내용전시리뷰내용전시리뷰내용전시리뷰내용전시리뷰내용<br>
+                                        ${reviewDTO.rv_content }
                                     </p>
                                 </div>
                                 <div class="memInfo_wrap">
@@ -122,8 +120,8 @@
                                     </div>
                                     <div class="profileInfo_wrap">
                                         <h4>닉네임</h4>
-                                         <span>작성일<i>2023-11-15</i></span>
-                                         <span>조회수<i>22</i></span>
+                                         <span>작성일<i>${reviewDTO.rv_postdate }</i></span>
+                                         <span>조회수<i>${reviewDTO.rv_visitcount }</i></span>
                                     </div>
 									<div class="bmBtn_wrap">
 										<a href="javascript:;" class="bmBtn">저장하기</a>
@@ -135,7 +133,7 @@
 						<div class="viewBtn_wrap">
 							<a href="" class="btn btn-light">삭제하기</a>
 							<a href="" class="btn btn-secondary">수정하기</a>
-							<a href="" class="btn btn-dark">리뷰등록</a>
+							<a href="" class="btn btn-dark">목록보기</a>
 						</div>
 
                     </div>

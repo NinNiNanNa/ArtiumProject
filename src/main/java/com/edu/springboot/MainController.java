@@ -92,18 +92,18 @@ public class MainController {
 		return "mypage";
 	}
 	
-	@GetMapping("/reviewList")
-	public String reviewList() {
-		return "/review/list";
-	}
-	@GetMapping("/reviewView")
-	public String reviewView() {
-		return "/review/view";
-	}
-	@GetMapping("/reviewWrite")
-	public String reviewWrite() {
-		return "/review/write";
-	}
+//	@GetMapping("/reviewList")
+//	public String reviewList() {
+//		return "/review/list";
+//	}
+//	@GetMapping("/reviewView")
+//	public String reviewView() {
+//		return "/review/view";
+//	}
+//	@GetMapping("/reviewWrite")
+//	public String reviewWrite() {
+//		return "/review/write";
+//	}
 
 	/*
 	 * @GetMapping("/mateList") public String mateList() { return "/mate/list"; }

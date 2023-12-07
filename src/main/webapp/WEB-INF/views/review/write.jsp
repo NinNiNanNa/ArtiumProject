@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ taglib uri="jakarta.tags.core" prefix="c" %>
 <!DOCTYPE HTML>
 <html lang='ko' class=''>
 <head>
@@ -40,6 +41,52 @@
     <link href="../vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
 
 </head>
+<script>
+function validateForm(form) {
+   if (form.rv_title.value == ""){
+      alert("제목을 입력하세요.");
+      form.rv_title.focus();
+      
+      return false;
+   }
+   if (form.rv_date.value == ""){
+      alert("관람일 날짜를 선택하세요.");
+      form.rv_date.focus();
+      return false;
+   }
+   if (form.rv_stime.value == ""){
+      alert("관람 시작시간을 선택하세요.");
+      form.rv_stime.focus();
+      return false;
+   }
+   if (form.rv_etime.value == ""){
+      alert("관람 종료시간을 선택하세요.");
+      form.rv_etime.focus();
+      return false;
+   }
+   if (form.rv_congestion.value == ""){
+      alert("혼잡도를 선택하세요.");
+      form.rv_congestion.focus();
+      return false;
+   }
+   if (form.rv_transportation.value == ""){
+      alert("교통수단을 선택하세요.");
+      form.rv_transportation.focus();
+      return false;
+   }
+   if (form.rv_revisit.value == ""){
+      alert("재방문 의향을 선택하세요.");
+      form.rv_revisit.focus();
+      return false;
+   }
+   if (form.rv_content.value == ""){
+      alert("내용을 입력하세요.");
+      form.rv_content.focus();
+      return false;
+   }
+   document.getElementById('rvForm').submit();
+}
+</script>
 <body>
 <div id='wrap'>
 	
@@ -58,7 +105,7 @@
                 <div class="gap1440">
                     <div class="container1440">
 
-                        <form action="">
+                        <form action="/reviewWrite" id="rvForm" name="rvForm" method="post" enctype="multipart/form-data">
                         <div class="writeForm_wrap">
                             <ul>
                                 <li class="row">
@@ -66,7 +113,7 @@
                                         <h2>제목</h2>
                                     </div>
                                     <div class="col-lg-10 write_wrap">
-                                        <input type="text" class="form-control" placeholder="제목을 입력하세요.">
+                                        <input type="text" name="rv_title" class="form-control" placeholder="제목을 입력하세요.">
                                     </div>
                                 </li>
                                 <li class="row">
@@ -82,7 +129,7 @@
                                         <h2>관람일</h2>
                                     </div>
                                     <div class="col-lg-2 write_wrap">
-                                        <input type="date" class="form-control" placeholder="날짜 선택" required>
+                                        <input type="date" name="rv_date" class="form-control" placeholder="날짜 선택" required>
                                     </div>
                                 </li>
                                 <li class="row">
@@ -90,62 +137,64 @@
                                         <h2>관람시간</h2>
                                     </div>
                                     <div class="col-lg-2 write_wrap">
-                                        <select name="" class="form-select">
-                                            <option value="">00시</option>
-                                            <option value="">01시</option>
-                                            <option value="">02시</option>
-                                            <option value="">03시</option>
-                                            <option value="">04시</option>
-                                            <option value="">05시</option>
-                                            <option value="">06시</option>
-                                            <option value="">07시</option>
-                                            <option value="">08시</option>
-                                            <option value="">09시</option>
-                                            <option value="">10시</option>
-                                            <option value="">11시</option>
-                                            <option value="">12시</option>
-                                            <option value="">13시</option>
-                                            <option value="">14시</option>
-                                            <option value="">15시</option>
-                                            <option value="">16시</option>
-                                            <option value="">17시</option>
-                                            <option value="">18시</option>
-                                            <option value="">19시</option>
-                                            <option value="">20시</option>
-                                            <option value="">21시</option>
-                                            <option value="">22시</option>
-                                            <option value="">23시</option>
-                                            <option value="">24시</option>
+                                        <select name="rv_stime" class="form-select">
+                                            <option value="">관람시작시간</option>
+                                            <option value="00">00시</option>
+                                            <option value="01">01시</option>
+                                            <option value="02">02시</option>
+                                            <option value="03">03시</option>
+                                            <option value="04">04시</option>
+                                            <option value="05">05시</option>
+                                            <option value="06">06시</option>
+                                            <option value="07">07시</option>
+                                            <option value="08">08시</option>
+                                            <option value="09">09시</option>
+                                            <option value="10">10시</option>
+                                            <option value="11">11시</option>
+                                            <option value="12">12시</option>
+                                            <option value="13">13시</option>
+                                            <option value="14">14시</option>
+                                            <option value="15">15시</option>
+                                            <option value="16">16시</option>
+                                            <option value="17">17시</option>
+                                            <option value="18">18시</option>
+                                            <option value="19">19시</option>
+                                            <option value="20">20시</option>
+                                            <option value="21">21시</option>
+                                            <option value="22">22시</option>
+                                            <option value="23">23시</option>
+                                            <option value="24">24시</option>
                                         </select>
                                     </div>
                                         ~
                                     <div class="col-lg-2 write_wrap">
-                                        <select name="" class="form-select">
-                                            <option value="">00시</option>
-                                            <option value="">01시</option>
-                                            <option value="">02시</option>
-                                            <option value="">03시</option>
-                                            <option value="">04시</option>
-                                            <option value="">05시</option>
-                                            <option value="">06시</option>
-                                            <option value="">07시</option>
-                                            <option value="">08시</option>
-                                            <option value="">09시</option>
-                                            <option value="">10시</option>
-                                            <option value="">11시</option>
-                                            <option value="">12시</option>
-                                            <option value="">13시</option>
-                                            <option value="">14시</option>
-                                            <option value="">15시</option>
-                                            <option value="">16시</option>
-                                            <option value="">17시</option>
-                                            <option value="">18시</option>
-                                            <option value="">19시</option>
-                                            <option value="">20시</option>
-                                            <option value="">21시</option>
-                                            <option value="">22시</option>
-                                            <option value="">23시</option>
-                                            <option value="">24시</option>
+                                        <select name="rv_etime" class="form-select">
+                                            <option value="">관람종료시간</option>
+                                            <option value="00">00시</option>
+                                            <option value="01">01시</option>
+                                            <option value="02">02시</option>
+                                            <option value="03">03시</option>
+                                            <option value="04">04시</option>
+                                            <option value="05">05시</option>
+                                            <option value="06">06시</option>
+                                            <option value="07">07시</option>
+                                            <option value="08">08시</option>
+                                            <option value="09">09시</option>
+                                            <option value="10">10시</option>
+                                            <option value="11">11시</option>
+                                            <option value="12">12시</option>
+                                            <option value="13">13시</option>
+                                            <option value="14">14시</option>
+                                            <option value="15">15시</option>
+                                            <option value="16">16시</option>
+                                            <option value="17">17시</option>
+                                            <option value="18">18시</option>
+                                            <option value="19">19시</option>
+                                            <option value="20">20시</option>
+                                            <option value="21">21시</option>
+                                            <option value="22">22시</option>
+                                            <option value="23">23시</option>
+                                            <option value="24">24시</option>
                                         </select>
                                     </div>
                                 </li>
@@ -154,11 +203,12 @@
                                         <h2>혼잡도</h2>
                                     </div>
                                     <div class="col-lg-2 write_wrap">
-                                        <select name="" class="form-select">
-                                            <option value="">한산</option>
-                                            <option value="">보통</option>
-                                            <option value="">북적거림</option>
-                                            <option value="">매우혼잡</option>
+                                        <select name="rv_congestion" class="form-select">
+                                            <option value="">혼잡도</option>
+                                            <option value="1">한산</option>
+                                            <option value="2">보통</option>
+                                            <option value="3">북적거림</option>
+                                            <option value="4">매우혼잡</option>
                                         </select>
                                     </div>
                                 </li>
@@ -167,11 +217,12 @@
                                         <h2>교통수단</h2>
                                     </div>
                                     <div class="col-lg-2 write_wrap">
-                                        <select name="" class="form-select">
-                                            <option value="">도보</option>
-                                            <option value="">버스</option>
-                                            <option value="">지하철</option>
-                                            <option value="">차</option>
+                                        <select name="rv_transportation" class="form-select">
+                                            <option value="">교통수단</option>
+                                            <option value="1">도보</option>
+                                            <option value="2">버스</option>
+                                            <option value="3">지하철</option>
+                                            <option value="4">차</option>
                                         </select>
                                     </div>
                                 </li>
@@ -180,11 +231,12 @@
                                         <h2>재방문 의향</h2>
                                     </div>
                                     <div class="col-lg-2 write_wrap">
-                                        <select name="" class="form-select">
-                                            <option value="">모르겠다</option>
-                                            <option value="">전혀없다</option>
-                                            <option value="">조금있다</option>
-                                            <option value="">재방문예정</option>
+                                        <select name="rv_revisit" class="form-select">
+                                            <option value="">재방문 의향</option>
+                                            <option value="1">모르겠다</option>
+                                            <option value="2">전혀없다</option>
+                                            <option value="3">조금있다</option>
+                                            <option value="4">재방문예정</option>
                                         </select>
                                     </div>
                                 </li>
@@ -206,16 +258,16 @@
                                     <div class="col-lg-2 title_wrap">
                                         <h2>내용</h2>
                                     </div>
-                                    <div class="col-lg-10 write_wrap">
-                                        <textarea name="" id="" cols="30" rows="10"></textarea>
+                                    <div class="col-lg-10 write_wrap">  
+                                        <textarea name="rv_content" id="" cols="30" rows="10"></textarea>
                                     </div>
                                 </li>
                             </ul>
                         </div>
 
                         <div class="button_wrap">
-                            <a href="" class="btn btn-light cancelBtn">취소하기</a>
-                            <a href="" class="btn btn-dark registBtn">등록하기</a>
+                            <a href="/reviewList" class="btn btn-light cancelBtn">취소하기</a>
+                            <a href="javascript:void(0);" class="btn btn-dark registBtn" onclick="validateForm(rvForm);">등록하기</a>
                         </div>
 
                         </form>

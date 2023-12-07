@@ -39,7 +39,19 @@
 
 	<!-- 아이콘 -->
     <link href="../vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
-
+    
+<script>
+	$(document).ready(function() {
+		$('#simpleLine').on('keyup', function() {
+			$('#textCnt').html("("+$(this).val().length+" / 60)");
+ 
+			if($(this).val().length > 60) {
+				$(this).val($(this).val().substring(0, 60));
+				$('#textCnt').html("(60 / 60)");
+			}
+		});
+	});
+</script>
 <script>
 //구글맵 초기화 및 마커설정 
 function initMap() {
@@ -198,10 +210,19 @@ window.onload = function(){
 															</div>
 															<div class="col-lg-9 comWrite_wrap">
 																<div class="user_wrap">
-																	<span>닉네임</span>
+																	<div class="col-lg-3 star_wrap">
+																		<fieldset>
+																			<input type="radio" name="rating" value="5" id="rate1"><label for="rate1">⭐</label>
+																			<input type="radio" name="rating" value="4" id="rate2"><label for="rate2">⭐</label>
+																			<input type="radio" name="rating" value="3" id="rate3"><label for="rate3">⭐</label>
+																			<input type="radio" name="rating" value="2" id="rate4"><label for="rate4">⭐</label>
+																			<input type="radio" name="rating" value="1" id="rate5"><label for="rate5">⭐</label>
+																		</fieldset>
+																	</div>
 																</div>
 																<div class="content_wrap">
-																	<textarea name="" id="" cols="30" rows="2" placeholder="댓글을 남겨주세요."></textarea>
+																	<textarea name="" id="simpleLine" cols="30" rows="1" placeholder="댓글을 남겨주세요."></textarea>
+																	<div id="textCnt">(0/60)</div>
 																</div>
 															</div>
 															<div class="col-lg-1 commentBtn_wrap">

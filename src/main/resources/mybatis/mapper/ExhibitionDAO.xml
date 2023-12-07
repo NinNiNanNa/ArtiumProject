@@ -8,62 +8,30 @@
 <!-- Controller에서 Mapper의 함수를 호출하기 위한 interface를 namespace속성에 설정한다. -->
 <mapper namespace="com.edu.springboot.jdbc.IExhibitionService">
 	
-	<select id="getTotalCount_1" resultType="int" parameterType="com.edu.springboot.jdbc.ParameterDTO">
-		SELECT COUNT(*) FROM exhibition WHERE ex_sdate <![CDATA[<=]]> sysdate AND ex_edate <![CDATA[>=]]> sysdate
-		<!-- 검색어가 null, 빈값이 아닐때만 AND 추가절을 동적으로 추가한다. -->
-		<if test="searchKeyword!=null and !searchKeyword.equals('')">
-			AND ${searchField} LIKE '%'||#{searchKeyword}||'%'
-		</if>
-	</select>
-	<select id="getTotalCount_2" resultType="int" parameterType="com.edu.springboot.jdbc.ParameterDTO">
-		SELECT COUNT(*) FROM exhibition WHERE ex_sdate <![CDATA[>]]> sysdate
-		<!-- 검색어가 null, 빈값이 아닐때만 AND 추가절을 동적으로 추가한다. -->
-		<if test="searchKeyword!=null and !searchKeyword.equals('')">
-			AND ${searchField} LIKE '%'||#{searchKeyword}||'%'
-		</if>
-	</select>
-	<select id="getTotalCount_3" resultType="int" parameterType="com.edu.springboot.jdbc.ParameterDTO">
-		SELECT COUNT(*) FROM exhibition WHERE ex_edate <![CDATA[<]]> sysdate
+	<select id="getTotalCount" resultType="int" parameterType="com.edu.springboot.jdbc.ParameterDTO">
+		SELECT COUNT(*) FROM exhibition WHERE
+		<choose>
+			<when test="status == 1">ex_sdate <![CDATA[<=]]> sysdate AND ex_edate <![CDATA[>=]]> sysdate</when>
+			<when test="status == 2">ex_sdate <![CDATA[>]]> sysdate</when>
+			<when test="status == 3">ex_edate <![CDATA[<]]> sysdate</when>
+		</choose>
 		<!-- 검색어가 null, 빈값이 아닐때만 AND 추가절을 동적으로 추가한다. -->
 		<if test="searchKeyword!=null and !searchKeyword.equals('')">
 			AND ${searchField} LIKE '%'||#{searchKeyword}||'%'
 		</if>
 	</select>
 	
-	<select id="listPage_1"
+	<select id="listPage"
 		resultType="com.edu.springboot.jdbc.ExhibitionDTO"
 		parameterType="com.edu.springboot.jdbc.ParameterDTO">
 		SELECT * FROM (
 			SELECT Tb.*, rownum rNum FROM (
-				SELECT * FROM exhibition WHERE ex_sdate <![CDATA[<=]]> sysdate AND ex_edate <![CDATA[>=]]> sysdate
-				<if test="searchKeyword!=null and !searchKeyword.equals('')">
-					AND ${searchField} LIKE '%'||#{searchKeyword}||'%'
-				</if>
-				ORDER BY ex_seq DESC
-			)	Tb
-		)
-		WHERE rNum<![CDATA[>=]]>#{start} AND rNum<![CDATA[<=]]>#{end}
-	</select>
-	<select id="listPage_2"
-		resultType="com.edu.springboot.jdbc.ExhibitionDTO"
-		parameterType="com.edu.springboot.jdbc.ParameterDTO">
-		SELECT * FROM (
-			SELECT Tb.*, rownum rNum FROM (
-				SELECT * FROM exhibition WHERE ex_sdate <![CDATA[>]]> sysdate
-				<if test="searchKeyword!=null and !searchKeyword.equals('')">
-					AND ${searchField} LIKE '%'||#{searchKeyword}||'%'
-				</if>
-				ORDER BY ex_seq DESC
-			)	Tb
-		)
-		WHERE rNum<![CDATA[>=]]>#{start} AND rNum<![CDATA[<=]]>#{end}
-	</select>
-	<select id="listPage_3"
-		resultType="com.edu.springboot.jdbc.ExhibitionDTO"
-		parameterType="com.edu.springboot.jdbc.ParameterDTO">
-		SELECT * FROM (
-			SELECT Tb.*, rownum rNum FROM (
-				SELECT * FROM exhibition WHERE ex_edate <![CDATA[<]]> sysdate
+				SELECT * FROM exhibition WHERE
+				<choose>
+					<when test="status == 1">ex_sdate <![CDATA[<=]]> sysdate AND ex_edate <![CDATA[>=]]> sysdate</when>
+					<when test="status == 2">ex_sdate <![CDATA[>]]> sysdate</when>
+					<when test="status == 3">ex_edate <![CDATA[<]]> sysdate</when>
+				</choose>
 				<if test="searchKeyword!=null and !searchKeyword.equals('')">
 					AND ${searchField} LIKE '%'||#{searchKeyword}||'%'
 				</if>

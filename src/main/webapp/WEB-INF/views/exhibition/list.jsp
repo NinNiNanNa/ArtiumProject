@@ -40,6 +40,24 @@
 	<!-- 아이콘 -->
     <link href="../vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
 
+<script>
+$(document).ready(function() {
+    var currentUrl = window.location.href;
+
+    function handleExhibitionButtonClick(status) {
+        $(".nav-link").removeClass("active");
+        $("#" + status + "Btn").addClass("active");
+    }
+
+    if (currentUrl.includes("/exhibitionCurrentList")) {
+        handleExhibitionButtonClick("current");
+    } else if (currentUrl.includes("/exhibitionFutureList")) {
+        handleExhibitionButtonClick("future");
+    } else if (currentUrl.includes("/exhibitionPastList")) {
+        handleExhibitionButtonClick("past");
+    }
+});
+</script>
 </head>
 <body>
 <div id='wrap'>
@@ -100,7 +118,7 @@
 									</div>
 									<div class="searchWord_wrap">
 										<input type="text" class="form-control" name="searchKeyword" placeholder="제목 또는 전시관을 입력하세요.">
-										<button type="button" class="btn btn-dark searchBtn"><i class="fas fa-search"></i></button>
+										<button type="submit" class="btn btn-dark searchBtn"><i class="fas fa-search"></i></button>
 									</div>
 								</div>
 								</form>
@@ -111,7 +129,7 @@
 										<div id="current">
 
 											<ul class="list_wrap row">
-												<c:forEach items="${lists1 }" var="row" varStatus="loop">
+												<c:forEach items="${lists }" var="row" varStatus="loop">
 												<li class="col-lg-3">
 													<div class="listInfo">
 														<div class="image_wrap">
@@ -142,88 +160,11 @@
 												</c:forEach>
 											</ul>
 											<div class="paging_wrap">
-												${ pagingImg1 }
+												${ pagingImg }
 											</div>
 
 										</div>
 
-										<div id="future">
-
-											<ul class="list_wrap row">
-												<c:forEach items="${lists2 }" var="row" varStatus="loop">
-												<li class="col-lg-3">
-													<div class="listInfo">
-														<div class="image_wrap">
-															<img src="${row.ex_imgURL }" alt="">
-															<div class="listBtn_wrap">
-																<a href="#" class="bookMarkBtn">
-																	<i class="fas fa-bookmark"></i>
-																</a>
-															</div>
-														</div>
-														<div class="title_wrap">
-															<div>
-																<a href="/exhibitionView?ex_seq=${row.ex_seq }" class="txtSkip">${row.ex_title }</a>
-																<h6 class="txtSkip">${row.ex_place }</h6>
-																<h5>${row.ex_sDate } ~ ${row.ex_eDate }</h5>
-																<ul class="info_wrap">
-																	<li>
-																		<span>조회수 <i>${row.ex_visitCount }</i></span>
-																	</li>
-																	<li>
-																		<span>북마크 <i>${row.ex_bmCount }</i></span>
-																	</li>
-																</ul>
-															</div>
-														</div>
-													</div>
-												</li>
-												</c:forEach>
-											</ul>
-											<div class="paging_wrap">
-												${ pagingImg2 }
-											</div>
-
-										</div>
-										
-										<div id="past">
-
-											<ul class="list_wrap row">
-												<c:forEach items="${lists3 }" var="row" varStatus="loop">
-												<li class="col-lg-3">
-													<div class="listInfo">
-														<div class="image_wrap">
-															<img src="${row.ex_imgURL }" alt="">
-															<div class="listBtn_wrap">
-																<a href="#" class="bookMarkBtn">
-																	<i class="fas fa-bookmark"></i>
-																</a>
-															</div>
-														</div>
-														<div class="title_wrap">
-															<div>
-																<a class="txtSkip" href="/exhibitionView?ex_seq=${row.ex_seq }">${row.ex_title }</a>
-																<h6 class="txtSkip">${row.ex_place }</h6>
-																<h5>${row.ex_sDate } ~ ${row.ex_eDate }</h5>
-																<ul class="info_wrap">
-																	<li>
-																		<span>조회수 <i>${row.ex_visitCount }</i></span>
-																	</li>
-																	<li>
-																		<span>북마크 <i>${row.ex_bmCount }</i></span>
-																	</li>
-																</ul>
-															</div>
-														</div>
-													</div>
-												</li>
-												</c:forEach>
-											</ul>
-											<div class="paging_wrap">
-												${ pagingImg3 }
-											</div>
-
-										</div>
 									</div>
 								</div>
 
@@ -252,4 +193,3 @@
 </div>  
 </body>
 </html>
-    

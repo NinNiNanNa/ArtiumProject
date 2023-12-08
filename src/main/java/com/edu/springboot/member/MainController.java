@@ -121,6 +121,17 @@ public class MainController {
 	 * @GetMapping("/mateWrite") public String mateWrite() { return "/mate/write"; }
 	 */
 	
+	
+	@GetMapping("/idFind")
+	public String idFind() {
+		return "/idFind";
+	}
+	@GetMapping("/pwFind")
+	public String pwFind() {
+		return "/pwFind";
+	}
+	
+	
 
 	@GetMapping("/admin")
 	public String adminLogin() {

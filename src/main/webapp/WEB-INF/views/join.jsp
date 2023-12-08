@@ -108,103 +108,6 @@
                 <div class="gap">
                     <div class="container">
                         
-											<div class="wrap470">
-												<div class="title_wrap">
-													<h1>회원가입</h1>
-													<div>
-														<h2>필수입력사항</h2>
-													</div>
-												</div>
-												<div class="content_wrap">
-													<ul class="inputText_wrap">
-														<li>
-															<h2>회원구분</h2>
-															<div class="inputBox">
-																<label for='userMember' class="clearfix">
-																	<input type='radio' name='member' id='userMember' value='' checked>
-																	<span>일반회원</span>
-																</label>
-																<label for='authorMember' class="clearfix">
-																	<input type='radio' name='member' id='authorMember' value=''>
-																	<span>작가회원</span>
-																</label>
-															</div>
-														</li>
-														<li>
-															<h2>아이디</h2>
-															<div class="inputBox inputBoxId">
-																<input type="text" name="id" id="id" placeholder="아이디를 입력해 주세요.">
-																<a href="javascript:void(0);" class="delBtn"><img src="./img/icon_close_circle.svg" alt=""></a>
-																<a href="javascript:void(0);" class="addChkBtn">중복확인</a>
-																<p></p>
-															</div>
-														</li>
-														<li>
-															<h2>비밀번호 입력</h2>
-															<div class="inputBox inputBoxPw1">
-																<input type="password" name="pw1" id="pw1" placeholder="비밀번호를 입력해 주세요.">
-																<a href="javascript:void(0);" class="delBtn"><img src="./img/icon_close_circle.svg" alt=""></a>
-																<a href="javascript:void(0);" class="pwBtn"><img src="./img/icon_pw_hide.svg" alt=""></a>
-																<p></p>
-															</div>
-														</li>
-														<li>
-															<h2>비밀번호 확인</h2>
-															<div class="inputBox inputBoxPw2">
-																<input type="password" name="pw2" id="pw2" placeholder="비밀번호를 다시 입력해 주세요.">
-																<a href="javascript:void(0);" class="delBtn"><img src="./img/icon_close_circle.svg" alt=""></a>
-																<a href="javascript:void(0);" class="pwBtn"><img src="./img/icon_pw_hide.svg" alt=""></a>
-																<p></p>
-															</div>
-														</li>
-														<li>
-															<h2>닉네임</h2>
-															<div class="inputBox inputBoxName">
-																<input type="text" name="name" id="name" placeholder="닉네임을 입력해 주세요.">
-																<a href="javascript:void(0);" class="delBtn"><img src="./img/icon_close_circle.svg" alt=""></a>
-																<p></p>
-															</div>
-														</li>
-														<li>
-															<h2>성별</h2>
-															<div class="inputBox">
-																<label for='genderM' class="clearfix">
-																	<input type='radio' name='gender' id='genderM' value='' checked>
-																	<span>남성</span>
-																</label>
-																<label for='genderW' class="clearfix">
-																	<input type='radio' name='gender' id='genderW' value=''>
-																	<span>여성</span>
-																</label>
-															</div>
-														</li>
-														<li>
-															<h2>이메일</h2>
-															<div class="inputBox inputBoxEmail">
-																<input type="text" name="email" id="email" placeholder="이메일을 입력해 주세요.">
-																<a href="javascript:void(0);" class="delBtn"><img src="./img/icon_close_circle.svg" alt=""></a>
-																<a href="javascript:void(0);" class="addChkBtn">본인인증</a>
-																<p></p>
-															</div>
-														</li>
-													</ul>
-						
-													<ul class="button_wrap clearfix">
-														<li>
-															<div>
-																<a href="javascript:void(0);" class="joinCanBtn">취소</a>
-															</div>
-														</li>
-														<li>
-															<div>
-																<a href="javascript:void(0);" class="joinConBtn">확인</a>
-															</div>
-														</li>
-													</ul>
-												</div>
-											</div>
-
-=======
 						<div class="wrap470">
 							<div class="title_wrap">
 								<h1>회원가입</h1>
@@ -315,7 +218,7 @@
 							</div>
 							</form>
 						</div>
->>>>>>> branch 'main' of https://github.com/NinNiNanNa/ArtiumProject.git
+						
                     </div>
                 </div>
             </div>

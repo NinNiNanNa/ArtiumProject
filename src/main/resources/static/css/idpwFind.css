@@ -1,0 +1,45 @@
+@charset "utf-8";
+
+input[type='text'],
+input[type='password'] { color:#919191; outline: 0; transition: all .4s; padding:0 15px; -webkit-appearance:none; appearance:none; box-shadow:none; text-shadow:none; border-radius:0; box-sizing:border-box; border:2px solid #ddd; background:#fff; width:100%; height:45px; }
+input[type='checkbox'] { -webkit-appearance:none; appearance:none; cursor:pointer; width:auto; height:auto; }
+
+/* header - start ////////////////////////////////////////////////////////////////////////////////////////////////////// */
+
+#header { z-index:3; position:fixed; top:0; left:0; width:100%; height:75px; border-bottom:1px solid rgba(255,255,255,.15); background:rgba(0,0,0, 1); transition:all .3s; }
+#header.addFixed { height:60px; border-bottom:0; }
+
+/* section - start ///////////////////////////////////////////////////////////////////////////////////////////////////// */
+
+#section { padding-top: 75px; color: #000; }
+#section .wrap470 { width:100%; max-width:440px; margin:80px auto; }
+
+#section .title_wrap { text-align: center; padding-bottom: 15px; }
+#section .title_wrap h1 { font-size: 35px; font-weight: bold; }
+#section .title_wrap p { margin-top: 25px; font-size: 18px; font-weight: 500; }
+
+
+#section .content_wrap { width: 100%; }
+#section .content_wrap ul.tabBtn_wrap { text-align: center; }
+#section .content_wrap ul.tabBtn_wrap > li { float: left; width: 50%; }
+#section .content_wrap ul.tabBtn_wrap > li > div { margin: 40px 0; }
+#section .content_wrap ul.tabBtn_wrap > li > div a { width: 100%; padding-bottom: 23px; font-size: 16px; color: #666; font-weight: 100; border-bottom: 1px solid #ccc; }
+#section .content_wrap ul.tabBtn_wrap > li > div a.addSelectBtn { font-weight: 700; color: #111; border-bottom: 1px solid #111; }
+
+#section .content_wrap ul.inputText_wrap > li h2 { display: inline-block; padding-right: 15px; font-weight: 200; background: url(../img/icon_necd.svg) no-repeat right top; }
+#section .content_wrap ul.inputText_wrap > li .inputBox { position: relative; margin: 10px 0 40px; }
+#section .content_wrap ul.inputText_wrap > li .inputBox input[type="text"] { height: 52px; border: 1px solid #eee; border-radius: 10px; font-size: 14px; color: #111; }
+#section .content_wrap ul.inputText_wrap > li .inputBox input[type="text"]::placeholder { font-weight: 100; color: #aaa; }
+#section .content_wrap ul.inputText_wrap > li .inputBox input[type="text"]:focus { border: 1px solid #111; }
+#section .content_wrap ul.inputText_wrap > li .inputBox > a { display: none; position: absolute; top: 0; margin: 16px 0; }
+#section .content_wrap ul.inputText_wrap > li .inputBox > a.delBtn { right: 15px; }
+#section .content_wrap ul.inputText_wrap > li .inputBox > a img { width: 20px; height: 20px; }
+#section .content_wrap ul.inputText_wrap > li .inputBox p { display: none; margin-top: 10px; font-size: 12px; font-weight: 100; color: #ff0000; }
+
+#section .content_wrap ul.inputText_wrap > li .inputBox input[type="text"].addInputWrong { border: 1px solid #ff0000; }
+#section .content_wrap ul.inputText_wrap > li .inputBox p.addInputWrong { display: block; }
+
+#section .content_wrap ul.inputText_wrap > li .buttonBox { text-align: center; }
+#section .content_wrap ul.inputText_wrap > li .buttonBox a.conBtn { width: 100%; padding: 20px 0; border-radius: 5px; font-size: 18px; font-weight: bold; color: #ccc; background-color: #f8f8f8; transition: all .3s; }
+#section .content_wrap ul.inputText_wrap > li .buttonBox a.conBtn:hover { color: #fff; background-color: #1A1A1A; }
+#section .content_wrap ul.inputText_wrap > li .buttonBox a.conBtn.addConBtn { color: #fff; background-color: #1A1A1A; }

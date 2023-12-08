@@ -3,13 +3,13 @@
 <!-- Mapper파일을 구성하기 위한 Doctype 설정 -->
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
-<mapper namespace="com.edu.springboot.jdbc.IMemberService">
+<mapper namespace="com.edu.springboot.member.IMemberService">
 
 	<!-- 회원목록 출력하기 : select 쿼리를 통해 인출한 레코드를 DTO에 저장한 후
 	List컬렉션에 add() 하여 컨트롤러로 반환한다. -->
 	<select id="select"
-		parameterType="com.edu.springboot.jdbc.MemberDTO"
-		resultType="com.edu.springboot.jdbc.MemberDTO">
+		parameterType="com.edu.springboot.member.MemberDTO"
+		resultType="com.edu.springboot.member.MemberDTO">
 		select * from members order by user_regidate desc
 	</select>
 	
@@ -17,33 +17,33 @@
 			SQL문의 인파라미터를 설정할 수 있다. EL과 동일하게 DTO 내부의
 			getter()를 호출하여 값을 얻어오게 된다. -->
 	<insert id="insert"
-		parameterType="com.edu.springboot.jdbc.MemberDTO">
+		parameterType="com.edu.springboot.member.MemberDTO">
 		insert into members (user_id, user_pass, user_name, user_email, user_gender, user_image, user_type) values
 			(#{user_id}, #{user_pass}, #{user_name}, #{user_email}, #{user_gender}, #{user_image, jdbcType=VARCHAR}, #{user_type})
 	</insert>
 	
 	<!-- 아이디 중복 확인 -->
 	<select id="idCheck"
-		parameterType="com.edu.springboot.jdbc.MemberDTO">
+		parameterType="com.edu.springboot.member.MemberDTO">
 		select COUNT(*) from members where user_id = #{user_id}
 	</select>
 	
 	<!-- 기존 회원정보 인출하기 -->
 	<select id="selectOne"
-		parameterType="com.edu.springboot.jdbc.MemberDTO"
-		resultType="com.edu.springboot.jdbc.MemberDTO">
+		parameterType="com.edu.springboot.member.MemberDTO"
+		resultType="com.edu.springboot.member.MemberDTO">
 		select * from members where user_id = #{user_id}
 	</select>
 	
 	<!-- 회원 삭제 -->
 	<delete id="delete"
-		parameterType="com.edu.springboot.jdbc.MemberDTO">
+		parameterType="com.edu.springboot.member.MemberDTO">
 		delete from members where user_id=#{user_id}
 	</delete>
 	
 	<!-- 로그인 -->
 	<select id="loginCheck"
-		parameterType="com.edu.springboot.jdbc.MemberDTO">
+		parameterType="com.edu.springboot.member.MemberDTO">
 		select count(*) from members where user_id = #{user_id} and user_pass = #{user_pass} 
 	</select>
 	

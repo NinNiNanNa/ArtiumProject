@@ -1,7 +1,7 @@
 package com.edu.springboot.jdbc;
 
 import lombok.Data;
-
+	
 @Data
 public class ReviewDTO {
 	private String rv_id;

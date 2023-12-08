@@ -13,7 +13,7 @@
 			WHERE ${searchField} LIKE '%'||#{searchKeyword}||'%'
 		</if>
 	</select>
-	
+
 	<select id="listPage" resultType="com.edu.springboot.jdbc.ReviewDTO" parameterType="com.edu.springboot.jdbc.ParameterDTO">
 		SELECT * FROM (
 			SELECT Tb.*, rownum rNum FROM (

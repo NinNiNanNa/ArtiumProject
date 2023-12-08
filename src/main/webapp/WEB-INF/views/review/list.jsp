@@ -94,7 +94,7 @@
 								<div class="writeBtn_wrap">
 									<a href="/reviewWrite">리뷰 등록</a>
 								</div>
-								
+							
 								<div class="col" style="margin-top: 30px;">
 
 									<ul class='list_wrap row'>

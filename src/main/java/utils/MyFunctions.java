@@ -15,7 +15,7 @@ public class MyFunctions {
 		System.out.println("생성된UUID : " + uuid);
 		return uuid;
 	}
-	
+		
 	// 파일명 변경
 	public static String renameFile(String sDirectory, String fileName) {
 		// 파일의 확장자를 잘라낸다.

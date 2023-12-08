@@ -10,7 +10,7 @@ import org.apache.ibatis.annotations.Param;
 public interface IReviewService {
 		// 리뷰목록 Paging처리를 위해 게시물의 갯수 카운트
 		public int getTotalCount(ParameterDTO parameterDTO);
-		
+	
 		// 리뷰목록
 		public ArrayList<ReviewDTO> listPage(ParameterDTO parameterDTO);
 

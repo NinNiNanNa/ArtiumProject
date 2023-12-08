@@ -50,7 +50,6 @@ public class ReviewController {
 		ArrayList<ReviewDTO> lists = dao.listPage(parameterDTO);
 		model.addAttribute("lists", lists);
 		
-		//게시판 하단에 출력한 페이지번호를 String으로 반환받은 후 Modle객체에 저장한다.
 		String pagingImg = PagingUtil.pagingImg(totalCount, pageSize, blockPage, pageNum, req.getContextPath()+"/reviewList?list=?");
 		model.addAttribute("pagingImg", pagingImg);
 		

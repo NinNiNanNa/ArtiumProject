@@ -14,7 +14,7 @@
 	<meta name='Author'      content='청일홍사'>
 	<meta name='Author-Date' content='2023-11-24'>
 	<meta name='Robots'      content='index,follow'>
-
+	
 	<!-- 파비콘 -->	
 	<link rel='shortcut icon' href='./img/brando-114x114-1.png'>
 	<link rel='apple-touch-icon' href='./img/brando-114x114-1.png'>

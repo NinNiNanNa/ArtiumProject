@@ -50,7 +50,7 @@ public class MainController {
 		if(result == 1) {
 			MemberDTO member = dao.selectOne(memberDTO);
 //			System.out.println(member);
-            
+              
 			session.setAttribute("userId", member.getUser_id());
 			session.setAttribute("userImg", member.getUser_image());
 			session.setAttribute("userEmail", member.getUser_email());

@@ -50,7 +50,7 @@ $(document).ready(function () {
         // 아이디 저장 체크박스 체크
         $("#idCheck").prop("checked", true);
     }
-
+   
     // 로그인 버튼 클릭 시 이벤트 처리
     $("#loginBtn").click(function () {
         loginCheck();

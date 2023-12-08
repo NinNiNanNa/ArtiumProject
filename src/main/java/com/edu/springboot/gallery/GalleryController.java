@@ -259,7 +259,7 @@ public class GalleryController {
 		}
 	}
 	
-	
+	     
 	
 	// 온라인 갤러리
 	@GetMapping("/galleryRoom")

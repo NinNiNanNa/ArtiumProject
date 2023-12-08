@@ -2,7 +2,7 @@
 
 <!-- Mapper파일을 구성하기 위한 Doctype 설정 -->
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-
+  
 <mapper namespace="com.edu.springboot.member.IMemberService">
 
 	<!-- 회원목록 출력하기 : select 쿼리를 통해 인출한 레코드를 DTO에 저장한 후

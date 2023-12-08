@@ -12,7 +12,9 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.edu.springboot.smtp.RegisterMail;
 
+import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 
 
@@ -38,8 +40,8 @@ public class MainController {
 	//로그인
 	@ResponseBody
 	@RequestMapping(value="/login/loginCheck", method=RequestMethod.POST)
-	public int loginCheck(@RequestParam("id") String id, @RequestParam("pw") String pw, HttpServletRequest request) {
-		HttpSession session = request.getSession();
+	public int loginCheck(@RequestParam("id") String id, @RequestParam("pw") String pw, HttpServletRequest req, HttpServletResponse rsp) {
+		HttpSession session = req.getSession();
 		MemberDTO memberDTO = new MemberDTO();
 		
 		memberDTO.setUser_id(id);
@@ -47,10 +49,12 @@ public class MainController {
 		int result = dao.loginCheck(memberDTO);
 		if(result == 1) {
 			MemberDTO member = dao.selectOne(memberDTO);
-//			session.setAttribute("email", member.getUser_email());
-//			session.setAttribute("name", member.getUser_name());
-//			session.setAttribute("image", member.getUser_image());
+//			System.out.println(member);
+            
 			session.setAttribute("userId", member.getUser_id());
+			session.setAttribute("userImg", member.getUser_image());
+			session.setAttribute("userEmail", member.getUser_email());
+			session.setAttribute("userName", member.getUser_name());
 		}
 		return result;
 	}
@@ -59,7 +63,7 @@ public class MainController {
 	@RequestMapping("/logout")
 	public String logout(HttpSession session) {
 		session.invalidate();
-		return "main";
+		return "login";
 	}
 	
 	//회원가입

@@ -151,58 +151,58 @@ $(document).ready(function(){
 																</li>
 																<li class="row">
 																	<div class="col-lg-8 artWrite_wrap">
-																		<input type="text" class="form-control mb-3" placeholder="작품2 제목을 입력해주세요">
+																		<input type="text" name="art_title2" class="form-control mb-3" placeholder="작품2 제목을 입력해주세요">
 																		<input type="date" class="form-control mb-3" placeholder="작품2 제작일" required>
-																		<textarea name="" id="" cols="30" rows="10" placeholder="작품2 내용을 입력해주세요."></textarea>
+																		<textarea name="art_content2" id="" cols="30" rows="10" placeholder="작품2 내용을 입력해주세요."></textarea>
 																	</div>
 																	<div class="col-lg-4 artImg_wrap">
 			                               <label for="artImgFile2">
 			                                   <div class="uploadBtn">작품2 올리기</div>
 			                               </label>
-			                               <input type="file" name="artImg2" id="artImgFile2" accept="image/gif, image/jpeg, image/png">
+			                               <input type="file" name="art_image2" id="artImgFile2" accept="image/gif, image/jpeg, image/png">
 																		 <img id="preview2" src="" alt="">
 																	</div>
 																	
 																</li>
 																<li class="row">
 																	<div class="col-lg-8 artWrite_wrap">
-																		<input type="text" class="form-control mb-3" placeholder="작품3 제목을 입력해주세요">
+																		<input type="text" name="art_title3" class="form-control mb-3" placeholder="작품3 제목을 입력해주세요">
 																		<input type="date" class="form-control mb-3" placeholder="작품3 제작일" required>
-																		<textarea name="" id="" cols="30" rows="10" placeholder="작품3 내용을 입력해주세요."></textarea>
+																		<textarea name="art_content3" id="" cols="30" rows="10" placeholder="작품3 내용을 입력해주세요."></textarea>
 																	</div>
 																	<div class="col-lg-4 artImg_wrap">
 		                                <label for="artImgFile3">
 		                                    <div class="uploadBtn">작품3 올리기</div>
 		                                </label>
-		                                <input type="file" name="artImg3" id="artImgFile3" accept="image/gif, image/jpeg, image/png">
+		                                <input type="file" name="art_image3" id="artImgFile3" accept="image/gif, image/jpeg, image/png">
 																		<img id="preview3" src="" alt="">
 																	</div>
 																</li>
 																<li class="row">
 																	<div class="col-lg-8 artWrite_wrap">
-																		<input type="text" class="form-control mb-3" placeholder="작품4 제목을 입력해주세요">
+																		<input type="text" name="art_title4" class="form-control mb-3" placeholder="작품4 제목을 입력해주세요">
 																		<input type="date" class="form-control mb-3" placeholder="작품4 제작일" required>
-																		<textarea name="" id="" cols="30" rows="10" placeholder="작품4 내용을 입력해주세요."></textarea>
+																		<textarea name="art_content4" id="" cols="30" rows="10" placeholder="작품4 내용을 입력해주세요."></textarea>
 																	</div>
 																	<div class="col-lg-4 artImg_wrap">
 	                                  <label for="artImgFile4">
 	                                      <div class="uploadBtn">작품4 올리기</div>
 	                                  </label>
-	                                  <input type="file" name="artImg4" id="artImgFile4" accept="image/gif, image/jpeg, image/png">
+	                                  <input type="file" name="art_image4" id="artImgFile4" accept="image/gif, image/jpeg, image/png">
 																		<img id="preview4" src="" alt="">
 																	</div>
 																</li>
 																<li class="row">
 																	<div class="col-lg-8 artWrite_wrap">
-																		<input type="text" class="form-control mb-3" placeholder="작품5 제목을 입력해주세요">
+																		<input type="text" name="art_title5" class="form-control mb-3" placeholder="작품5 제목을 입력해주세요">
 																		<input type="date" class="form-control mb-3" placeholder="작품5 제작일" required>
-																		<textarea name="" id="" cols="30" rows="10" placeholder="작품5 내용을 입력해주세요."></textarea>
+																		<textarea name="art_content5" id="" cols="30" rows="10" placeholder="작품5 내용을 입력해주세요."></textarea>
 																	</div>
 																	<div class="col-lg-4 artImg_wrap">
 	                                  <label for="artImgFile5">
 	                                      <div class="uploadBtn">작품5 올리기</div>
 	                                  </label>
-	                                  <input type="file" name="artImg5" id="artImgFile5" accept="image/gif, image/jpeg, image/png">
+	                                  <input type="file" name="art_image5" id="artImgFile5" accept="image/gif, image/jpeg, image/png">
 																		<img id="preview5" src="" alt="">
 																	</div>
 																</li>

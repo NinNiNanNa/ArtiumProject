@@ -1,10 +1,12 @@
-package com.edu.springboot.jdbc;
+package com.edu.springboot.review;
 
 
 import java.util.ArrayList;
 
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
+
+import com.edu.springboot.jdbc.ParameterDTO;
 
 @Mapper
 public interface IReviewService {

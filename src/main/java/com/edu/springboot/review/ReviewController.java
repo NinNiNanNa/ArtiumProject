@@ -78,7 +78,7 @@ public class ReviewController {
 		// View로 포워드한다.
 		return "/review/list";
 	}
-	
+		
 	// 상페보기 페이지
 	@RequestMapping("/reviewView")
 	public String reviewView(Model model, ReviewDTO reviewDTO) {

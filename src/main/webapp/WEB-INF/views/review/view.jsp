@@ -133,7 +133,7 @@
 						<div class="viewBtn_wrap">
 							<a href="" class="btn btn-light">삭제하기</a>
 							<a href="" class="btn btn-secondary">수정하기</a>
-							<a href="" class="btn btn-dark">목록보기</a>
+							<a href="/reviewList" class="btn btn-dark">목록보기</a>
 						</div>
 
                     </div>

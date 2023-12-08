@@ -1,5 +1,11 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ taglib uri="jakarta.tags.core" prefix="c" %>
+<script type="text/javascript">
+function logoutPrint(){
+	alert('로그아웃되었습니다.');
+}    
+</script>
 	<header id='header'>
 		<div class='wrap1440'>
 			<div class='gap1440'>
@@ -21,22 +27,29 @@
 					
 					<div class='menu_wrap'>
 						<!-- JSP에서 로그인 / 로그아웃 분리 - 시작 -->
+						<c:set var="userId" value="${sessionScope.userId }"></c:set>
 						<ul class="account">
 							<li><span>계정</span></li>
-							<li><a href="/login">로그인</a></li>
-							<li><a href="/join">회원가입</a></li>
+						<c:choose>
+							<c:when test="${not empty userId }">
 							<li>
-								<a href="/mypage" class="clearfix">
+								<a href="./mypage.html" class="clearfix">
 									<div class="profile_img">
-										<img src="./img/profile.png" alt="">
+										<img src="${memberDTO.user_image }" alt="">
 									</div>
 									<div class="profile_info">
-										<span>닌니난나</span>
-										<i>kimsojin3011@gmail.com</i>
+										<span>${memberDTO.user_name }</span>
+										<i>${memberDTO.user_email }</i>
 									</div>
 								</a>
 							</li>
 							<li><a href="">로그아웃</a></li>
+							</c:when>
+							<c:otherwise>
+							<li><a href="./login.html">로그인</a></li>
+							<li><a href="./join.html">회원가입</a></li>
+							</c:otherwise>
+						</c:choose>
 						</ul>
 						<!-- JSP에서 로그인 / 로그아웃 분리 - 끝 -->
 						<ul class="menu">

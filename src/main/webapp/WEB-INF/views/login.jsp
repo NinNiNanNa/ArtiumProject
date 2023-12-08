@@ -39,25 +39,65 @@
 	<!-- 아이콘 -->
     <link href="./vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
     
-    	<script type="text/javascript">
-	    function loginCheck(){
-	        $.ajax({
-	            url:"/login/loginCheck",
-	            type:"post",
-	            data:{"id" : $("#id").val(),
-	            	"pw" : $("#pw").val()},
-	            success: function(result){
-	            	if(result == 0){
-	            	} else{
-	            		alert("로그인 성공");
-	            		window.location.href = "../";
-	            	}
-	            },
-	            error:function(request,status,error){        alert("code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error);       }
-	            
-	        });
-	    }
-	    </script>
+<script type="text/javascript">
+$(document).ready(function () {
+    // 페이지 로드 시 실행되는 함수
+    // 저장된 아이디가 있는지 확인
+    var savedId = getCookie("savedId");
+    if (savedId !== "") {
+        // 아이디 입력란에 저장된 아이디 설정
+        $("#id").val(savedId);
+        // 아이디 저장 체크박스 체크
+        $("#idCheck").prop("checked", true);
+    }
+   
+    // 로그인 버튼 클릭 시 이벤트 처리
+    $("#loginBtn").click(function () {
+        loginCheck();
+    });
+});
+//쿠키를 가져오는 함수
+function getCookie(cookieName) {
+    var name = cookieName + "=";
+    var decodedCookie = decodeURIComponent(document.cookie);
+    var cookieArray = decodedCookie.split(';');
+    for (var i = 0; i < cookieArray.length; i++) {
+        var cookie = cookieArray[i].trim();
+        if (cookie.indexOf(name) === 0) {
+            return cookie.substring(name.length, cookie.length);
+        }
+    }
+    return "";
+}
+// 로그인 체크 함수
+function loginCheck(){
+    $.ajax({
+        url:"/login/loginCheck",
+        type:"post",
+        data:{"id" : $("#id").val(),
+        	"pw" : $("#pw").val()},
+        success: function(result){
+        	if(result == 0){
+        	} else{
+        		alert("로그인 성공");
+        		
+        		// 아이디 저장 체크박스 확인
+                if ($('#idCheck').is(':checked')) {
+                    // 쿠키에 아이디 저장
+                    document.cookie = "savedId=" + $("#id").val() + "; expires=Thu, 01 Jan 2026 00:00:00 UTC; path=/";
+                } else {
+                    // 체크박스가 해제되면 쿠키 삭제
+                    document.cookie = "savedId=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/";
+                }
+        		
+        		window.location.href = "../";
+        	}
+        },
+        error:function(request,status,error){        alert("code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error);       }
+        
+    });
+}
+</script>
 
 </head>
 <body>

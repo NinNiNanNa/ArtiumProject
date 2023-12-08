@@ -15,7 +15,7 @@ public interface IMemberService {
 	public int idCheck(MemberDTO memberDTO);
 	//회원조회
 	public MemberDTO selectOne(MemberDTO memberDTO);
-	//회원 삭제
+	//회원삭제
 	public void delete(MemberDTO memberDTO);
 	//로그인
 	public int loginCheck(MemberDTO memberDTO);

@@ -44,33 +44,11 @@
 	<update id="visitCount" parameterType="com.edu.springboot.review.ReviewDTO">
 		UPDATE review SET rv_visitcount = rv_visitcount + 1 WHERE rv_id=#{rv_id}
 	</update>
-	   
+	 	  
 	<!-- @Param 어노테이션으로 변경된 파라미터를 인파라미터로 설정한다. -->
 	<insert id="write">
-		INSERT INTO review(
-			rv_id, 
-			rv_title, 
-			rv_date, 
-			rv_stime, 
-			rv_etime, 
-			rv_congestion, 
-			rv_transportation, 
-			rv_image, 
-			rv_revisit, 
-			rv_content
-		)
-		VALUES(
-			seq_board_num.nextval, 
-			#{_rv_title}, 
-			#{_rv_date}, 
-			#{_rv_stime}, 
-			#{_rv_etime}, 
-			#{_rv_congestion}, 
-			#{_rv_transportation}, 
-			#{_rv_image}, 
-			#{_rv_revisit}, 
-			#{_rv_content}
-		)
+		INSERT INTO review(rv_id, rv_title, rv_date, rv_stime, rv_etime, rv_congestion, rv_transportation, rv_image, rv_revisit, rv_content)
+		VALUES(seq_board_num.nextval, #{_rv_title}, #{_rv_date}, #{_rv_stime}, #{_rv_etime}, #{_rv_congestion}, #{_rv_transportation}, #{_rv_image}, #{_rv_revisit}, #{_rv_content})
 	</insert>
 	
 	<update id="edit" parameterType="com.edu.springboot.review.ReviewDTO">

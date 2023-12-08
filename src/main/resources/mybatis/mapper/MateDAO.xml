@@ -94,7 +94,7 @@
         #{_mt_gender}, 
         #{_mt_age}, 
         #{_mt_content}
-    ) 
+    )  
 </insert>
 
 <select id="view" resultType="com.edu.springboot.mate.MateDTO" 

@@ -1,4 +1,4 @@
-package com.edu.springboot;
+package com.edu.springboot.member;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -10,8 +10,6 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.edu.springboot.jdbc.IMemberService;
-import com.edu.springboot.jdbc.MemberDTO;
 import com.edu.springboot.smtp.RegisterMail;
 
 import jakarta.servlet.http.HttpServletRequest;
@@ -40,9 +38,7 @@ public class MainController {
 	//로그인
 	@ResponseBody
 	@RequestMapping(value="/login/loginCheck", method=RequestMethod.POST)
-	public int loginCheck(@RequestParam("id") String id,
-			@RequestParam("pw") String pw,
-			HttpServletRequest request) {
+	public int loginCheck(@RequestParam("id") String id, @RequestParam("pw") String pw, HttpServletRequest request) {
 		HttpSession session = request.getSession();
 		MemberDTO memberDTO = new MemberDTO();
 		
@@ -51,9 +47,10 @@ public class MainController {
 		int result = dao.loginCheck(memberDTO);
 		if(result == 1) {
 			MemberDTO member = dao.selectOne(memberDTO);
-			session.setAttribute("email", member.getUser_email());
-			session.setAttribute("name", member.getUser_name());
-			session.setAttribute("image", member.getUser_image());
+//			session.setAttribute("email", member.getUser_email());
+//			session.setAttribute("name", member.getUser_name());
+//			session.setAttribute("image", member.getUser_image());
+			session.setAttribute("userId", member.getUser_id());
 		}
 		return result;
 	}

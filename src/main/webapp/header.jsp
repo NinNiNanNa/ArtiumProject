@@ -31,23 +31,23 @@ function logoutPrint(){
 						<ul class="account">
 							<li><span>계정</span></li>
 						<c:choose>
-							<c:when test="${not empty userId }">
+							<c:when test="${not empty userId}">
 							<li>
-								<a href="./mypage.html" class="clearfix">
+								<a href="./mypage" class="clearfix">
 									<div class="profile_img">
-										<img src="${memberDTO.user_image }" alt="">
+										<img src="../img/${sessionScope.userImg}" alt="">
 									</div>
 									<div class="profile_info">
-										<span>${memberDTO.user_name }</span>
-										<i>${memberDTO.user_email }</i>
+										<span>${sessionScope.userName}</span>
+										<i>${sessionScope.userEmail}</i>
 									</div>
 								</a>
 							</li>
-							<li><a href="">로그아웃</a></li>
+							<li><a href="./logout">로그아웃</a></li>
 							</c:when>
 							<c:otherwise>
-							<li><a href="./login.html">로그인</a></li>
-							<li><a href="./join.html">회원가입</a></li>
+							<li><a href="./login">로그인</a></li>
+							<li><a href="./join">회원가입</a></li>
 							</c:otherwise>
 						</c:choose>
 						</ul>
@@ -62,7 +62,6 @@ function logoutPrint(){
 							<li><a href='' title='ABOUT'>ABOUT</a></li>
 						</ul>
 					</div>
-					
 				</div>
 			</div>
 		</div>

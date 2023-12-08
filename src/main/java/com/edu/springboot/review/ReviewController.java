@@ -7,6 +7,8 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -31,7 +33,7 @@ public class ReviewController {
 	// 리뷰 목록
 	@RequestMapping("/reviewList") 
 	//매개변수는 View로 전달할 데이터를 저장하기 위한 Model객체와 요청을 받아 처리하기위한 requset내장객체, DTO객체를 추가한다.
-	public String reviewList(Model model, HttpServletRequest req, ParameterDTO parameterDTO) { 
+	public String reviewList(Model model, HttpServletRequest req, ParameterDTO parameterDTO, ReviewDTO reviewDTO) { 
 		// 게시물의 갯수를 카운트(검색어가 있는경우 DTO객체에 자동으로 저장된다.)
 		int totalCount = dao.getTotalCount(parameterDTO); 
 		// 한 페이지당 게시물 수
@@ -59,6 +61,16 @@ public class ReviewController {
 		ArrayList<ReviewDTO> lists = dao.listPage(parameterDTO);
 		model.addAttribute("lists", lists);
 		
+		for (ReviewDTO row : lists) {
+			Pattern pattern = Pattern.compile("([a-zA-Z0-9]+\\.[a-zA-Z0-9]+)");
+	        Matcher matcher = pattern.matcher(row.getRv_image());
+//			System.out.println(matcher);
+	        while (matcher.find()) {
+	            String fileNameWithExtension = matcher.group(1);
+	            System.out.println("파일명과 확장자: " + fileNameWithExtension);
+	        }
+		}
+
 		// 게시판 하단에 출력한 페이지번호를 String으로 반환받은 후 Model객체에 저장한다.
 		String pagingImg = PagingUtil.pagingImg(totalCount, pageSize, blockPage, pageNum, req.getContextPath()+"/reviewList?list=?");
 		model.addAttribute("pagingImg", pagingImg);
@@ -66,7 +78,7 @@ public class ReviewController {
 		// View로 포워드한다.
 		return "/review/list";
 	}
-	
+		
 	// 상페보기 페이지
 	@RequestMapping("/reviewView")
 	public String reviewView(Model model, ReviewDTO reviewDTO) {

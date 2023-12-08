@@ -21,6 +21,7 @@ public interface IExhibitionService {
 	public int bmCount(String ex_seq);
 	
 	
+	
 	// 한줄평 총 갯수 가져오기
 	public int getSimpleReviewCount(ParameterDTO parameterDTO);
 	// 한줄평 목록 가져오기

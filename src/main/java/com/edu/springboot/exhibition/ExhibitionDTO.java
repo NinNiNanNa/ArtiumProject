@@ -22,5 +22,5 @@ public class ExhibitionDTO {
 	private String ex_addr;
 	private String ex_webURL;
 	private int ex_visitCount;
-	private int ex_bmCount;
+	private int ex_bmCount;  
 }

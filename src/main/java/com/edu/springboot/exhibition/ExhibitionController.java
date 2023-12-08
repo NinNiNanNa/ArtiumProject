@@ -68,7 +68,7 @@ public class ExhibitionController {
 		model.addAttribute("pagingImg", pagingImg);
 		
 		return "/exhibition/list";
-	}
+	}  
 	
 	// 현재전시
 	@RequestMapping("/exhibitionCurrentList")

@@ -48,7 +48,6 @@
 	            	"pw" : $("#pw").val()},
 	            success: function(result){
 	            	if(result == 0){
-	            		alert("로그인 실패");
 	            	} else{
 	            		alert("로그인 성공");
 	            		window.location.href = "../";

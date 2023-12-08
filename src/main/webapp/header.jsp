@@ -1,5 +1,10 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+        	<script type="text/javascript">
+	    function logoutPrint(){
+	    	alert('로그아웃되었습니다.');
+	    }    
+	    </script>
 	<header id='header'>
 		<div class='wrap1440'>
 			<div class='gap1440'>
@@ -23,20 +28,34 @@
 						<!-- JSP에서 로그인 / 로그아웃 분리 - 시작 -->
 						<ul class="account">
 							<li><span>계정</span></li>
-							<li><a href="/login">로그인</a></li>
-							<li><a href="/join">회원가입</a></li>
-							<li>
-								<a href="/mypage" class="clearfix">
-									<div class="profile_img">
-										<img src="./img/profile.png" alt="">
-									</div>
-									<div class="profile_info">
-										<span>닌니난나</span>
-										<i>kimsojin3011@gmail.com</i>
-									</div>
-								</a>
-							</li>
-							<li><a href="">로그아웃</a></li>
+							<%
+								if(session.getAttribute("name")==null){
+									out.println("<li><a href='/login'>로그인</a></li>");
+									out.println("<li><a href='/join'>회원가입</a></li>");
+								} else {
+									String email = (String)session.getAttribute("email");
+									String name = (String)session.getAttribute("name");
+									String image = (String)session.getAttribute("image");
+									out.println("<li>" +
+													"<a href='/mypage' class='clearfix'>" +
+														"<div class='profile_img'>");
+									if(image == null){
+										out.print("<img src='./img/profile.png' alt=''>");
+									} else {
+										out.print("<img src=\'" + image + "\' alt=''>");
+									}
+															 
+									out.print("</div>" +
+														"<div class='profile_info'>" + 
+															"<span>" + name + "</span>" + 
+															"<i>" + email + "</i>" +
+														"</div>" +
+													"</a>" +	
+												"</li>");
+									out.print("<li><a href='/logout' onclick='logoutPrint()'>로그아웃</a></li>");
+								}
+							%>
+							
 						</ul>
 						<!-- JSP에서 로그인 / 로그아웃 분리 - 끝 -->
 						<ul class="menu">

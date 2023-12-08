@@ -1,6 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
-<%@ taglib uri="jakarta.tags.core" prefix="c" %>
+<%@ taglib prefix="c" uri="jakarta.tags.core" %>
 <!DOCTYPE HTML>
 <html lang='ko' class=''>
 <head>
@@ -103,7 +103,7 @@
 										<li class="col-lg-3">
 											<div class="listInfo">
 												<div class="image_wrap">
-													<img src="../img/imgex1.jpg" alt="">
+													<img src="./uploads/${row.rv_image }" alt="">
 													<div class="listBtn_wrap">
 														<a href="#" class="bookMarkBtn">
 															<i class="fas fa-bookmark"></i>

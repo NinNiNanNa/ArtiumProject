@@ -1,9 +1,11 @@
-package com.edu.springboot.jdbc;
+package com.edu.springboot.exhibition;
 
 import java.util.ArrayList;
 
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
+
+import com.edu.springboot.jdbc.ParameterDTO;
 
 @Mapper
 public interface IExhibitionService {
@@ -17,6 +19,7 @@ public interface IExhibitionService {
 	public int visitCount(String ex_seq);
 	// 북마크수 올리기
 	public int bmCount(String ex_seq);
+	
 	
 	
 	// 한줄평 총 갯수 가져오기

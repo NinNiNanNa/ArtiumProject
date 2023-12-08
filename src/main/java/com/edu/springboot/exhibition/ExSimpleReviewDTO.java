@@ -1,4 +1,4 @@
-package com.edu.springboot.jdbc;
+package com.edu.springboot.exhibition;
 
 import java.sql.Date;
 
@@ -6,7 +6,6 @@ import lombok.Data;
 
 @Data
 public class ExSimpleReviewDTO {
-	
 	private String srv_id;
 	private String ex_seq;
 	private String user_id;

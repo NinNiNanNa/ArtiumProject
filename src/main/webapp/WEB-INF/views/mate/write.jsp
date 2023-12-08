@@ -58,7 +58,7 @@
                 <div class="gap1440">
                     <div class="container1440">
 
-                        <form action="./mateWrite" onsubmit="return validateForm(this);">
+                        <form action="./mateWrite" id="mtForm" name="mtForm" method="post" enctype="multipart/form-data">
                         <div class="writeForm_wrap">
                             <ul>
                                 <li class="row">
@@ -85,8 +85,10 @@
                                         <h2>전시회정보</h2>
                                     </div>
                                     <div class="col-lg-10 write_wrap">
-                                        <button type="button" class="btn btn-dark">전시회 선택하기</button>
+                                    	<button type="button" class="btn btn-dark" data-bs-toggle="modal" data-bs-target="#exhibitionModal" name="ex_info">전시회 선택하기</button>
+                                        <!-- <button type="button" class="btn btn-dark">전시회 선택하기</button> -->
                                     </div>
+                                   <!-- 전시회 정보 모달 -->
                                 </li>
                                 <li class="row">
                                     <div class="col-lg-2 title_wrap">
@@ -155,8 +157,7 @@
 
                         <div class="button_wrap">
                             <a href="" class="btn btn-light cancelBtn">취소하기</a>
-                            <button type="submit" class="btn btn-dark registBtn">등록하기</button>
-                            <!-- <a href="" class="btn btn-dark registBtn">등록하기</a> -->
+                            <a href="" class="btn btn-dark registBtn" onclick="validateForm(mtForm);">등록하기</a> 
                         </div>
 
                         </form>

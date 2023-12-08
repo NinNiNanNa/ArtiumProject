@@ -1,4 +1,4 @@
-package com.edu.springboot.jdbc;
+package com.edu.springboot.mate;
 
 import java.time.LocalDate;
 
@@ -9,6 +9,7 @@ public class MateDTO {
 	private int mt_id;
 	private String mt_title;
 	private String mt_location;
+	private String ex_info;
 	private LocalDate mt_viewdate;
 	private int mt_visitcount;
 	private int mt_bmcount; 

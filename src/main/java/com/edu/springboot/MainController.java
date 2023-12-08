@@ -14,6 +14,9 @@ import com.edu.springboot.jdbc.IMemberService;
 import com.edu.springboot.jdbc.MemberDTO;
 import com.edu.springboot.smtp.RegisterMail;
 
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpSession;
+
 
 @Controller
 public class MainController {
@@ -38,12 +41,28 @@ public class MainController {
 	@ResponseBody
 	@RequestMapping(value="/login/loginCheck", method=RequestMethod.POST)
 	public int loginCheck(@RequestParam("id") String id,
-			@RequestParam("pw") String pw) {
+			@RequestParam("pw") String pw,
+			HttpServletRequest request) {
+		HttpSession session = request.getSession();
 		MemberDTO memberDTO = new MemberDTO();
+		
 		memberDTO.setUser_id(id);
 		memberDTO.setUser_pass(pw);
 		int result = dao.loginCheck(memberDTO);
+		if(result == 1) {
+			MemberDTO member = dao.selectOne(memberDTO);
+			session.setAttribute("email", member.getUser_email());
+			session.setAttribute("name", member.getUser_name());
+			session.setAttribute("image", member.getUser_image());
+		}
 		return result;
+	}
+	
+	//로그아웃
+	@RequestMapping("/logout")
+	public String logout(HttpSession session) {
+		session.invalidate();
+		return "main";
 	}
 	
 	//회원가입

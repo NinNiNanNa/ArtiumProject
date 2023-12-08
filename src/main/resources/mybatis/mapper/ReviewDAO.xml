@@ -6,15 +6,18 @@
 	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <!-- Controller에서 Mapper의 함수를 호출하기 위한 interface를 namespace속성에 설정한다. -->
-<mapper namespace="com.edu.springboot.jdbc.IReviewService">
-	<select id="getTotalCount" resultType="int" parameterType="com.edu.springboot.jdbc.ParameterDTO">
+<mapper namespace="com.edu.springboot.review.IReviewService">
+	<!-- 목록에서 게시물의 갯수를 카운트하여 정수로 반환한다.
+	<select> 엘리먼트의 경우 select한 결과를 List로 반환하는것이 default이므로 정수값을 반환하기 위해 resultType을 int로 지정해야한다. -->
+	<select id="getTotalCount" resultType="int" parameterType="com.edu.springboot.review.ParameterDTO">
 		SELECT COUNT (*) FROM review
+		<!-- 검색어가 null, 빈값이 아닐때만 where절을 동적으로 추가한다. -->
 		<if test="searchKeyword!=null and !searchKeyword.equals('')">
 			WHERE ${searchField} LIKE '%'||#{searchKeyword}||'%'
 		</if>
 	</select>
 
-	<select id="listPage" resultType="com.edu.springboot.jdbc.ReviewDTO" parameterType="com.edu.springboot.jdbc.ParameterDTO">
+	<select id="listPage" resultType="com.edu.springboot.review.ReviewDTO" parameterType="com.edu.springboot.review.ParameterDTO">
 		SELECT * FROM (
 			SELECT Tb.*, rownum rNum FROM (
 				SELECT * FROM review
@@ -24,16 +27,25 @@
 				ORDER BY rv_id DESC
 			) Tb
 		)
+		<!-- 
+		CDATA : unparsed Character Data. 파싱되지 않는 문자데이터라는 뜻을 가지고있다.
+			Mapper에서는 꺽쇄괄호로 시작하는 모든 문자열을 엘리먼트로 판단하기 때문에 쿼리문 사이에 비교연산자를 사용하면 에러가 발생한다.
+			따라서 파싱되지 않는 문자라는것을 명시하기 위해 CDATA를 사용해야한다.
+		
+		만약 비교연산자를 사용하지 않으려면 아래와 같이 between절을 사용해도 된다.
+		WHERE rNum BETWEEN #{start} AND #{end}
+		 -->
 		WHERE rNum<![CDATA[>=]]>#{start} AND rNum<![CDATA[<=]]>#{end}
 	</select>
 	
-	<select id="view" resultType="com.edu.springboot.jdbc.ReviewDTO" parameterType="com.edu.springboot.jdbc.ReviewDTO">
+	<select id="view" resultType="com.edu.springboot.review.ReviewDTO" parameterType="com.edu.springboot.review.ReviewDTO">
 		SELECT * FROM review WHERE rv_id=#{rv_id}
 	</select>
-	<update id="visitCount" parameterType="com.edu.springboot.jdbc.ReviewDTO">
+	<update id="visitCount" parameterType="com.edu.springboot.review.ReviewDTO">
 		UPDATE review SET rv_visitcount = rv_visitcount + 1 WHERE rv_id=#{rv_id}
 	</update>
 	
+	<!-- @Param 어노테이션으로 변경된 파라미터를 인파라미터로 설정한다. -->
 	<insert id="write">
 		INSERT INTO review(
 			rv_id, 
@@ -61,7 +73,7 @@
 		)
 	</insert>
 	
-	<update id="edit" parameterType="com.edu.springboot.jdbc.ReviewDTO">
+	<update id="edit" parameterType="com.edu.springboot.review.ReviewDTO">
        	UPDATE review SET
 			rv_title=#{rv_title}, 
 			rv_date=#{rv_date}, 

@@ -1,4 +1,4 @@
-package com.edu.springboot.jdbc;
+package com.edu.springboot.review;
 
 import lombok.Data;
 	

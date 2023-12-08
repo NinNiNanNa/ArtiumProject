@@ -3,17 +3,24 @@ package com.edu.springboot.gallery;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.util.ResourceUtils;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.edu.springboot.jdbc.ParameterDTO;
@@ -70,11 +77,12 @@ public class GalleryController {
 		return "/gallery/list";
 	}
 
-	// 갤러리 등록
-	@GetMapping("/galleryWrite")
-	public String galleryWriteGet(Model model) {
-		return "/gallery/write";
-	}
+	// 글쓰기 페이지 로딩
+		@GetMapping("/galleryWrite")
+		public String reviewWriteGet(Model model) {
+			return "/gallery/write";
+		}
+	
 	
 	// 글쓰기 처리
 //    @PostMapping("/galleryWrite")
@@ -153,7 +161,6 @@ public class GalleryController {
 //	 }
 
     
-	
 	@PostMapping("/galleryWrite")
     public String galleryWritePost(Model model, GalleryDTO galleryDTO) {
         // 파일 업로드 처리
@@ -186,7 +193,7 @@ public class GalleryController {
             model.addAttribute("saveFileMaps", saveFileMaps);
             
             // JDBC연동
-//    		galleryDTO.setArt_image1(saveFileMaps.toString());
+    		galleryDTO.setArt_title1(saveFileMaps.toString());
     		dao.write(galleryDTO);
 
         } 
@@ -211,7 +218,49 @@ public class GalleryController {
 		model.addAttribute("galleryDTO", galleryDTO);		
 		return "/gallery/view";
 	}
+	
+	// 갤러리 댓글 기능
+	@GetMapping("/galleryView/getComments")
+    public List<GalleryCommentDTO> getComments(@RequestParam(name = "cm_id")int cm_id) {
 		
+		List<GalleryCommentDTO> list = dao.getGalleryComments(cm_id);
+	
+		return list;
+		}
+	
+//	// 갤러리 댓글 기능
+	/*
+	 * @PostMapping("/galleryView/addComment")
+	 * 
+	 * @ResponseBody public ResponseEntity<String>
+	 * addComment(@RequestParam("commentContent") String commentContent) { try {
+	 * 
+	 * return ResponseEntity.ok("댓글이 성공적으로 등록되었습니다."); } catch (Exception e) { // 오류
+	 * 발생 시 오류 응답 반환 return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).
+	 * body("댓글 등록 중 오류가 발생했습니다."); } }
+	 */
+	
+
+	
+
+	@PostMapping("/galleryView/addComment")
+	@ResponseBody
+	public ResponseEntity<String> addComment(@RequestParam("commentContent") String commentContent, GalleryCommentDTO dto,Model model) {
+		var userId = dto.getUser_id();
+		try {
+			
+			model.addAttribute(userId);
+			dao.addGalleryComment(dto);
+            return ResponseEntity.ok("댓글이 성공적으로 등록되었습니다.");
+		} 
+		catch (Exception e) {
+			// 오류 발생 시 오류 응답 반환
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("댓글 등록 중 오류가 발생했습니다.");
+		}
+	}
+	
+	
+	
 	// 온라인 갤러리
 	@GetMapping("/galleryRoom")
 	public String galleryRoom() {

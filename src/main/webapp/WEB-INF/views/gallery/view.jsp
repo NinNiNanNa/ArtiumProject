@@ -40,6 +40,50 @@
     <link href="../vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
 
 </head>
+
+<!-- 댓글 작성 및 등록을 처리하는 스크립트 -->
+<script>
+	$(document).ready(function(){
+		// 댓글 등록 버튼 클릭 시
+		$("#addComment").on("click", function(){
+			// 사용자가 작성한 댓글 내용 가져오기
+			var commentContent = $("#commentContent").val();
+			
+			// 서버로 댓글 내용 전송(Ajax를 사용하여 서버에 전송), 성공 시 화면에 댓글 추가
+			 $.ajax({
+        type: "POST",  // 댓글 등록은 POST 방식을 사용
+        url: "/galleryView/addComment",
+        data: { commentContent : commentContent },
+        success: function(response) {
+            // 서버에서 성공적으로 응답을 받으면 댓글 목록 갱신 등 필요한 작업 수행
+            // 새로운 댓글을 화면에 추가
+            var newComment = '<li><div class="row"><!-- ... 댓글 내용 생성 ... --></div></li>';
+            $(".comList_wrap").append(newComment);
+
+            // 댓글 작성 폼 초기화
+            $("#commentContent").val('');
+            loadComments();
+        },
+        error: function(error) {
+            console.error("댓글 등록 실패:", error);
+        }
+    });
+	});
+});
+	// 댓글 목록 조회 및 초기화 함수 (페이지 로드 시 호출)
+    function loadComments() {
+       $.get("/galleryView/getComments", function(comments) {
+           // 서버에서 받은 댓글 목록으로 화면 초기화
+           var commentsHtml = '';
+           for (var i = 0; i < comments.length; i++) {
+               commentsHtml += '<li><div class="row"><!-- 댓글 내용 생성 --></div></li>';
+           }
+           $(".comList_wrap").html(commentsHtml);
+       });
+   }
+	
+
+</script>
 <body>
 <div id='wrap'>
 	
@@ -59,9 +103,9 @@
                     <div class="container1440">
 
                         <div class='main-title'>
-							<h2>GALLERY</h2>
-							<p>온라인 전시회에 오신걸 환영합니다.</p>
-						</div>
+													<h2>GALLERY</h2>
+													<p>온라인 전시회에 오신걸 환영합니다.</p>
+												</div>
 
                     </div>
                 </div>
@@ -78,7 +122,7 @@
                     </form>
                         <div class="view_content">
                             <div>
-								<span class="status">#현대미술</span>
+																<span class="status">#현대미술</span>
                                 <h2>${ galleryDTO.ga_title }</h2>
                                 <ul>
                                     <li>
@@ -149,11 +193,11 @@
 																				<span>닉네임</span>
 																			</div>
 																			<div class="content_wrap">
-																				<textarea name="" id="" cols="30" rows="2" placeholder="댓글을 남겨주세요."></textarea>
+																				<textarea name="" id="commentContent" cols="30" rows="2" placeholder="댓글을 남겨주세요."></textarea>
 																			</div>
 																		</div>
 																		<div class="col-lg-1 commentBtn_wrap">
-																			<button type="button" class="btn btn-dark">등록</button>
+																			<button type="button" class="btn btn-dark" id="addComment">등록</button>
 																		</div>
 																	</div>
 																</li>
@@ -167,8 +211,7 @@
 																				<span>닉네임</span>
 																			</div>
 																			<div class="content_wrap">
-																				댓글 내용댓글 내용댓글 내용댓글 내용댓글 내용댓글 내용댓글 내용댓글 내용<br>
-																				댓글 내용댓글 내용댓글 내용댓글 내용댓글 내용댓글 내용<br>
+																			<span>${galleryCommentDTO.cm_comment}</span>
 																			</div>
 																		</div>
 																		<div class="btn_wrap">

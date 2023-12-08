@@ -4,7 +4,7 @@
 <!DOCTYPE mapper
 	PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-    
+
 <!-- Controller에서 Mapper의 함수를 호출하기 위한 interface를 namespace속성에 설정한다. -->
 <mapper namespace="com.edu.springboot.exhibition.IExhibitionService">
 	
@@ -53,7 +53,7 @@
 	
 	
 	<!-- 한줄평 목록 가져오기 -->
-	<select id="getSimpleReviewList" resultType="com.edu.springboot.exhibition.ExSimpleReviewDTO">
+	<select id="getSimpleReviewList" resultType="com.edu.springboot.exhibition.SimpleReviewDTO">
 	    SELECT * FROM simple_review
 	    WHERE ex_seq = #{ex_seq}
 	</select>
@@ -65,13 +65,13 @@
 	</select>
 	
 	<!-- 한줄평 작성 -->
-	<insert id="writeSimpleReview" parameterType="com.edu.springboot.exhibition.ExSimpleReviewDTO">
+	<insert id="writeSimpleReview" parameterType="com.edu.springboot.exhibition.SimpleReviewDTO">
 	    INSERT INTO simple_review (srv_id, ex_seq, user_id, srv_star, srv_content, srv_postdate)
 	    VALUES (seq_board_num.nextval, #{ex_seq}, #{user_id}, #{srv_star}, #{srv_content}, sysdate)
 	</insert>
 	
 	<!-- 
-	<insert id="srWrite" parameterType="com.edu.springboot.exhibition.ExSimpleReviewDTO">
+	<insert id="srWrite" parameterType="com.edu.springboot.exhibition.SimpleReviewDTO">
 		insert into simple_review (srv_id, srv_star, srv_content, srv_postdate, ex_seq)
     	values
 		(seq_board_num.nextval, #{srv_star}, #{srv_content}, sysdate, #{ex_seq})

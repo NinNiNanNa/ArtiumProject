@@ -83,49 +83,7 @@ document.addEventListener('DOMContentLoaded', function () {
 });
 
 // ajax 비동기
-$(function(){
-	// 목록 불러오기 버튼을 누를때 ajax() 함수를 실행
-	$("#btnBoard").click(function(){
-		$.ajax({
-			type : 'get',	// 전송방식(form태그의 method)
-			url : './restBoardList.do',	// 요청할 URL
-			data : {pageNum : $('#pageNum').val()},	// 파라미터
-			contentType : "text/html;charset:utf-8",	// 컨텐츠타입
-			dataType : "json",	// 콜백데이터의 타입(형식)
-			success : sucCallBack,	// 성공시 호출할 콜백함수
-			error : errCallBack	// 실패시 호출할 콜백함수
-		});
-	});
-	/*
-	이벤트를 자동으로 실행하고 싶을때 trigger() 를 사용한다.
-	페이지가 로드되었을때 사용자가 버튼을 클릭한것과 동일한 동작을 수행한다.
-	*/
-	$('#btnBoard').trigger('click');
-});
-// 성공시 콜백메서드
-function sucCallBack(resData){
-	let tableData = "";
-	/* 
-	현재 콜백 데이터는 JSON 배열이므로 each() 를 통해 즉시 반복할 수 있다.
-	갯수만큼 반복하여 출력할 목록의 <tr>태그를 만든다.
-	*/
-	$(resData).each(function(index, data){
-		tableData += ""
-		+"<tr>"
-		+"	<td>"+data.num+"</td>"
-		+"	<td><a href='ajaxBoardView.do?num="+data.num+"'>"+data.title+"</a></td>"
-		+"	<td>"+data.id+"</td>"
-		+"	<td>"+data.postdate+"</td>"
-		+"	<td>"+data.visitcount+"</td>"
-		+"</tr>";
-	});
-	// 앞에서 만든 <tr>태그를 table에 적용한다.
-	$('#show_data').html(tableData);
-}
-// 실패시 호출될 콜백함수
-function errCallBack(errData){
-	console.log(errData.status+":"+errData.statusText);
-}
+
 </script>
 </head>
 <body>

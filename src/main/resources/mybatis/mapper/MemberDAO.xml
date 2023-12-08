@@ -32,7 +32,7 @@
 	<select id="selectOne"
 		parameterType="com.edu.springboot.jdbc.MemberDTO"
 		resultType="com.edu.springboot.jdbc.MemberDTO">
-		select * from members where id = #{user_id}
+		select * from members where user_id = #{user_id}
 	</select>
 	
 	<!-- 회원 삭제 -->

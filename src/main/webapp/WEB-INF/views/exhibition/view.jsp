@@ -41,18 +41,6 @@
     <link href="../vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
     
 <script>
-	$(document).ready(function() {
-		$('#simpleLine').on('keyup', function() {
-			$('#textCnt').html("("+$(this).val().length+" / 60)");
- 
-			if($(this).val().length > 60) {
-				$(this).val($(this).val().substring(0, 60));
-				$('#textCnt').html("(60 / 60)");
-			}
-		});
-	});
-</script>
-<script>
 //구글맵 초기화 및 마커설정 
 function initMap() {
 	var latitude = parseFloat(document.getElementById('latitude').value);
@@ -74,10 +62,78 @@ function initMap() {
 window.onload = function(){
 	initMap();
 }
+
+//댓글 글자길이 카운트 이벤트
+document.addEventListener('DOMContentLoaded', function () {
+	var srvContent = document.getElementById('srvContent');
+	var textCnt = document.getElementById('textCnt');
+	
+	srvContent.addEventListener('keyup', function () {
+	    // 입력된 텍스트의 길이를 가져와서 #textCnt에 표시
+	    textCnt.innerHTML = "(" + srvContent.value.length + " / 60)";
+	
+	    // 만약 입력된 텍스트의 길이가 60을 초과하면
+	    if (srvContent.value.length > 60) {
+	        // 입력된 텍스트를 60자까지만 자르고 다시 #srvContent에 설정
+	        srvContent.value = srvContent.value.substring(0, 60);
+	        // #textCnt에 "(60 / 60)"으로 표시
+	        textCnt.innerHTML = "(60 / 60)";
+	    }
+	});
+});
+
+// ajax 비동기
+$(function(){
+	// 목록 불러오기 버튼을 누를때 ajax() 함수를 실행
+	$("#btnBoard").click(function(){
+		$.ajax({
+			type : 'get',	// 전송방식(form태그의 method)
+			url : './restBoardList.do',	// 요청할 URL
+			data : {pageNum : $('#pageNum').val()},	// 파라미터
+			contentType : "text/html;charset:utf-8",	// 컨텐츠타입
+			dataType : "json",	// 콜백데이터의 타입(형식)
+			success : sucCallBack,	// 성공시 호출할 콜백함수
+			error : errCallBack	// 실패시 호출할 콜백함수
+		});
+	});
+	/*
+	이벤트를 자동으로 실행하고 싶을때 trigger() 를 사용한다.
+	페이지가 로드되었을때 사용자가 버튼을 클릭한것과 동일한 동작을 수행한다.
+	*/
+	$('#btnBoard').trigger('click');
+});
+// 성공시 콜백메서드
+function sucCallBack(resData){
+	let tableData = "";
+	/* 
+	현재 콜백 데이터는 JSON 배열이므로 each() 를 통해 즉시 반복할 수 있다.
+	갯수만큼 반복하여 출력할 목록의 <tr>태그를 만든다.
+	*/
+	$(resData).each(function(index, data){
+		tableData += ""
+		+"<tr>"
+		+"	<td>"+data.num+"</td>"
+		+"	<td><a href='ajaxBoardView.do?num="+data.num+"'>"+data.title+"</a></td>"
+		+"	<td>"+data.id+"</td>"
+		+"	<td>"+data.postdate+"</td>"
+		+"	<td>"+data.visitcount+"</td>"
+		+"</tr>";
+	});
+	// 앞에서 만든 <tr>태그를 table에 적용한다.
+	$('#show_data').html(tableData);
+}
+// 실패시 호출될 콜백함수
+function errCallBack(errData){
+	console.log(errData.status+":"+errData.statusText);
+}
 </script>
 </head>
 <body>
 <div id='wrap'>
+
+	<input type="hidden" name="ex_seq" value="${exhibitionDTO.ex_seq }" />
+	<input type="hidden" id="longitude" name="ex_gpsX" value="${exhibitionDTO.ex_gpsX }" />
+	<input type="hidden" id="latitude" name="ex_gpsY" value="${exhibitionDTO.ex_gpsY }" />
 	
 	<ul id='skip'>
 		<li><a href='#header'>메뉴바로가기</a></li>
@@ -100,11 +156,6 @@ window.onload = function(){
 							</div>
 							<div class="col-lg-7 exinfo_wrap">
 								<ul>
-									<form action="">
-										<input type="hidden" name="ex_seq" value="${exhibitionDTO.ex_seq }" />
-										<input type="hidden" id="longitude" name="ex_gpsX" value="${exhibitionDTO.ex_gpsX }" />
-										<input type="hidden" id="latitude" name="ex_gpsY" value="${exhibitionDTO.ex_gpsY }" />
-									</form>
 									<li class="row">
 										<h4 class="col-12">${exhibitionDTO.ex_title }</h4>
 									</li>
@@ -188,7 +239,6 @@ window.onload = function(){
 												</div>
 											</div>
 											<div class="col-lg-12 map_wrap">
-												<!-- <img src="../img/place.png" alt=""> -->
 												<div id="map"></div>
 												<script async defer src="https://maps.googleapis.com/maps/api/js?key=${apiKey }"></script>
 											</div>
@@ -199,12 +249,10 @@ window.onload = function(){
 									<div id="simple" class="tab-pane fade">
 										<div class="comment_wrap">
 				                            <div class="comment_title">
-				                                <h1><i>${simpleReviewCount }</i>개의 댓글을 확인해보세요!</h1>
+				                                <h1><i>1</i>개의 댓글을 확인해보세요!</h1>
 				                            </div>
 				                            <div class="comment_content">
 												<ul class="comList_wrap">
-													<form method="POST" action="/exhibitionView/writeSimpleReview">
-													<input type="hid den" name="ex_seq" value="${exhibitionDTO.ex_seq}">
 													<li>
 														<div class="row">
 															<div class="col-lg-2 comImg_wrap">
@@ -223,17 +271,15 @@ window.onload = function(){
 																	</div>
 																</div>
 																<div class="content_wrap">
-																	<textarea name="srv_content" id="simpleLine" cols="30" rows="1" placeholder="댓글을 남겨주세요."></textarea>
+																	<textarea name="srv_content" id="srvContent" cols="30" rows="1" placeholder="댓글을 남겨주세요."></textarea>
 																	<div id="textCnt">(0/60)</div>
 																</div>
 															</div>
 															<div class="col-lg-1 commentBtn_wrap">
-																<button type="submit" class="btn btn-dark">등록</button>
+																<button type="button" id="srvSendBtn" class="btn btn-dark">등록</button>
 															</div>
 														</div>
 													</li>
-													</form>
-													<c:forEach items="simpleReviewList" var="sreview" varStatus="loop">
 													<li>
 														<div class="row">
 															<div class="col-lg-2 comImg_wrap">
@@ -241,10 +287,11 @@ window.onload = function(){
 															</div>
 															<div class="col-lg-10 comText_wrap">
 																<div class="user_wrap">
-																	<span>${sreview.user_id} | ${sreview.srv_postdate }</span>
+																	<span>닉네임</span>
+																	<span>작성일</span>
 																</div>
 																<div class="content_wrap">
-																	${sreview.srv_content }
+																	한줄평 내용
 																</div>
 															</div>
 															<div class="btn_wrap">
@@ -253,7 +300,6 @@ window.onload = function(){
 															</div>
 														</div>
 													</li>
-													</c:forEach>
 												</ul>
 				
 				                            </div>

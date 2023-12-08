@@ -38,7 +38,20 @@
 
 	<!-- 아이콘 -->
     <link href="../vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
+<script>
+$(document).ready(function(){
+	   // 등록버튼 클릭 시 폼 제출
+	   $("#registBtn").click(function(){
+	      $("form").submit();
+	   });
 
+	   // 취소버튼 클릭시 이전 페이지로 이동
+	   $(".cancelBtn").click(function(){
+	      history.back();
+	   });
+	});
+
+</script>
 </head>
 <body>
 <div id='wrap'>
@@ -58,7 +71,7 @@
                 <div class="gap1440">
                     <div class="container1440">
 
-                        <form action="./mateWrite" id="mtForm" name="mtForm" method="post" enctype="multipart/form-data">
+                        <form action="./mateWrite" id="mtForm" name="mtForm" method="post" >
                         <div class="writeForm_wrap">
                             <ul>
                                 <li class="row">
@@ -66,9 +79,9 @@
                                         <h2>모집상태</h2>
                                     </div>
                                     <div class="col-lg-2 write_wrap">
-                                        <select name="_mt_status" class="form-select">
-                                            <option value="">모집중</option>
-                                            <option value="">모집완료</option>
+                                        <select name="mt_status" class="form-select">
+                                            <option value="모집중">모집중</option>
+                                            <option value="모집완료">모집완료</option>
                                         </select>
                                     </div>
                                 </li>
@@ -82,10 +95,18 @@
                                 </li>
                                 <li class="row">
                                     <div class="col-lg-2 title_wrap">
+                                        <h2>모임장소</h2>
+                                    </div>
+                                    <div class="col-lg-10 write_wrap">
+                                        <input type="text" name="mt_location" class="form-control" placeholder="모임 장소를 입력하세요.">
+                                    </div>
+                                </li>
+                                <li class="row">
+                                    <div class="col-lg-2 title_wrap">
                                         <h2>전시회정보</h2>
                                     </div>
                                     <div class="col-lg-10 write_wrap">
-                                    	<button type="button" class="btn btn-dark" data-bs-toggle="modal" data-bs-target="#exhibitionModal" name="ex_info">전시회 선택하기</button>
+                                    	<button type="button" class="btn btn-dark" data-bs-toggle="modal" data-bs-target="#exhibitionModal" name="">전시회 선택하기</button>
                                         <!-- <button type="button" class="btn btn-dark">전시회 선택하기</button> -->
                                     </div>
                                    <!-- 전시회 정보 모달 -->
@@ -104,9 +125,9 @@
                                     </div>
                                     <div class="col-lg-2 write_wrap">
                                         <select name="mt_gender" class="form-select">
-                                            <option value="">성별무관</option>
-                                            <option value="">남성</option>
-                                            <option value="">여성</option>
+                                            <option value="1">성별무관</option>
+                                            <option value="2">남성</option>
+                                            <option value="3">여성</option>
                                         </select>
                                     </div>
                                 </li>
@@ -116,31 +137,31 @@
                                     </div>
                                     <div class="col-lg-2 write_wrap">
                                         <select name="mt_age" class="form-select">
-                                            <option value="">연령무관</option>
-                                            <option value="">20대 초반</option>
-                                            <option value="">20대 중반</option>
-                                            <option value="">20대 후반</option>
-                                            <option value="">30대 초반</option>
-                                            <option value="">30대 중반</option>
-                                            <option value="">30대 후반</option>
-                                            <option value="">40대 초반</option>
-                                            <option value="">40대 중반</option>
-                                            <option value="">40대 후반</option>
+                                            <option value="연령무">연령무관</option>
+                                            <option value="20대초">20대 초반</option>
+                                            <option value="20대중">20대 중반</option>
+                                            <option value="20대후">20대 후반</option>
+                                            <option value="30대초">30대 초반</option>
+                                            <option value="30대중">30대 중반</option>
+                                            <option value="30대후">30대 후반</option>
+                                            <option value="40대초">40대 초반</option>
+                                            <option value="40대중">40대 중반</option>
+                                            <option value="40대후">40대 후반</option>
                                         </select>
                                     </div>
                                         ~
                                     <div class="col-lg-2 write_wrap">
                                         <select name="mt_age" class="form-select">
-                                            <option value="">연령무관</option>
-                                            <option value="">20대 초반</option>
-                                            <option value="">20대 중반</option>
-                                            <option value="">20대 후반</option>
-                                            <option value="">30대 초반</option>
-                                            <option value="">30대 중반</option>
-                                            <option value="">30대 후반</option>
-                                            <option value="">40대 초반</option>
-                                            <option value="">40대 중반</option>
-                                            <option value="">40대 후반</option>
+                                            <option value="연령무관">연령무관</option>
+                                            <option value="20대초">20대 초반</option>
+                                            <option value="20대중">20대 중반</option>
+                                            <option value="20대후">20대 후반</option>
+                                            <option value="30대초">30대 초반</option>
+                                            <option value="30대중">30대 중반</option>
+                                            <option value="30대후">30대 후반</option>
+                                            <option value="40대초">40대 초반</option>
+                                            <option value="40대중">40대 중반</option>
+                                            <option value="40대후">40대 후반</option>
                                         </select>
                                     </div>
                                 </li>
@@ -156,8 +177,10 @@
                         </div>
 
                         <div class="button_wrap">
-                            <a href="" class="btn btn-light cancelBtn">취소하기</a>
-                            <a href="" class="btn btn-dark registBtn" onclick="validateForm(mtForm);">등록하기</a> 
+                            <!-- <a href="" class="btn btn-light cancelBtn">취소하기</a> -->
+                            <!-- <a href="avascript:void(0);" class="btn btn-dark registBtn" id="registBtn" onclick="validateForm(mtForm, event");">등록하기</a>  -->
+                            <a class="btn btn-light cancelBtn">취소하기</a>
+                            <a href="javascript:void(0);" class="btn btn-dark registBtn" id="registBtn" onclick="validateForm(mtForm);">등록하기</a>
                         </div>
 
                         </form>

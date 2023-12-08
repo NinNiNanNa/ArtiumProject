@@ -49,6 +49,7 @@
 	-->
 	 	 
 	<!-- @Param 어노테이션으로 변경된 파라미터를 인파라미터로 설정한다.  --> 
+	<!-- 
 	<insert id="write">
 		INSERT INTO mate (
 		mt_id, 
@@ -61,7 +62,7 @@
 		mt_content)
 		VALUES(
 		seq_board_num.nextval, 
-		#{_mt_id}, 
+		#{_mt_id},  
 		#{_mt_status}, 
 		#{_mt_title}, 
 		#{_ex_info},
@@ -71,6 +72,36 @@
 		#{_mt_content}
 		) 
 	</insert>
+	 -->
+	
+	<insert id="write">
+    INSERT INTO mate (
+        mt_id,  
+        mt_status, 
+        mt_title, 
+        mt_location,
+        mt_viewdate, 
+        mt_gender, 
+        mt_age, 
+        mt_content
+    )
+    VALUES(
+        seq_board_num.nextval, 
+        #{_mt_status}, 
+        #{_mt_title}, 
+        #{_mt_location},
+        #{_mt_viewdate}, 
+        #{_mt_gender}, 
+        #{_mt_age}, 
+        #{_mt_content}
+    ) 
+</insert>
+
+<select id="view" resultType="com.edu.springboot.mate.MateDTO" 
+		parameterType="com.edu.springboot.mate.MateDTO">
+		SELECT * FROM mate WHERE mt_id=#{mt_id}
+</select>	
+	
 	
 	
 	<!--<select id="view" resultType="com.edu.springboot.jdbc.MateDTO" 

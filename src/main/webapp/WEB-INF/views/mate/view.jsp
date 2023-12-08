@@ -73,12 +73,12 @@
                         <div class="view_content">
                             <div>
 																<span class="status">모집중</span>
-                                <h2>전시 메이트 제목</h2>
+                                <h2>${mateDTO.mt_title}</h2>
                                 <ul>
                                     <li>
                                         <div>
                                             <span>관람 예정일</span>
-                                            <i>2023-11-01</i>
+                                            <i>${mateDTO.mt_viewdate}</i>
                                         </div>
                                     </li>
                                     <li>

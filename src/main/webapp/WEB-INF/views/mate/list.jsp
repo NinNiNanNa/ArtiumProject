@@ -1,7 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
-<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
-
+<%@ taglib uri="jakarta.tags.core" prefix="c" %>
 <!DOCTYPE HTML>
 <html lang='ko' class=''>
 <head>
@@ -112,34 +111,31 @@
 
 											<ul class="list_wrap row">
 											<c:forEach items="${ lists }" var="row" varStatus="loop">  
-												<li class="col-lg-3">
-													
+												<li class="col-lg-4">
 													<div class="listInfo">
-														<div class="image_wrap">
-															<img src="../img/imgex1.jpg" alt="">
-															<div class="listBtn_wrap">
-																<a href="#" class="bookMarkBtn">
-																	<i class="fas fa-bookmark"></i>
-																</a>
-															</div>
+														<div class="image_wrap" style="position: relative;">
+															<img src="./img/imgex1.jpg" alt="">
 														</div>
 														<div class="title_wrap">
 															<div>
-																<a class="txtSkip" href="/mateView">${row.mt_title}</a>
-																<h6 class="txtSkip">${row.mt_location}</h6>
-																<h5>${row.mt_viewdate}</h5>
-																<ul class="info_wrap">
-																	<li>
-																		<span>조회수<i>${row.mt_visitcount}</i></span>
-																	</li>
-																	<li>
-																		<span>북마크<i>${row.mt_bmcount}</i></span>
-																	</li>
-																</ul>
+																<div class="userInfo">
+																	<a class="txtSkip" href="/mateView">${row.mt_title}</a>
+																	<span>사용자 닉네임</span>
+																	<span>등록일 <i>${row.mt_postdate }</i></span>
+																	<span>조회수 <i>${row.mt_visitcount }</i></span>
+																	<span>북마크 <i>${row.mt_bmcount }</i></span>
+																</div>
+																<div class="mateDetail">
+																	<div>
+																		<a class="txtSkip" href="javascript:;">전시회 제목</a>
+																		<span>관람예정일 <i>${row.mt_viewdate }</i></span>
+																		<span>성별 <i>${row.mt_gender }</i></span>
+																		<span>나이 <i>${row.mt_age }</i></span>
+																	</div>
+																</div>
 															</div>
 														</div>
 													</div>
-													
 												</li>
 												</c:forEach>
 											</ul>

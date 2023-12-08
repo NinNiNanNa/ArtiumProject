@@ -116,7 +116,7 @@
                                             </tr>
                                         </thead>
                                         <tbody>
-                                        <c:forEach items=$"{memberList }" var="row" varStatus="loop">
+                                        <c:forEach items="${memberList}" var="row" varStatus="loop">
                                             <tr>
                                                 <td>${loop.count}</td>
                                                 <td>${row.user_id}</td>

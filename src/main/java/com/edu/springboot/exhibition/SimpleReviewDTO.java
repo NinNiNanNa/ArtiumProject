@@ -5,7 +5,7 @@ import java.sql.Date;
 import lombok.Data;
 
 @Data
-public class ExSimpleReviewDTO {
+public class SimpleReviewDTO {
 	private String srv_id;
 	private String ex_seq;
 	private String user_id;

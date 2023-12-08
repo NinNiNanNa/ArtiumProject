@@ -1,6 +1,7 @@
 package com.edu.springboot.gallery;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
@@ -16,9 +17,14 @@ public interface IGalleryService {
 	// 게시판 목록 (페이징 기능 추가)
 	public ArrayList<GalleryDTO> listPage(ParameterDTO parameterDTO);
 	
-	// 작성하기(받은 폼값은 이름을 변경한 후 매퍼로 전달)
-//	public int write(GalleryDTO galleryDTO);
+	// 갤러리 댓글 목록 조회
+    public List<GalleryCommentDTO> getGalleryComments(int cm_id);
+
+    // 갤러리 댓글 작성
+    public void addGalleryComment(GalleryCommentDTO galleryCommentDTO);
+    
 	
+	// 작성하기(받은 폼값은 이름을 변경한 후 매퍼로 전달)
 	public int write(GalleryDTO galleryDTO);
 	public int write(@Param("_title") String ga_title, 
             @Param("_name") String user_id,
@@ -60,5 +66,4 @@ public interface IGalleryService {
 
 	
 
-	
 }

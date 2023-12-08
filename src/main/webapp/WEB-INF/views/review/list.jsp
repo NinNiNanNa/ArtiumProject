@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ taglib uri="jakarta.tags.core" prefix="c" %>
 <!DOCTYPE HTML>
 <html lang='ko' class=''>
 <head>
@@ -93,10 +94,12 @@
 								<div class="writeBtn_wrap">
 									<a href="/reviewWrite">리뷰 등록</a>
 								</div>
-
+							
 								<div class="col" style="margin-top: 30px;">
 
 									<ul class='list_wrap row'>
+									
+									<c:forEach items="${ lists }" var="row" varStatus="loop">
 										<li class="col-lg-3">
 											<div class="listInfo">
 												<div class="image_wrap">
@@ -109,21 +112,22 @@
 												</div>
 												<div class="title_wrap">
 													<div>
-														<a class="txtSkip" href="/reviewView">전시회 리뷰 제목</a>
+														<a class="txtSkip" href="/reviewView?rv_id=${row.rv_id }">${row.rv_title }</a>
 														<h6>사용자 닉네임</h6>
-														<h5>2023-11-01</h5>
+														<h5>${row.rv_postdate }</h5>
 														<ul class="info_wrap">
 															<li>
-																<span>조회수 <i>22</i></span>
+																<span>조회수 <i>${row.rv_visitcount }</i></span>
 															</li>
 															<li>
-																<span>북마크 <i>5</i></span>
+																<span>북마크 <i>${row.rv_bmcount }</i></span>
 															</li>
 														</ul>
 													</div>
 												</div>
 											</div>
 										</li>
+									</c:forEach>
 									</ul>
 									
 								</div>

@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!-- 마이바티스 Doctype 설정 -->
+<!DOCTYPE mapper
+	PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!-- Controller에서 Mapper의 함수를 호출하기 위한 interface를 namespace속성에 설정한다. -->
+<mapper namespace="com.edu.springboot.jdbc.IReviewService">
+	<select id="getTotalCount" resultType="int" parameterType="com.edu.springboot.jdbc.ParameterDTO">
+		SELECT COUNT (*) FROM review
+		<if test="searchKeyword!=null and !searchKeyword.equals('')">
+			WHERE ${searchField} LIKE '%'||#{searchKeyword}||'%'
+		</if>
+	</select>
+
+	<select id="listPage" resultType="com.edu.springboot.jdbc.ReviewDTO" parameterType="com.edu.springboot.jdbc.ParameterDTO">
+		SELECT * FROM (
+			SELECT Tb.*, rownum rNum FROM (
+				SELECT * FROM review
+				<if test="searchKeyword!=null and !searchKeyword,equals('')">
+					WHERE ${searchField} LIKE '%'||#{searchKeyword}||'%'
+				</if>
+				ORDER BY rv_id DESC
+			) Tb
+		)
+		WHERE rNum<![CDATA[>=]]>#{start} AND rNum<![CDATA[<=]]>#{end}
+	</select>
+	
+	<select id="view" resultType="com.edu.springboot.jdbc.ReviewDTO" parameterType="com.edu.springboot.jdbc.ReviewDTO">
+		SELECT * FROM review WHERE rv_id=#{rv_id}
+	</select>
+	<update id="visitCount" parameterType="com.edu.springboot.jdbc.ReviewDTO">
+		UPDATE review SET rv_visitcount = rv_visitcount + 1 WHERE rv_id=#{rv_id}
+	</update>
+	
+	<insert id="write">
+		INSERT INTO review(
+			rv_id, 
+			rv_title, 
+			rv_date, 
+			rv_stime, 
+			rv_etime, 
+			rv_congestion, 
+			rv_transportation, 
+			rv_image, 
+			rv_revisit, 
+			rv_content
+		)
+		VALUES(
+			seq_board_num.nextval, 
+			#{_rv_title}, 
+			#{_rv_date}, 
+			#{_rv_stime}, 
+			#{_rv_etime}, 
+			#{_rv_congestion}, 
+			#{_rv_transportation}, 
+			#{_rv_image}, 
+			#{_rv_revisit}, 
+			#{_rv_content}
+		)
+	</insert>
+	
+	<update id="edit" parameterType="com.edu.springboot.jdbc.ReviewDTO">
+       	UPDATE review SET
+			rv_title=#{rv_title}, 
+			rv_date=#{rv_date}, 
+			rv_stime=#{rv_stime}, 
+			rv_etime=#{rv_etime}, 
+			rv_congestion=#{rv_congestion}, 
+			rv_transportation=#{rv_transportation}, 
+			rv_revisit=#{rv_revisit}, 
+			rv_image=#{rv_image}, 
+			rv_content=#{rv_content}
+       	WHERE rv_id=#{rv_id}
+    </update>
+    
+    <delete id="delete">
+    	DELETE FROM review WHERE rv_id=#{param1}
+    </delete>
+
+</mapper>

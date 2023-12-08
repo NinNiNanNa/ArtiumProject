@@ -44,7 +44,7 @@
 	<update id="visitCount" parameterType="com.edu.springboot.review.ReviewDTO">
 		UPDATE review SET rv_visitcount = rv_visitcount + 1 WHERE rv_id=#{rv_id}
 	</update>
-	
+	   
 	<!-- @Param 어노테이션으로 변경된 파라미터를 인파라미터로 설정한다. -->
 	<insert id="write">
 		INSERT INTO review(

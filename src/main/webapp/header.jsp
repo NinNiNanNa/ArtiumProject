@@ -4,7 +4,7 @@
 <script type="text/javascript">
 function logoutPrint(){
 	alert('로그아웃되었습니다.');
-}    
+}           
 </script>
 	<header id='header'>
 		<div class='wrap1440'>

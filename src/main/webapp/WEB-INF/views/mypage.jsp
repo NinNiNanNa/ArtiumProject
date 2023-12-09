@@ -45,7 +45,60 @@
 	<link href='https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.9.0/fullcalendar.min.css'rel='stylesheet'/>
 	<link href='https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.9.0/fullcalendar.print.css' rel='stylesheet' media='print'/>
 	<script src='https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.9.0/fullcalendar.min.js'></script>
-
+	<script type="text/javascript">
+	    function sendNumber(){
+	        $("#mail_number").css("display","block");
+	        $.ajax({
+	            url:"/mail",
+	            type:"post",
+	            data:{"email" : $("#email").val()},
+	            success: function(data){
+	                alert("인증번호 발송");
+	                $("#Confirm").attr("value",data);
+	            }
+	        });
+	    }
+	
+	    function confirmNumber(){
+	        var number1 = $("#number").val();
+	        var number2 = $("#Confirm").val();
+	
+	        if(number1 == number2){
+	            alert("인증되었습니다.");
+	        }else{
+	            alert("번호가 다릅니다.");
+	        }
+	    }
+	    
+	    function submit(){
+	    	alert("수정되었습니다.");
+	    	var form = document.getElementById('frm');
+	    	form.action = "mypage";
+	    	form.method = "post";
+	    	form.submit();
+	    }
+	    
+	    function removeCheck(user_id) {
+	    	 if (confirm("정말 탈퇴하시겠습니까??") == true){    //확인
+	    		 deleteMember(user_id);
+	    	 }else{   //취소
+	    	     return false;
+	    	 }
+	    	}
+   	
+	    function deleteMember(user_id){
+	        $.ajax({
+	            url:"/mypage/delete",
+	            type:"post",
+	            data:{"user_id" : user_id},
+	            success: function(data){
+	                alert("탈퇴 완료 ");
+	                location.href="/";
+	            }
+	        });
+	    }
+	    
+	</script>
 </head>
 <body>
 <div id='wrap'>
@@ -59,21 +112,47 @@
 	<%@ include file="/header.jsp"%>
 	
 	<main id='main'>
-
+		<c:set var="userId" value="${sessionScope.userId}"></c:set>
+		<c:set var="userPass" value="${sessionScope.userPass}"></c:set>
+		<c:set var="userName" value="${sessionScope.userName}"></c:set>
+		<c:set var="userEmail" value="${sessionScope.userEmail}"></c:set>
+		<c:set var="userGender" value="${sessionScope.userGender}"></c:set>
+		<c:set var="userImg" value="${sessionScope.userImg}"></c:set>
+		<c:set var="userType" value="${sessionScope.userType}"></c:set>
 		<section id="section1">
 			<div class="wrap1440">
 				<div class="gap1440">
 					<div class="container1440">
 						
 						<div class="profile_wrap">
-							<img src="./img/profile.png" alt="">
+							<c:choose>
+								<c:when test="${not empty userImg}">
+									<img style="width:120px; height:120px; border-radius: 100%;" src="../img/${userImg}" alt="" >
+								</c:when>
+								<c:when test="${empty userImg}">
+									<img src="./img/profile.png" alt="">
+								</c:when>
+							</c:choose>
 							<div class="profile_info">
-								<span>일반회원</span>
-								<h2>닌니난나</h2>
+							<c:choose>
+								<c:when test="${userType == 'G'}">
+									<span>일반회원</span>
+								</c:when>
+								<c:when test="${userType == 'A'}">
+									<span>작가회원</span>
+								</c:when>
+							</c:choose>
+								<h2>${userName}</h2>
 								<ul>
-									<li>여성</li>
-									<li>25세</li>
-									<li>kimsojin3011@gmail.com</li>
+								<c:choose>
+									<c:when test="${userGender == 'M'}">
+										<li>남성</li>
+									</c:when>
+									<c:when test="${userGender == 'W'}">
+										<li>여성</li>
+									</c:when>
+								</c:choose>
+									<li>${userEmail}</li>
 								</ul>
 							</div>
 						</div>
@@ -111,29 +190,37 @@
 
 			<div class="tab-content">
 				<div id="mypage1" class="tab-pane active">
-
+					
+					<form action="mypage" method="post" id="frm">
 					<div class="wrap470">
 						<div class="content_wrap">
 							<ul class="inputText_wrap">
 								<li>
 									<div class="profileUpload">
-										<img id="preview" src="./img/profile.png" alt="">
+										<c:choose>
+											<c:when test="${not empty userImg}">
+												<img style="width:128px; height:128px; border-radius: 100%;" src="../img/${userImg}" alt="" >
+											</c:when>
+											<c:when test="${empty userImg}">
+												<img id="preview" src="./img/profile.png" alt="">
+											</c:when>
+										</c:choose>
 										<label for="imageFile">
 											<div class="uploadBtn"><i class="fas fa-camera"></i></div>
 										</label>
-										<input type="file" name="profileUpload" id="imageFile" accept="image/gif, image/jpeg, image/png">
+										<input type="file" name="user_image" id="imageFile" accept="image/gif, image/jpeg, image/png">
 									</div>
 								</li>
 								<li>
 									<h2>아이디</h2>
 									<div class="inputBox inputBoxId">
-										<input type="text" name="id" id="id" value="wlsdms3011" readonly>
+										<input type="text" name="user_id" id="id" value="${userId}" readonly>
 									</div>
 								</li>
 								<li>
 									<h2>비밀번호 입력</h2>
 									<div class="inputBox inputBoxPw1">
-										<input type="password" name="pw1" id="pw1" value="wlsdms24^^!">
+										<input type="password" name="user_pass" id="pw1" value="${userPass}">
 										<a href="javascript:void(0);" class="delBtn"><img src="./img/icon_close_circle.svg" alt=""></a>
 										<a href="javascript:void(0);" class="pwBtn"><img src="./img/icon_pw_hide.svg" alt=""></a>
 										<p></p>
@@ -142,7 +229,7 @@
 								<li>
 									<h2>비밀번호 확인</h2>
 									<div class="inputBox inputBoxPw2">
-										<input type="password" name="pw2" id="pw2" value="wlsdms24^^!">
+										<input type="password" name="pw2" id="pw2" value="${userPass}">
 										<a href="javascript:void(0);" class="delBtn"><img src="./img/icon_close_circle.svg" alt=""></a>
 										<a href="javascript:void(0);" class="pwBtn"><img src="./img/icon_pw_hide.svg" alt=""></a>
 										<p></p>
@@ -151,7 +238,7 @@
 								<li>
 									<h2>닉네임</h2>
 									<div class="inputBox inputBoxName">
-										<input type="text" name="name" id="name" value="닌니난나">
+										<input type="text" name="user_name" id="name" value="${userName}">
 										<a href="javascript:void(0);" class="delBtn"><img src="./img/icon_close_circle.svg" alt=""></a>
 										<p></p>
 									</div>
@@ -159,22 +246,47 @@
 								<li>
 									<h2>성별</h2>
 									<div class="inputBox">
-										<label for='genderM' class="clearfix">
-											<input type='radio' name='gender' id='genderM' value='' checked>
-											<span>남성</span>
-										</label>
-										<label for='genderW' class="clearfix">
-											<input type='radio' name='gender' id='genderW' value=''>
-											<span>여성</span>
-										</label>
+										<c:choose>
+											<c:when test="${userGender == 'M'}">
+											<label for='genderM' class="clearfix">
+												<input type='radio' name='user_gender' id='genderM' value='M' checked>
+												<span>남성</span>
+												</label>
+											<label for='genderW' class="clearfix">
+												<input type='radio' name='user_gender' id='genderW' value='W'>
+												<span>여성</span>
+											</label>
+											</c:when>
+											<c:when test="${userGender == 'W'}">
+												<label for='genderM' class="clearfix">
+													<input type='radio' name='user_gender' id='genderM' value='M'>
+													<span>남성</span>
+												</label>
+												<label for='genderW' class="clearfix">
+													<input type='radio' name='user_gender' id='genderW' value='W' checked>
+													<span>여성</span>
+												</label>
+											</c:when>
+										</c:choose>
+	
 									</div>
 								</li>
 								<li>
 									<h2>이메일</h2>
 									<div class="inputBox inputBoxEmail">
-										<input type="text" name="email" id="email" value="wlsdms3011@gmail.com">
+										<input type="text" name="user_email" id="email" value="${userEmail}">
 										<a href="javascript:void(0);" class="delBtn"><img src="./img/icon_close_circle.svg" alt=""></a>
-										<a href="javascript:void(0);" class="addChkBtn">본인인증</a>
+										<a href="javascript:void(0);" class="addChkBtn" id="checkEmail" onclick="sendNumber()">본인인증</a>
+										<p></p>
+									</div>
+								</li>
+								<li>
+									<h2>이메일 인증번호</h2>
+									<div class="inputBox inputBoxEmail2">
+										<input type="text" name="email2" id="number" placeholder="인증번호를 입력해 주세요.">
+										<input type="text" id="Confirm" name="Confirm" style="display: none" value="">
+										<a href="javascript:void(0);" class="delBtn"><img src="./img/icon_close_circle.svg" alt=""></a>
+										<a href="javascript:void(0);" class="addChkBtn" onclick="confirmNumber()">인증확인</a>
 										<p></p>
 									</div>
 								</li>
@@ -183,18 +295,18 @@
 							<ul class="button_wrap clearfix">
 								<li>
 									<div>
-										<a href="javascript:void(0);" class="joinCanBtn">취소</a>
+										<a href="javascript:void(0);" class="joinCanBtn" onclick="removeCheck('${userId}')">탈퇴</a>
 									</div>
 								</li>
 								<li>
 									<div>
-										<a href="javascript:void(0);" class="joinConBtn">확인</a>
+										<a href="javascript:void(0);" class="joinConBtn" onclick="submit()">확인</a>
 									</div>
 								</li>
 							</ul>
 						</div>
 					</div>
-
+					</form>
 				</div>
 			</div>
 

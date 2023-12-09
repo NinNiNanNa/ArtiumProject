@@ -49,12 +49,14 @@ public class MainController {
 		int result = dao.loginCheck(memberDTO);
 		if(result == 1) {
 			MemberDTO member = dao.selectOne(memberDTO);
-//			System.out.println(member);
               
 			session.setAttribute("userId", member.getUser_id());
-			session.setAttribute("userImg", member.getUser_image());
-			session.setAttribute("userEmail", member.getUser_email());
+			session.setAttribute("userPass", member.getUser_pass());
 			session.setAttribute("userName", member.getUser_name());
+			session.setAttribute("userEmail", member.getUser_email());
+			session.setAttribute("userGender", member.getUser_gender());
+			session.setAttribute("userImg", member.getUser_image());
+			session.setAttribute("userType", member.getUser_type());
 		}
 		return result;
 	}
@@ -102,9 +104,34 @@ public class MainController {
 	
 	//회원 삭제
 	@RequestMapping(value="/admin/accountUser/delete", method=RequestMethod.POST)
-	public String deleteMember(MemberDTO memberDTO) {
+	public String adminDeleteMember(MemberDTO memberDTO) {
 		dao.delete(memberDTO);
 		return "/admin/accountUser";
+	}
+	
+	//회원정보 수정
+	@RequestMapping(value="/mypage", method=RequestMethod.POST)
+	public String modifyMember(MemberDTO memberDTO, HttpServletRequest req) {
+		HttpSession session = req.getSession();
+		int result = dao.update(memberDTO);
+		if(result==1) {
+			
+			System.out.println("수정되었습니다.");
+			session.setAttribute("userPass", memberDTO.getUser_pass());
+			session.setAttribute("userName", memberDTO.getUser_name());
+			session.setAttribute("userEmail", memberDTO.getUser_email());
+			session.setAttribute("userGender", memberDTO.getUser_gender());
+			session.setAttribute("userImg", memberDTO.getUser_image());
+		}
+		return "mypage";
+	}
+	
+	//회원 탈퇴
+	@RequestMapping(value="/mypage/delete", method=RequestMethod.POST)
+	public String deleteMember(MemberDTO memberDTO, HttpSession session) {
+		session.invalidate();
+		dao.delete(memberDTO);
+		return "mypage";
 	}
 	
 	@GetMapping("/mypage")

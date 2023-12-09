@@ -35,6 +35,13 @@
 		select * from members where user_id = #{user_id}
 	</select>
 	
+	<!-- 회원정보 수정 -->
+	<update id="update"
+		parameterType="com.edu.springboot.member.MemberDTO">
+		update members set user_image = #{user_image}, user_pass = #{user_pass}, user_name = #{user_name}, user_gender = #{user_gender}, user_email = #{user_email} where user_id = #{user_id}
+	</update>
+		
+	
 	<!-- 회원 삭제 -->
 	<delete id="delete"
 		parameterType="com.edu.springboot.member.MemberDTO">

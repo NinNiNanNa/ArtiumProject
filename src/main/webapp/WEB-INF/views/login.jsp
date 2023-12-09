@@ -112,7 +112,7 @@ function loginCheck(){
 	<%@ include file="/header.jsp"%>
 	
 	<main id='main'>
-
+        
 		<section id="section">
 			<div class="wrap1440">
 				<div class="gap1440">

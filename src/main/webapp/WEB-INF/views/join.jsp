@@ -107,6 +107,7 @@
             <div class="wrap">
                 <div class="gap">
                     <div class="container">
+                        
 						<div class="wrap470">
 							<div class="title_wrap">
 								<h1>회원가입</h1>
@@ -217,6 +218,7 @@
 							</div>
 							</form>
 						</div>
+						
                     </div>
                 </div>
             </div>

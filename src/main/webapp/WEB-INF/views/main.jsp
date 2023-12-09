@@ -93,7 +93,7 @@
 										<div class='s2Text'>
 											<p>다양한 전시 정보를 찾아보세요.</p>
 											<div>
-												<a href='/exhibitionList'>바로가기<i class="fas fa-arrow-right"></i></a>
+												<a href='/exhibitionCurrentList'>바로가기<i class="fas fa-arrow-right"></i></a>
 											</div>
 										</div>
 									</div>

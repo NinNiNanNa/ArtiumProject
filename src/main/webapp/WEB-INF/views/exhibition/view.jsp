@@ -82,7 +82,7 @@ document.addEventListener('DOMContentLoaded', function () {
 	});
 });
 
-// ajax 비동기
+// ajax 비동기 댓글
 
 </script>
 </head>
@@ -265,6 +265,9 @@ document.addEventListener('DOMContentLoaded', function () {
 									</div>
 								</div>
 
+								<div class="listBtnBox">
+									<a href="javascript:history.back()" class="listBtn">목록보기</a>
+								</div>
 							</div>
 						</div>
 

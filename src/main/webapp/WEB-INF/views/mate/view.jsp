@@ -167,7 +167,7 @@
 																			<div class="content_wrap">
 																				댓글 내용댓글 내용댓글 내용댓글 내용댓글 내용댓글 내용댓글 내용댓글 내용<br>
 																				댓글 내용댓글 내용댓글 내용댓글 내용댓글 내용댓글 내용<br>
-																			</div>
+																			</div> 
 																		</div>
 																		<div class="btn_wrap">
 																			<a href="">수정</a>

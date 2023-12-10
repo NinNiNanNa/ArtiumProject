@@ -18,7 +18,7 @@ input[type='radio'] { -webkit-appearance:none; appearance:none; cursor:pointer; 
 /* 프로필 부분 - start */
 #section1 { width: 100%; margin-top: 50px; }
 #section1 .profile_wrap { width: 100%; }
-#section1 .profile_wrap img { width: 100%; max-width: 120px; }
+#section1 .profile_wrap img { width: 120px; height: 120px; border-radius: 100%; object-fit: cover; }
 #section1 .profile_wrap .profile_info { width: 100%; padding: 15px 0 30px; }
 #section1 .profile_wrap .profile_info span { display: inline-block; padding: 8px 15px; font-size: 12px; color: #fff; background-color: #000; border-radius: 20px; }
 #section1 .profile_wrap .profile_info h2 { margin: 10px 0; font-size: 20px; font-weight: bold; }

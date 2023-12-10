@@ -176,8 +176,10 @@ public class ExhibitionController {
 	
 	@GetMapping("/restBoardView.do")
 	@ResponseBody
-	public SimpleReviewDTO restSimpleReviewView(ParameterDTO parameterDTO){
-		SimpleReviewDTO simpleReviewDTO = dao.viewSimpleReview(parameterDTO);
+	public SimpleReviewDTO restSimpleReviewView(Model model, SimpleReviewDTO simpleReviewDTO){
+		
+		simpleReviewDTO = dao.viewSimpleReview(simpleReviewDTO);
+		model.addAttribute("simpleReviewDTO"+ simpleReviewDTO);
 		
 		System.out.println("호잇!"+simpleReviewDTO);
 		return simpleReviewDTO;

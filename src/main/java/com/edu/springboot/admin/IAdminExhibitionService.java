@@ -1,12 +1,16 @@
-package com.edu.springboot.exhibition;
+package com.edu.springboot.admin;
 
 import java.util.ArrayList;
 
 import org.apache.ibatis.annotations.Mapper;
 
+import com.edu.springboot.exhibition.ExhibitionDTO;
+import com.edu.springboot.exhibition.ParameterDTO;
+import com.edu.springboot.exhibition.SimpleReviewDTO;
+
 
 @Mapper
-public interface IExhibitionService {
+public interface IAdminExhibitionService {
 	// 전시목록 Paging처리를 위해 게시물의 갯수 카운트
 	public int getTotalCount(ParameterDTO parameterDTO);
 	// 전시목록

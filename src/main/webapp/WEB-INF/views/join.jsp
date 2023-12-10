@@ -44,7 +44,7 @@
 	            type:"post",
 	            data:{"email" : $("#email").val()},
 	            success: function(data){
-	                alert("인증번호 발송");
+	                alert("인증번호가 발송되었습니다.");
 	                $("#Confirm").attr("value",data);
 	            }
 	        });

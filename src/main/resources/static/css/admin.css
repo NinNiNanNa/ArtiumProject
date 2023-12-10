@@ -47,6 +47,13 @@ ul li { list-style: none; }
 .info_wrap > li > span { font-size: .7rem; }
 .info_wrap > li > span > i { font-style: normal; font-weight: bold; }
 
+/* 페이징 스타일 */
+.paging_wrap { width: 100%; text-align: center; line-height: 24px; padding-bottom: 30px; }
+.paging_wrap a { display: inline-block; margin: 0 5px; width: 24px; height: 24px; color: #000; text-decoration: none; border-radius: 50%; transition: all .3s; }
+.paging_wrap a img { border-radius: 50%; transition: all .3s; }
+.paging_wrap a:hover { background-color: #ccc; }
+.paging_wrap a.nowPage { font-weight: 500; color: #fff; background-color: #1A1D20; }
+
 /* 검색필드, 검색창 */
 .searchFeild_wrap { display: inline-block; }
 .searchWord_wrap { position: relative; display: inline-block; margin-left: 5px; width: 340px; }

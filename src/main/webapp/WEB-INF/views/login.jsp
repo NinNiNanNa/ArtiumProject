@@ -79,7 +79,7 @@ function loginCheck(){
         success: function(result){
         	if(result == 0){
         	} else{
-        		alert("로그인 성공");
+        		alert("로그인되었습니다.");
         		
         		// 아이디 저장 체크박스 확인
                 if ($('#idCheck').is(':checked')) {
@@ -112,7 +112,7 @@ function loginCheck(){
 	<%@ include file="/header.jsp"%>
 	
 	<main id='main'>
-
+        
 		<section id="section">
 			<div class="wrap1440">
 				<div class="gap1440">
@@ -155,7 +155,7 @@ function loginCheck(){
 									</li>
 									<li>
 										<hr>
-										<a href="./join.html" class="buttons joinBtn">회원가입</a>
+										<a href="./join" class="buttons joinBtn">회원가입</a>
 										<a href="javascript:void(0);" class="buttons searchBtn">아이디 / 비밀번호 찾기</a>
 									</li>
 								</ul>

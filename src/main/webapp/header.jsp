@@ -4,7 +4,7 @@
 <script type="text/javascript">
 function logoutPrint(){
 	alert('로그아웃되었습니다.');
-}    
+}           
 </script>
 	<header id='header'>
 		<div class='wrap1440'>
@@ -28,22 +28,30 @@ function logoutPrint(){
 					<div class='menu_wrap'>
 						<!-- JSP에서 로그인 / 로그아웃 분리 - 시작 -->
 						<c:set var="userId" value="${sessionScope.userId }"></c:set>
+						<c:set var="userImg" value="${sessionScope.userImg }"></c:set>
 						<ul class="account">
 							<li><span>계정</span></li>
 						<c:choose>
 							<c:when test="${not empty userId}">
 							<li>
 								<a href="./mypage" class="clearfix">
-									<div class="profile_img">
-										<img src="../img/${sessionScope.userImg}" alt="">
-									</div>
+										<div class="profile_img" >
+											<c:choose>
+												<c:when test="${not empty userImg}">
+													<img style="width:50px; height:50px; border-radius: 100%;" src="../img/${sessionScope.userImg}" alt="" >
+												</c:when>
+												<c:when test="${empty userImg}">
+													<img src="../img/profile.png" alt="">
+												</c:when>
+											</c:choose>
+										</div>
 									<div class="profile_info">
 										<span>${sessionScope.userName}</span>
 										<i>${sessionScope.userEmail}</i>
 									</div>
 								</a>
 							</li>
-							<li><a href="./logout">로그아웃</a></li>
+							<li><a href="./logout" onclick="logoutPrint()">로그아웃</a></li>
 							</c:when>
 							<c:otherwise>
 							<li><a href="./login">로그인</a></li>

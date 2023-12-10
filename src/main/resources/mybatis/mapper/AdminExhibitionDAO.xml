@@ -6,7 +6,7 @@
 	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <!-- Controller에서 Mapper의 함수를 호출하기 위한 interface를 namespace속성에 설정한다. -->
-<mapper namespace="com.edu.springboot.exhibition.IExhibitionService">
+<mapper namespace="com.edu.springboot.admin.IAdminExhibitionService">
 	
 	<select id="getTotalCount" resultType="int" parameterType="com.edu.springboot.exhibition.ParameterDTO">
 		SELECT COUNT(*) FROM exhibition WHERE

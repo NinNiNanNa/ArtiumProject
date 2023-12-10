@@ -13,4 +13,8 @@ public class MemberDTO {
 	private String user_image;
 	private String user_type;
 	private String user_regidate;
+	
+	//검색
+	private String searchOption;
+	private String keyword;
 }

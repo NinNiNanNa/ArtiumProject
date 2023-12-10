@@ -138,7 +138,7 @@
                             <div class="comment_content">
 															<ul class="comList_wrap">
 																<li>
-																	<div class="row">
+																	<div class="row commentBox">
 																		<div class="col-lg-2 comImg_wrap">
 																			<img src="../img/profile.png" alt="">
 																		</div>
@@ -156,7 +156,7 @@
 																	</div>
 																</li>
 																<li>
-																	<div class="row">
+																	<div class="row commentBox">
 																		<div class="col-lg-2 comImg_wrap">
 																			<img src="../img/profile.png" alt="">
 																		</div>

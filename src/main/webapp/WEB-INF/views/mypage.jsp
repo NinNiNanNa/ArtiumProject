@@ -53,7 +53,7 @@
 	            type:"post",
 	            data:{"email" : $("#email").val()},
 	            success: function(data){
-	                alert("인증번호 발송");
+	                alert("인증번호가 발송되었습니다.");
 	                $("#Confirm").attr("value",data);
 	            }
 	        });
@@ -79,7 +79,7 @@
 	    }
 	    
 	    function removeCheck(user_id) {
-	    	 if (confirm("정말 탈퇴하시겠습니까??") == true){    //확인
+	    	 if (confirm("정말 탈퇴하시겠습니까?") == true){    //확인
 	    		 deleteMember(user_id);
 	    	 }else{   //취소
 	    	     return false;
@@ -92,7 +92,7 @@
 	            type:"post",
 	            data:{"user_id" : user_id},
 	            success: function(data){
-	                alert("탈퇴 완료 ");
+	                alert("회원 탈퇴가 정상적으로 이뤄졌습니다.");
 	                location.href="/";
 	            }
 	        });

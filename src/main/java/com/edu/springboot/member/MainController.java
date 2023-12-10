@@ -102,7 +102,7 @@ public class MainController {
         return code;
     }
 	
-	//회원 삭제
+	//회원삭제
 	@RequestMapping(value="/admin/accountUser/delete", method=RequestMethod.POST)
 	public String adminDeleteMember(MemberDTO memberDTO) {
 		dao.delete(memberDTO);
@@ -116,7 +116,7 @@ public class MainController {
 		int result = dao.update(memberDTO);
 		if(result==1) {
 			
-			System.out.println("수정되었습니다.");
+			System.out.println("회원정보 수정이 완료되었습니다.");
 			session.setAttribute("userPass", memberDTO.getUser_pass());
 			session.setAttribute("userName", memberDTO.getUser_name());
 			session.setAttribute("userEmail", memberDTO.getUser_email());
@@ -126,7 +126,7 @@ public class MainController {
 		return "mypage";
 	}
 	
-	//회원 탈퇴
+	//회원탈퇴
 	@RequestMapping(value="/mypage/delete", method=RequestMethod.POST)
 	public String deleteMember(MemberDTO memberDTO, HttpSession session) {
 		session.invalidate();

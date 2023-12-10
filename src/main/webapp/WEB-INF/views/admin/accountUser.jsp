@@ -50,6 +50,20 @@
 	            }
 	        });
 	    }
+	    
+	    function submit(){
+	    	var form = document.getElementById('frm');
+	    	
+	    	removeList();
+	    	form.action = "/admin/accountUser";
+	    	form.method = "post";
+	    	form.submit();
+	    	
+	    }
+	    
+	    function removeList(){
+	    	${memberList} = null;
+	    }
     </script>
 
 </head>
@@ -77,17 +91,17 @@
                             <div class="table_wrap">
                                 <div class="table_gap">
 
-                                    <form>
+                                    <form name="form1" id="frm" method="post" action="/admin/accountUser">
                                         <div class="searchFeild_wrap">
-                                            <select class="form-control" name="">
-                                                <option value="">아이디</option>
-                                                <option value="">닉네임</option>
+                                            <select class="form-control" name="searchOption">
+                                                <option value="user_id" >아이디</option>
+                                                <option value="user_name">닉네임</option>
                                             </select>
                                         </div>
                                         <div class="searchWord_wrap">
-                                            <input type="text" class="form-control bg-light border-0 small" placeholder="Search for..." aria-label="Search" aria-describedby="basic-addon2">
+                                            <input type="text" name="keyword" class="form-control bg-light border-0 small" placeholder="Search for..." aria-label="Search" aria-describedby="basic-addon2">
                                             <div class="searchBtn">
-                                                <button class="btn btn-dark" type="button">
+                                                <button class="btn btn-dark" type="button" onclick="submit()">
                                                     <i class="fas fa-search fa-sm"></i>
                                                 </button>
                                             </div>

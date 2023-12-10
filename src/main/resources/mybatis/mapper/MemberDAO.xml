@@ -13,6 +13,12 @@
 		select * from members order by user_regidate desc
 	</select>
 	
+	
+	<select id="search"
+		resultType="com.edu.springboot.member.MemberDTO">
+		select * from members where ${searchOption} like '%'||#{keyword}||'%' order by user_regidate desc 
+	</select>
+	
 	<!-- 회원등록 : 파라미터 타입으로 명시한 DTO객체의 멤버변수명을 통해
 			SQL문의 인파라미터를 설정할 수 있다. EL과 동일하게 DTO 내부의
 			getter()를 호출하여 값을 얻어오게 된다. -->

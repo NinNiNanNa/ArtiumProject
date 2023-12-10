@@ -184,6 +184,12 @@ public class MainController {
 		return "/admin/accountUser";
 	}
 	
+	@RequestMapping(value="/admin/accountUser", method=RequestMethod.POST)
+	public String search(MemberDTO memberDTO, Model model) throws Exception {
+		model.addAttribute("memberList", dao.search(memberDTO));
+		return "/admin/accountUser";
+	}
+	
 	@GetMapping("/admin/exComments")
 	public String exComments() {
 		return "/admin/exComments";

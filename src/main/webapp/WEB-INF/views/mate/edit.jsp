@@ -38,20 +38,21 @@
 
 	<!-- 아이콘 -->
     <link href="../vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
-<script>
-$(document).ready(function(){
-	   // 등록버튼 클릭 시 폼 제출
-	   $("#registBtn").click(function(){
-	      $("form").submit();
-	   });
+	
+	<!--수정하기 -->
+	<script>
+        $(document).ready(function(){
+            // 등록버튼 클릭 시 폼 제출
+            $("#registBtn").click(function(){
+                $("form").submit();
+            });
 
-	   // 취소버튼 클릭시 이전 페이지로 이동
-	   $(".cancelBtn").click(function(){
-	      history.back();
-	   });
-	});
-
-</script>
+            // 취소버튼 클릭시 이전 페이지로 이동
+            $(".cancelBtn").click(function(){
+                history.back();
+            });
+        });
+    </script>
 </head>
 <body>
 <div id='wrap'>
@@ -79,7 +80,7 @@ $(document).ready(function(){
                                         <h2>모집상태</h2>
                                     </div>
                                     <div class="col-lg-2 write_wrap">
-                                        <select name="mt_status" class="form-select">
+                                        <select name="mt_status" class="form-select" value="${mateDTO.mt_status}">
                                             <option value="모집중">모집중</option>
                                             <option value="모집완료">모집완료</option>
                                         </select>
@@ -90,7 +91,7 @@ $(document).ready(function(){
                                         <h2>제목</h2>
                                     </div>
                                     <div class="col-lg-10 write_wrap">
-                                        <input type="text" name="mt_title" class="form-control" placeholder="제목을 입력하세요.">
+                                        <input type="text" name="mt_title" class="form-control" placeholder="제목을 입력하세요." value="${mateDTO.mt_title}">
                                     </div>
                                 </li>
                                 <li class="row">
@@ -108,7 +109,7 @@ $(document).ready(function(){
                                         <h2>관람 예정일</h2>
                                     </div>
                                     <div class="col-lg-2 write_wrap">
-                                        <input type="date" name="mt_viewdate" class="form-control" placeholder="날짜 선택" required>
+                                        <input type="date" name="mt_viewdate" class="form-control" placeholder="날짜 선택" required value="${mateDTO.mt_viewdate}">
                                     </div>
                                 </li>
                                 <li class="row">
@@ -116,7 +117,7 @@ $(document).ready(function(){
                                         <h2>메이트 성별</h2>
                                     </div>
                                     <div class="col-lg-2 write_wrap">
-                                        <select name="mt_gender" class="form-select">
+                                        <select name="mt_gender" class="form-select" value="${mateDTO.mt_gender}">
                                             <option value="성별무관">성별무관</option>
                                             <option value="남성">남성</option>
                                             <option value="여성">여성</option>
@@ -128,7 +129,7 @@ $(document).ready(function(){
                                         <h2>메이트 나이</h2>
                                     </div>
                                     <div class="col-lg-2 write_wrap">
-                                        <select name="mt_age" class="form-select">
+                                        <select name="mt_age" class="form-select" value="${mateDTO.mt_age}">
                                             <option value="연령무관">연령무관</option>
                                             <option value="20대 초반">20대 초반</option>
                                             <option value="20대 중반">20대 중반</option>
@@ -143,7 +144,7 @@ $(document).ready(function(){
                                     </div>
                                         ~
                                     <div class="col-lg-2 write_wrap">
-                                        <select name="mt_age" class="form-select">
+                                        <select name="mt_age" class="form-select" value="${mateDTO.mt_age}">
                                             <option value="연령무관">연령무관</option>
                                             <option value="20대 초반">20대 초반</option>
                                             <option value="20대 중반">20대 중반</option>
@@ -162,7 +163,7 @@ $(document).ready(function(){
                                         <h2>내용</h2>
                                     </div>
                                     <div class="col-lg-10 write_wrap">
-                                        <textarea name="mt_content" id="" cols="30" rows="10"></textarea>
+                                        <textarea name="mt_content" id="" cols="30" rows="10">${mateDTO.mt_content}</textarea>
                                     </div>
                                 </li>
                             </ul>

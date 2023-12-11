@@ -19,13 +19,12 @@ public interface IMateService {
 	//mate 상세보기
 	public MateDTO view(MateDTO mateDTO);
 	
-	// 조회수
+	// 조회수 올리기 
 	public int visitCount(int mt_visitcount);
 		
-	// 북마크
-	//public int bomcount(String mt_bmcount);
+	// 북마크 올리기 
+	public int bomcount(String mt_bmcount);
 
-	
 	
 	//작성하기(받은 폼값은 이름을 변경한 후 매퍼로 전달한다) 
 	public int write(
@@ -41,6 +40,11 @@ public interface IMateService {
 	
 	//수정하기 
 	public int edit(MateDTO mateDTO);
+	
+	
+	//삭제하기 
+	public int delete(String mt_id);
+	
 	/*
 	//작성하기(받은 폼값은 이름을 변경한 후 매퍼로 전달한다) public int write(@Param("_name") String
 	 * name,

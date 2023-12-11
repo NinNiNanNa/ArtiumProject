@@ -44,12 +44,15 @@
 	<script>
     function checkLoginAndRedirect(destination) {
         // 세션에서 userId 가져오기
-        var userId = '<%= session.getAttribute("userId") %>';
+        var userId = "${sessionScope.userId}";
+        console.log(userId);
 
-        if (userId == null) {
+        if (userId === undefined || userId === null || userId.trim() === "") {
             // 로그인이 되어 있지 않은 경우
             alert("로그인 후 작성하실 수 있습니다.");
-        } else {
+           	window.location.href = "/login";
+        } 
+        else {
             // 로그인이 된 경우 지정된 페이지로 이동
             window.location.href = destination;
         }
@@ -135,7 +138,7 @@
 														<div class="title_wrap">
 															<div>
 																<div class="userInfo">
-																	<a class="txtSkip" href="/mateView">${row.mt_title}</a>
+																	<a class="txtSkip" href="/mateView?mt_id=${row.mt_id}">${row.mt_title}</a>
 																	<span>사용자 닉네임</span>
 																	<span>등록일 <i>${row.mt_postdate }</i></span>
 																	<span>조회수 <i>${row.mt_visitcount }</i></span>

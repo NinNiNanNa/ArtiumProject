@@ -14,6 +14,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import com.edu.springboot.review.ReviewDTO;
+
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 import utils.PagingUtil;
@@ -29,21 +31,19 @@ public class MateController {
 
     @Autowired
     private IMateService mateService;
-
+    
+    //작성하기 
     @GetMapping("/mateWrite")
     public String mateWriteGet(HttpServletRequest request, Model model) {
         HttpSession session = request.getSession();
         String userId = (String) session.getAttribute("userId");
 
-        if (userId != null) {
-            // 로그인한 사용자의 경우
-            // 세션에 저장된 userId를 이용하여 필요한 작업 수행
-            return "mate/write"; // 모집 등록 페이지로 이동
-        } else {
-            // 로그인하지 않은 사용자의 경우
-            // 로그인 페이지로 이동하거나 다른 처리 수행
-            return "redirect:/login"; // 로그인 페이지로 이동하는 것은 예시일 뿐입니다.
-        }
+//        if (userId != null) {
+//            // 로그인한 사용자의 경우
+//            // 세션에 저장된 userId를 이용하여 필요한 작업 수행
+//             // 모집 등록 페이지로 이동
+//        }
+        return "mate/write";
     }
 
     @PostMapping("/mateWrite")
@@ -81,7 +81,8 @@ public class MateController {
             return "redirect:/mateList";
         }
     }
-
+    
+    //리스트 출력 
     @RequestMapping("/mateList")
     public String mateList(Model model, HttpServletRequest req, ParameterDTO parameterDTO) {
         int totalCount = dao.getTotalCount(parameterDTO);
@@ -109,12 +110,56 @@ public class MateController {
 
         return "mate/list";
     }
-
+    
+    //상세보기 
     @RequestMapping("/mateView")
     public String mateView(Model model, MateDTO mateDTO) {
         dao.visitCount(mateDTO.getMt_id());
         mateDTO = dao.view(mateDTO);
-        model.addAttribute("MateDTO", mateDTO);
+        mateDTO.setMt_content(mateDTO.getMt_content().replace("\r\n", "<br>"));
+        model.addAttribute("mateDTO", mateDTO);
+        System.out.println("나옴?"+mateDTO);
         return "/mate/view";
     }
+    
+    
+    //수정하기
+    @GetMapping("/mateEdit")
+	public String boardEditGet(Model model, MateDTO mateDTO) {
+    	mateDTO = dao.view(mateDTO);
+		model.addAttribute("mateDTO", mateDTO);
+		return "mate/edit";       
+	}	
+	@PostMapping("/mateEdit")
+	public String boardEditPost(MateDTO mateDTO) {
+		int result = dao.edit(mateDTO);
+		System.out.println("글수정결과:"+ result);
+		return "redirect:view.do?idx="+ mateDTO.getMt_id();       
+	}
+    
+    
+    
+    
+    //삭제하기
+    @PostMapping("/delete")
+	public String mateDeletePost(HttpServletRequest req) {
+		int result = dao.delete(req.getParameter("mt_id"));
+		System.out.println("글삭제결과:"+ result);
+		//return "redirect:mate/list";       
+		return "/mate/list"; 
+	}
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+

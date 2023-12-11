@@ -22,6 +22,7 @@
 		</if>
 	</select>
 	
+	<!-- 리스트 출력 -->
 	<select id="listPage" 
 		resultType="com.edu.springboot.mate.MateDTO"
 		parameterType="com.edu.springboot.mate.ParameterDTO">			
@@ -39,7 +40,7 @@
 		WHERE rNum<![CDATA[>=]]>#{start} AND rNum<![CDATA[<=]]>#{end}		
 	</select>
 	
-	
+	<!-- 작성하기 -->
 	<insert id="write">
     INSERT INTO mate (
         mt_id,  
@@ -68,18 +69,25 @@
 <!--조회수-->	
 <update id="visitCount" parameterType="com.edu.springboot.mate.MateDTO">
 			UPDATE mate SET mt_visitcount=mt_visitcount+1 WHERE mt_id=#{mt_id}
-		</update>
+</update>
 		
-	<update id="mateEdit" parameterType="com.edu.springboot.mate.MateDTO">
+<!-- 수정하기 -->		
+<update id="Edit" parameterType="com.edu.springboot.mate.MateDTO">
 		UPDATE mate SET 
-		#{_mt_status}, 
-        #{_mt_title}, 
-        #{_mt_viewdate}, 
-        #{_mt_gender}, 
-        #{_mt_age}, 
-        #{_mt_content}
+		mt_status=#{mt_status}, 
+        mt_title=#{mt_title}, 
+        mt_viewdate=#{mt_viewdate}, 
+        mt_gender=#{mt_gender}, 
+        mt_age=#{mt_age}, 
+        mt_content=#{mt_content}
 		WHERE mt_id=#{mt_id}
-	</update>
+</update>
+
+
+<!-- 삭제하기 -->
+<delete id="delete">
+		DELETE FROM mate WHERE mt_id=#{mt_id}
+</delete>
 	
 	<!--<select id="view" resultType="com.edu.springboot.jdbc.MateDTO" 
 		parameterType="com.edu.springboot.jdbc.MateDTO">

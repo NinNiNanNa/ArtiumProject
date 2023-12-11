@@ -6,8 +6,6 @@ import java.util.List;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
-import com.edu.springboot.jdbc.ParameterDTO;
-import com.edu.springboot.member.MemberDTO;
 
 @Mapper
 public interface IGalleryService {

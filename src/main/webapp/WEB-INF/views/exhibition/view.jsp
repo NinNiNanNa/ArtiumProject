@@ -117,8 +117,8 @@ function loadComments(pageNum) {
                 var userId = "${sessionScope.userId}"; // 세션에서 현재 로그인한 사용자의 아이디를 가져옴
                 if (userId && userId === review.user_id) {
                 	buttons = '<div class="btn_wrap">' +
-                        '<a href="">수정</a>' +
-                        '<a href="">삭제</a>' +
+                        '<a href="" class="srvEditBtn">수정</a>' +
+                        '<a href="" class="srvDeleteBtn" data-comment-id="'+review.srv_id+'">삭제</a>' +
                         '</div>';
                 }
                 
@@ -207,10 +207,8 @@ function checkUserId() {
 
 		        if (response.result === 1) {	// 리뷰 작성 성공
 		            alert("리뷰 작성이 성공하였습니다.");
-		            
 		         	// 성공적인 댓글 제출 후 댓글을 업데이트하기 위해 loadComments() 함수 호출
                     loadComments();
-		         	
                  	// 폼 초기화
                     document.getElementById('srvContent').value = "";
                     document.querySelector('input[name="srv_star"]:checked').checked = false;
@@ -226,6 +224,44 @@ function checkUserId() {
 	}
 }
 
+//댓글 삭제 함수
+function deleteComment(srvId) {
+    $.ajax({
+        type: "POST",
+        url: "/exhibitionReviewDelete.api",
+        data: { srv_id: srvId },
+        success: function(response) {
+            if (response.result === 1) {	// 댓글 삭제 성공
+                alert("댓글이 삭제되었습니다.");
+                // 삭제 후 댓글 목록을 업데이트하는 함수 호출
+                loadComments();
+            } else {	// 댓글 삭제 실패
+                alert("댓글 삭제에 실패하였습니다.");
+            }
+        },
+        error: function(error) {
+            // 에러 처리
+            console.log(error);
+        }
+    });
+}
+
+//삭제 버튼 클릭 시 이벤트 처리
+$(document).on('click', 'a.srvDeleteBtn', function(e) {
+    e.preventDefault();
+
+    var srvId = $(this).data('comment-id');
+    
+ 	// 확인 창 띄우기
+    var isConfirmed = confirm('댓글을 삭제하시겠습니까?');
+ 	
+ 	// 확인이 눌렸을 경우에만 삭제 요청
+    if (isConfirmed) {
+        // 서버로 삭제 요청을 보냄
+        deleteComment(srvId);
+    }
+    
+});
 </script>
 </head>
 <body>

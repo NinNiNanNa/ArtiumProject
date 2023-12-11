@@ -113,6 +113,7 @@ public class ExhibitionController {
 	
 	/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	
+	// 한줄평 목록
 	@RequestMapping("/exhibitionReviewList.api")
 	@ResponseBody
 	public Map<String, Object> simpleReviewList(HttpServletRequest req, ParameterDTO parameterDTO) {
@@ -209,6 +210,7 @@ public class ExhibitionController {
 //		return "redirect:exhibitionView?ex_seq="+exhibitionSeq;
 //	}
 	
+	// 한줄평 작성
 	@PostMapping("/exhibitionReviewWrite.api")
 	@ResponseBody
 	public Map<String, Object> restSimpleReviewWrite(@RequestBody SimpleReviewDTO simpleReviewDTO, HttpSession session) {
@@ -221,6 +223,23 @@ public class ExhibitionController {
 	    resultMap.put("result", result);
 	    
 	    return resultMap;
+	}
+	
+	// 한줄평 삭제
+	@PostMapping("/exhibitionReviewDelete.api")
+	@ResponseBody
+	public Map<String, Object> restSimpleReviewDelete(HttpServletRequest req) {
+	    Map<String, Object> maps = new HashMap<>();
+	    
+	    int result = dao.deleteSimpleReview(req.getParameter("srv_id"));
+	    try {
+		    maps.put("result", 1);
+		} catch (Exception e) {
+			maps.put("result", 0);
+			maps.put("error", e.getMessage());
+		}
+	    
+	    return maps;
 	}
 	
 }

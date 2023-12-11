@@ -79,6 +79,13 @@
 	    VALUES (seq_board_num.nextval, #{ex_seq}, #{user_id}, #{srv_star, jdbcType=INTEGER}, #{srv_content}, sysdate)
 	</insert>
 	
+	<!-- 한줄평 수정 -->
+	<update id="editSimpleReview" parameterType="com.edu.springboot.exhibition.SimpleReviewDTO">
+		UPDATE simple_review SET
+		srv_star=#{srv_star}, srv_content=#{srv_content}
+		WHERE srv_id=#{srv_id}
+	</update>
+	
 	<!-- 한줄평 삭제 -->
 	<delete id="deleteSimpleReview">
 		DELETE FROM simple_review WHERE srv_id=#{param1}

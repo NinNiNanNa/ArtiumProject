@@ -99,7 +99,7 @@ public class ExhibitionController {
 	// 전시 상세보기
 	@RequestMapping("/exhibitionView")
 	public String exhibitionView(Model model, HttpServletRequest req, ExhibitionDTO exhibitionDTO) {
-		 String exSeq = exhibitionDTO.getEx_seq();
+		String exSeq = exhibitionDTO.getEx_seq();
 	    HttpSession session = req.getSession();
 	    session.setAttribute("ex_seq", exSeq);
 		
@@ -221,6 +221,24 @@ public class ExhibitionController {
 	    
 	    int result = dao.writeSimpleReview(simpleReviewDTO);
 	    resultMap.put("result", result);
+	    
+	    return resultMap;
+	}
+	
+	// 한줄평 수정
+	@PostMapping("/exhibitionReviewEdit.api")
+	@ResponseBody
+	public Map<String, Object> restSimpleReviewEdit(@RequestBody SimpleReviewDTO simpleReviewDTO, HttpSession session) {
+	    Map<String, Object> resultMap = new HashMap<>();
+	    
+	    String userId = (String) session.getAttribute("userId");
+	    simpleReviewDTO.setUser_id(userId);
+	    System.out.println("아이디도 들어옴?"+simpleReviewDTO);
+	    
+	    int result = dao.editSimpleReview(simpleReviewDTO);
+	    resultMap.put("result", result);
+	    
+	    System.out.println(resultMap);
 	    
 	    return resultMap;
 	}

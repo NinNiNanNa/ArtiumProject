@@ -76,10 +76,9 @@ document.addEventListener('DOMContentLoaded', function () {
         	// 기본 동작인 줄바꿈 막음
         	e.preventDefault();
             // 댓글 작성 함수 호출
-            checkUserId();
+            writeComment();
         }
     });
-
     srvContent.addEventListener('keyup', function () {
         // 입력된 텍스트의 길이를 가져와서 #textCnt에 표시
         textCnt.innerHTML = "(" + srvContent.value.length + " / 60)";
@@ -123,6 +122,7 @@ function loadComments(pageNum) {
                 }
                 
                 var commentItem = '<li>' +
+                	'<input type="hid den" id="srvId" name="srv_id" value="'+review.srv_id+'" />' +
                 	'<div class="row commentBox">' +
 					'<div class="col-lg-2 comImg_wrap">' +
 					'<img src="../img/'+review.user_image+'" alt="">' +
@@ -140,6 +140,7 @@ function loadComments(pageNum) {
 					buttons +
 					'</div>' +
 					'</li>';
+					
                 $('#simpleReviewList').append(commentItem);
             }
             $('.srtotalCount').html(data.totalCount);
@@ -169,7 +170,7 @@ function getPageNumFromUrl(url) {
     return match ? parseInt(match[1], 10) : 1;
 }
 
-function checkUserId() {
+function writeComment() {
 	var userId = "${sessionScope.userId}";
 	var selectedStar = document.querySelector('input[name="srv_star"]:checked');
 	var srvContent = document.getElementById('srvContent').value;
@@ -261,6 +262,104 @@ $(document).on('click', 'a.srvDeleteBtn', function(e) {
         deleteComment(srvId);
     }
     
+});
+
+//댓글 수정 버튼 클릭 시 이벤트 처리
+$(document).on('click', 'a.srvEditBtn', function(e) {
+    e.preventDefault();
+    // 수정할 댓글의 내용, 별점을 가져옴
+    var srvEditStar = $(this).closest('.commentBox').find('.star').length;
+    var srvEditContent = $(this).closest('.commentBox').find('.content_wrap p').text();
+
+    // 동적으로 수정 폼 생성
+    var editForm = $('<li id="editCommentForm">' +
+        '<div class="row commentBox">' +
+        '<div class="col-lg-2 comImg_wrap">' +
+        '<img src="../img/${userImg }" alt="">' +
+        '</div>' +
+        '<div class="col-lg-9 comWrite_wrap">' +
+        '<div class="user_wrap">' +
+        '<span>${userName }</span>' +
+        '</div>' +
+        '<div class="content_wrap">' +
+        '<div class="row starAndtextcnt">' +
+        '<div class="col-lg-6 star_wrap">' +
+        '<fieldset>' +
+        '<input type="radio" name="srv_star" value="5" id="rateEdit1"><label for="rateEdit1">⭐</label>' +
+        '<input type="radio" name="srv_star" value="4" id="rateEdit2"><label for="rateEdit2">⭐</label>' +
+        '<input type="radio" name="srv_star" value="3" id="rateEdit3"><label for="rateEdit3">⭐</label>' +
+        '<input type="radio" name="srv_star" value="2" id="rateEdit4"><label for="rateEdit4">⭐</label>' +
+        '<input type="radio" name="srv_star" value="1" id="rateEdit5"><label for="rateEdit5">⭐</label>' +
+        '</fieldset>' +
+        '</div>' +
+        '<div id="textEditCnt" class="col-lg-6">(0/60)</div>' +
+        '</div>' +
+        '<textarea name="srv_content" id="srvEditContent" cols="30" rows="1" placeholder="댓글을 남겨주세요.">' + srvEditContent + '</textarea>' +
+        '</div>' +
+        '</div>' +
+        '<div class="col-lg-1 commentBtn_wrap">' +
+        '<button type="button" id="srvUpdateBtn" class="btn btn-dark" onclick="">수정</button>' +
+        '</div>' +
+        '</div>' +
+        '</li>');
+
+ 	// 수정 폼을 이전에 있던 댓글 밑에 추가
+    $(this).closest('.commentBox').after(editForm);
+    // 기존 댓글은 숨기기
+    $(this).closest('.commentBox').hide();
+    
+ 	// 별점 체크
+    editForm.find('input[name="srv_star"]').eq(5 - srvEditStar).prop('checked', true);
+});
+
+//수정한 내용을 업데이트할 시 이벤트 처리
+$(document).on('click', 'button#srvUpdateBtn', function (e) {
+    e.preventDefault();
+
+    // 수정할 댓글의 내용, 별점을 가져옴
+    var editedId = $('#srvId').val();
+    var editedStar = $('input[name="srv_star"]:checked').val();
+    var editedContent = $('#editCommentForm textarea').val();
+    
+	console.log("수정값들어오냐?!: "+editedId);    
+	console.log("수정값들어오냐?!: "+editedStar);    
+	console.log("수정값들어오냐?!: "+editedContent);    
+    
+    // 수정한 내용을 서버에 전송
+    $.ajax({
+        type: 'POST',
+        contentType: "application/json",
+        url: '/exhibitionReviewEdit.api',
+        data: JSON.stringify({
+            //editedStar: srv_star,
+            //editedContent: srv_content
+            srv_id: editedId,
+            srv_star: editedStar,
+            srv_content: editedContent
+        }),
+        success: function (response) {
+            if (response.result === 1) {
+                // 서버에서 수정이 성공하면 화면에 수정된 내용을 갱신
+                var commentBox = $('input[value="' + editedId + '"]');
+                commentBox.find('.star').remove();
+                for (var i = 0; i < editedStar; i++) {
+                    commentBox.find('.content_wrap').append('<span class="star">⭐</span>');
+                }
+                commentBox.find('.content_wrap p').text(editedContent);
+
+                // 수정 폼을 제거하고, 기존 댓글을 다시 보이게 함
+                $('#editCommentForm').remove();
+                $('.commentBox').show();
+            } else {
+                // 수정이 실패한 경우에 대한 처리
+                alert('댓글 수정에 실패했습니다.');
+            }
+        },
+        error: function () {
+            // 통신 오류 등에 대한 처리
+            alert('댓글 수정 중 오류가 발생했습니다.');
+        }
+    });
 });
 </script>
 </head>
@@ -432,41 +531,7 @@ $(document).on('click', 'a.srvDeleteBtn', function(e) {
 																</div>
 															</div>
 															<div class="col-lg-1 commentBtn_wrap">
-																<button type="button" id="srvSendBtn" class="btn btn-dark" onclick="checkUserId()">등록</button>
-															</div>
-														</div>
-													</li>
-													</form>
-													<form method="post" action="exhibitionReviewWrite.api" id="exhibitionReviewForm">
-													<li>
-														<div class="row commentBox">
-															<div class="col-lg-2 comImg_wrap">
-																<img src="../img/profile.png" alt="">
-															</div>
-															<div class="col-lg-9 comWrite_wrap">
-																<div class="user_wrap">
-																	<div class="user_wrap">
-																		<span>닉네임</span>
-																	</div>
-																</div>
-																<div class="content_wrap">
-																	<div class="row starAndtextcnt">
-																		<div class="col-lg-6 star_wrap">
-																			<fieldset>
-																				<input type="radio" name="srv_star" value="5" id="rate1"><label for="rate1">⭐</label>
-																				<input type="radio" name="srv_star" value="4" id="rate2"><label for="rate2">⭐</label>
-																				<input type="radio" name="srv_star" value="3" id="rate3"><label for="rate3">⭐</label>
-																				<input type="radio" name="srv_star" value="2" id="rate4"><label for="rate4">⭐</label>
-																				<input type="radio" name="srv_star" value="1" id="rate5"><label for="rate5">⭐</label>
-																			</fieldset>
-																		</div>
-																		<div id="textCnt" class="col-lg-6">(0/60)</div>
-																	</div>
-																	<textarea name="srv_content" id="srvContent" cols="30" rows="1" placeholder="댓글을 남겨주세요."></textarea>
-																</div>
-															</div>
-															<div class="col-lg-1 commentBtn_wrap">
-																<button type="button" id="srvSendBtn" class="btn btn-dark" onclick="">수정</button>
+																<button type="button" id="srvSendBtn" class="btn btn-dark" onclick="writeComment()">등록</button>
 															</div>
 														</div>
 													</li>

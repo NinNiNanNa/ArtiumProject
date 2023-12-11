@@ -5,8 +5,10 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -19,13 +21,17 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.edu.springboot.jdbc.ParameterDTO;
+import com.edu.springboot.member.MemberDTO;
 
 import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
 import jakarta.servlet.http.Part;
 import utils.PagingUtil;
 
@@ -36,10 +42,14 @@ public class GalleryController {
 	// DAO호출을 위한 빈 자동주입. 이 인터페이스를 통해 Mapper 호출
 	@Autowired
 	IGalleryService dao;
+
 	
 	// 갤러리 목록
 	@RequestMapping("/galleryList")
-	public String galleryList(Model model, HttpServletRequest req, ParameterDTO parameterDTO) {
+	public String galleryList(Model model, HttpServletRequest req, ParameterDTO parameterDTO, HttpSession session) {
+		
+		// 세션에서 사용자 아이디 가져오기
+		String userId = (String) session.getAttribute("userId");
 
 		// 게시물의 갯수를 카운트(검색어가 있는 경우 DTO객체에 자동으로 저장
 		int totalCount = dao.getTotalCount(parameterDTO);
@@ -79,139 +89,160 @@ public class GalleryController {
 
 	// 글쓰기 페이지 로딩
 		@GetMapping("/galleryWrite")
-		public String reviewWriteGet(Model model) {
+		public String reviewWriteGet(Model model, HttpSession session) {
+			// 세션에서 사용자 아이디 가져오기
+			String userId = (String) session.getAttribute("userId");
+			// 사용자 아이디를 모델에 추가
+			model.addAttribute("userId", userId);
+			
 			return "/gallery/write";
 		}
 	
 	
 	// 글쓰기 처리
-//    @PostMapping("/galleryWrite")
-//    public String galleryWritePost(Model model, HttpServletRequest req, GalleryDTO galleryDTO) { 
-//	  
+    @PostMapping("/galleryWrite")
+    public String galleryWritePost(Model model, HttpServletRequest req, GalleryDTO galleryDTO, HttpSession session) { 
+	  
 //    	System.out.println("galleryDTO="+ galleryDTO);
-//    	
-//    	try {
-//    		// 업로드 디렉토리의 물리적 경로 얻어오기
-//    		String uploadDir = ResourceUtils.getFile("classpath:static/uploads/").toPath().toString();
-//    		System.out.println("물리적경로:"+uploadDir);
-//    		
-//    		Map<String, String> saveFileMaps = new HashMap<>();
-//			Collection<Part> parts = req.getParts();
-//			for(Part part : parts) {
-//				if(!part.getName().equals("art_image1"))
-//					continue;
-//    			
-//    			// 파일명 확인을 위해 해더값 얻어오기
-//    			String partHeader = part.getHeader("content-disposition");
-//	    		System.out.println("partHeader="+ partHeader);
-//	    		// 헤더값에서 파일명 추출을 위해 문자열을 split()하기
-//	    		String[] phArr = partHeader.split("filename=");
-//	    		// 따옴표를 제거한 후 원본 파일명 추출.
-//	    		String originalFileName = phArr[1].trim().replace("\"", "");
-//	    		
-//	    		// 전송된 파일이 있다면 서버에 저장하기
-//	    		if(!originalFileName.isEmpty()) {
-//	    			part.write(uploadDir+ File.separator +originalFileName);
-//	    		}
-//	    		saveFileMaps.put(originalFileName," ");
-//    		}
-//    		// JDBC연동 하지 않았으므로 Model객체에 정보 저장
-//    		model.addAttribute("saveFileMaps", saveFileMaps);
-//    		
-//    		// JDBC연동
-//    		galleryDTO.setArt_image1(saveFileMaps.toString());
-//    		dao.write(galleryDTO);
-//    		
-//    	}catch (Exception e) {
-//			System.out.println("업로드 실패");
-//			e.printStackTrace();
-//		}
-//    		
-//    	// request 내장객체를 통해 폼값 받아오기 
-//    	String title = req.getParameter("ga_title"); 
-//	    String name = req.getParameter("user_id");
-//	    String sdate = req.getParameter("ga_sdate"); 
-//	    String edate = req.getParameter("ga_edate"); 
-//	    String content = req.getParameter("ga_content");
-//	    String image1 = req.getParameter("art_image1"); 
-//	    String title1 = req.getParameter("art_title1");
-//	    String content1 = req.getParameter("art_content1"); 
-//	    String image2 = req.getParameter("art_image2"); 
-//	    String title2 = req.getParameter("art_title2");
-//	    String content2 = req.getParameter("art_content2"); 
-//	    String image3 = req.getParameter("art_image3"); 
-//	    String title3 = req.getParameter("art_title3");
-//	    String content3 = req.getParameter("art_content3"); 
-//	    String image4 = req.getParameter("art_image4"); 
-//	    String title4 = req.getParameter("art_title4");
-//	    String content4 = req.getParameter("art_content4"); 
-//	    String image5 = req.getParameter("art_image5"); 
-//	    String title5 = req.getParameter("art_title5");
-//	    String content5 = req.getParameter("art_content5");
-//	    
-//    	// 폼값 개별적으로 전달 
-//	    int result = dao.write(title, name, sdate, edate, content,
-//	    	    image1, title1, content1, image2, title2, content2, image3, title3, content3,
-//	    	    image4, title4, content4, image5, title5, content5);
-//	  
-//	    System.out.println("글쓰기 결과:"+ result);
-//	  
-//	    //글쓰기 완료되면 목록으로이동 
-//	    return "redirect:/galleryList";
-//	 }
-
-    
-	@PostMapping("/galleryWrite")
-    public String galleryWritePost(Model model, GalleryDTO galleryDTO) {
-        // 파일 업로드 처리
-        try {
-            // 업로드 디렉토리의 물리적 경로 얻어오기
-            String uploadDir = ResourceUtils.getFile("classpath:static/uploads/").toPath().toString();
-            System.out.println("물리적경로:" + uploadDir);
-
-            Map<String, String> saveFileMaps = new HashMap<>();
-            
-            // 각 이미지에 대한 처리 추가
-            MultipartFile[] imageFiles = {
-            		galleryDTO.getArt_image1(), 
-            		galleryDTO.getArt_image2(), 
-            		galleryDTO.getArt_image3(), 
-            		galleryDTO.getArt_image4(), 
-            		galleryDTO.getArt_image5()
-            		};
-            
-            for (MultipartFile imageFile : imageFiles) {
-                // 파일이 비어있지 않으면 저장
-                if (!imageFile.isEmpty()) {
-                    String originalFileName = imageFile.getOriginalFilename();
-                    imageFile.transferTo(new File(uploadDir + File.separator + originalFileName));
-                    saveFileMaps.put(originalFileName, " ");
-                }
-            }
-
-            // JDBC연동 하지 않았으므로 Model객체에 정보 저장
-            model.addAttribute("saveFileMaps", saveFileMaps);
-            
-            // JDBC연동
-    		galleryDTO.setArt_title1(saveFileMaps.toString());
+    	
+    	try {
+    		// 업로드 디렉토리의 물리적 경로 얻어오기
+    		String uploadDir = ResourceUtils.getFile("classpath:static/uploads/").toPath().toString();
+    		System.out.println("물리적경로:"+uploadDir);
+    		
+    		Set<String> saveFileSets = new HashSet<>();
+			Collection<Part> parts = req.getParts();
+			for(Part part : parts) {
+				if(!part.getName().equals("art_image1"))
+					continue;
+    			
+    			// 파일명 확인을 위해 해더값 얻어오기
+    			String partHeader = part.getHeader("content-disposition");
+	    		System.out.println("partHeader="+ partHeader);
+	    		// 헤더값에서 파일명 추출을 위해 문자열을 split()하기
+	    		String[] phArr = partHeader.split("filename=");
+	    		// 따옴표를 제거한 후 원본 파일명 추출.
+	    		String originalFileName = phArr[1].trim().replace("\"", "");
+	    		
+	    		// 전송된 파일이 있다면 서버에 저장하기
+	    		if(!originalFileName.isEmpty()) {
+	    			part.write(uploadDir+ File.separator +originalFileName);
+	    		}
+	    		saveFileSets.add(originalFileName);
+    		}
+    		// JDBC연동 하지 않았으므로 Model객체에 정보 저장
+    		model.addAttribute("saveFileSets", saveFileSets);
+    		
+    		// 세션에서 사용자 아이디 가져오기
+    		String userId = (String) session.getAttribute("userId");
+    		// 사용자 아이디를 GallerDTO에 설정
+    		galleryDTO.setUser_id(userId);
+    		
+    		// JDBC연동
+    		galleryDTO.setArt_title1(saveFileSets.toString());
     		dao.write(galleryDTO);
-
-        } 
-        catch (Exception e) {
-            System.out.println("업로드 실패");
-            e.printStackTrace();
-        }
-
-        //글쓰기 완료되면 목록으로 이동
-        return "redirect:/galleryList";
-    }
+    		
+    	}
+    	catch (Exception e) {
+			System.out.println("업로드 실패");
+			e.printStackTrace();
+		}
+  
+    	// request 내장객체를 통해 폼값 받아오기 
+    	String title = req.getParameter("ga_title"); 
+	    String name = req.getParameter("user_id");
+	    String sdate = req.getParameter("ga_sdate"); 
+	    String edate = req.getParameter("ga_edate"); 
+	    String content = req.getParameter("ga_content");
+	    String image1 = galleryDTO.getArt_image1(); 
+	    String title1 = req.getParameter("art_title1");
+	    String content1 = req.getParameter("art_content1"); 
+	    String image2 = req.getParameter("art_image2"); 
+	    String title2 = req.getParameter("art_title2");
+	    String content2 = req.getParameter("art_content2"); 
+	    String image3 = req.getParameter("art_image3"); 
+	    String title3 = req.getParameter("art_title3");
+	    String content3 = req.getParameter("art_content3"); 
+	    String image4 = req.getParameter("art_image4"); 
+	    String title4 = req.getParameter("art_title4");
+	    String content4 = req.getParameter("art_content4"); 
+	    String image5 = req.getParameter("art_image5"); 
+	    String title5 = req.getParameter("art_title5");
+	    String content5 = req.getParameter("art_content5");
+	    
+    	// 폼값 개별적으로 전달 
+	    int result = dao.write(title, name, sdate, edate, content,
+	    	    image1, title1, content1, image2, title2, content2, image3, title3, content3,
+	    	    image4, title4, content4, image5, title5, content5);
+	  
+	    System.out.println("글쓰기 결과:"+ result);
+	    //글쓰기 완료되면 목록으로이동 
+	    return "redirect:/galleryList";
+	    
+	 }
+    
+//	@PostMapping("/galleryWrite")
+//    public String galleryWritePost(Model model, GalleryDTO galleryDTO, HttpSession session) {
+//        // 파일 업로드 처리
+//        try {
+//            // 업로드 디렉토리의 물리적 경로 얻어오기
+//            String uploadDir = ResourceUtils.getFile("classpath:static/uploads/").toPath().toString();
+//            System.out.println("물리적경로:" + uploadDir);
+//
+//            Map<String, String> saveFileMaps = new HashMap<>();
+//            
+//            // 각 이미지에 대한 처리 추가
+//            MultipartFile[] imageFiles = {
+//            		galleryDTO.getArt_image1(), 
+//            		galleryDTO.getArt_image2(), 
+//            		galleryDTO.getArt_image3(), 
+//            		galleryDTO.getArt_image4(), 
+//            		galleryDTO.getArt_image5()
+//            		};
+//            
+//            for (MultipartFile imageFile : imageFiles) {
+//                // 파일이 비어있지 않으면 저장
+//                if (!imageFile.isEmpty()) {
+//                    String originalFileName = imageFile.getOriginalFilename();
+//                    imageFile.transferTo(new File(uploadDir + File.separator + originalFileName));
+//                    saveFileMaps.put(originalFileName, " ");
+//                }
+//            }
+//
+//            // JDBC연동 하지 않았으므로 Model객체에 정보 저장
+//            model.addAttribute("saveFileMaps", saveFileMaps);
+//            
+//            // 세션에서 사용자 아이디 가져오기
+//            String userId = (String) session.getAttribute("userId");
+//            // 사용자 아이디를 GallerDTO에 설정
+//            galleryDTO.setUser_id(userId);
+//            
+//            // JDBC연동
+//    		galleryDTO.setArt_title1(saveFileMaps.toString());
+//    		dao.write(galleryDTO);
+//
+//        } 
+//        catch (Exception e) {
+//            System.out.println("업로드 실패");
+//            e.printStackTrace();
+//        }
+//
+//        //글쓰기 완료되면 목록으로 이동
+//        return "redirect:/galleryList";
+//    }
 
 	
 
 	 
 	// 갤러리 내용
 	@RequestMapping("/galleryView")
-	public String galleryView(Model model, GalleryDTO galleryDTO) {
+	public String galleryView(Model model, GalleryDTO galleryDTO, HttpSession session) {
+		
+		// 세션에서 사용자 아이디 가져오기
+		String userId = (String) session.getAttribute("userId");
+		// 사용자 아이디를 GallerDTO에 설정
+        galleryDTO.setUser_id(userId);
+		
 		dao.visitCount(galleryDTO.getGa_id());
 		galleryDTO = dao.view(galleryDTO);
 		galleryDTO.setGa_content(galleryDTO.getGa_content().replace("\r\n", "<br/>"));
@@ -219,47 +250,49 @@ public class GalleryController {
 		return "/gallery/view";
 	}
 	
-	// 갤러리 댓글 기능
-	@GetMapping("/galleryView/getComments")
-    public List<GalleryCommentDTO> getComments(@RequestParam(name = "cm_id")int cm_id) {
-		
-		List<GalleryCommentDTO> list = dao.getGalleryComments(cm_id);
+	// 갤러리 댓글 조회 기능
+	@GetMapping("/getComments")
+	public ResponseEntity<List<GalleryCommentDTO>> getComments(@RequestParam(name = "user_id") int userId) {
+        List<GalleryCommentDTO> comments = dao.getGalleryComments(userId);
+        return new ResponseEntity<>(comments, HttpStatus.OK);
+    }
 	
-		return list;
-		}
-	
-//	// 갤러리 댓글 기능
-	/*
-	 * @PostMapping("/galleryView/addComment")
-	 * 
-	 * @ResponseBody public ResponseEntity<String>
-	 * addComment(@RequestParam("commentContent") String commentContent) { try {
-	 * 
-	 * return ResponseEntity.ok("댓글이 성공적으로 등록되었습니다."); } catch (Exception e) { // 오류
-	 * 발생 시 오류 응답 반환 return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).
-	 * body("댓글 등록 중 오류가 발생했습니다."); } }
-	 */
-	
+	// 갤러리 댓글 추가 기능
+	@PostMapping("/addComment")
+    public ResponseEntity<Object> addComment(@RequestBody HashMap<String, Object> params, HttpSession session) {
+        try {
+            // 클라이언트에서 전달한 댓글 데이터 확인
+            GalleryCommentDTO commentContent = (GalleryCommentDTO) params.get("commentContent");
 
-	
+            // 댓글을 DB에 저장하는 로직
+            dao.addGalleryComment(commentContent);
 
-	@PostMapping("/galleryView/addComment")
-	@ResponseBody
-	public ResponseEntity<String> addComment(@RequestParam("commentContent") String commentContent, GalleryCommentDTO dto,Model model) {
-		var userId = dto.getUser_id();
-		try {
-			
-			model.addAttribute(userId);
-			dao.addGalleryComment(dto);
-            return ResponseEntity.ok("댓글이 성공적으로 등록되었습니다.");
-		} 
-		catch (Exception e) {
-			// 오류 발생 시 오류 응답 반환
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("댓글 등록 중 오류가 발생했습니다.");
-		}
-	}
-	
+            // 실제로 저장된 댓글의 ID 등을 가져와 응답에 추가
+            Map<String, Object> response = new HashMap<>();
+            response.put("success", true); 
+            response.put("user_id", 1); // 실제 commentId로 변경
+
+            return new ResponseEntity<>(response, HttpStatus.CREATED); 
+        } 
+        catch (Exception e) {
+            // 오류 발생 시 적절한 응답 반환
+            Map<String, Object> errorResponse = new HashMap<>();
+            errorResponse.put("success", false);
+            errorResponse.put("error", "댓글 등록 중 오류가 발생했습니다.");
+            
+            return new ResponseEntity<>(errorResponse, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
 	     
+	// 수정하기
+	
+	// 삭제하기
+	@PostMapping("/galletyViewDelete")
+	public String galletyViewDelete(HttpServletRequest req) {
+		int result = dao.delete(req.getParameter("ga_id"));
+		System.out.println("글삭제결과: "+ result);
+		return "redirect:/gallery/list";
+	}
 	
 	// 온라인 갤러리
 	@GetMapping("/galleryRoom")

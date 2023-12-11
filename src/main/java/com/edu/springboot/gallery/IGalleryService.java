@@ -7,6 +7,7 @@ import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
 import com.edu.springboot.jdbc.ParameterDTO;
+import com.edu.springboot.member.MemberDTO;
 
 @Mapper
 public interface IGalleryService {
@@ -16,14 +17,7 @@ public interface IGalleryService {
 	
 	// 게시판 목록 (페이징 기능 추가)
 	public ArrayList<GalleryDTO> listPage(ParameterDTO parameterDTO);
-	
-	// 갤러리 댓글 목록 조회
-    public List<GalleryCommentDTO> getGalleryComments(int cm_id);
-
-    // 갤러리 댓글 작성
-    public void addGalleryComment(GalleryCommentDTO galleryCommentDTO);
     
-	
 	// 작성하기(받은 폼값은 이름을 변경한 후 매퍼로 전달)
 	public int write(GalleryDTO galleryDTO);
 	public int write(@Param("_title") String ga_title, 
@@ -61,9 +55,20 @@ public interface IGalleryService {
 	
 	// 북마크 올리기
 	public int bomcount(String ga_id);
-
 	
-
+	////////////////////////////////////////////////////////////
 	
+	// 갤러리 댓글 목록 조회
+    public List<GalleryCommentDTO> getGalleryComments(int cm_id);
+
+    // 갤러리 댓글 작성
+    public int addGalleryComment(GalleryCommentDTO galleryCommentDTO);
+
+//	public int galleryComments(GalleryCommentDTO galleryCommentDTO);
+    
+    // 댓글 수정
+    
+    // 댓글 삭제
+
 
 }

@@ -51,38 +51,69 @@
 			
 			// 서버로 댓글 내용 전송(Ajax를 사용하여 서버에 전송), 성공 시 화면에 댓글 추가
 			 $.ajax({
-        type: "POST",  // 댓글 등록은 POST 방식을 사용
-        url: "/galleryView/addComment",
-        data: { commentContent : commentContent },
-        success: function(response) {
-            // 서버에서 성공적으로 응답을 받으면 댓글 목록 갱신 등 필요한 작업 수행
-            // 새로운 댓글을 화면에 추가
-            var newComment = '<li><div class="row"><!-- ... 댓글 내용 생성 ... --></div></li>';
-            $(".comList_wrap").append(newComment);
-
-            // 댓글 작성 폼 초기화
+        method: 'POST',  // 댓글 등록은 POST 방식을 사용
+        url: "/galleryWriteComment",
+        contentType: "application/json", // 데이터 타입을 JSON형태로 저장
+        data: JSON.stringify({ commentContent: commentContent }),
+        success: function(data) {
+        	if(data.success) {
+        		// 서버에서 성공적으로 응답을 받으면 댓글 목록 갱신 및 새로운 댓글을 화면에 추가
+          	loadComments();
+          	// 댓글 작성 폼 초기화
             $("#commentContent").val('');
-            loadComments();
+        	}
+        	else {
+        		console.error("댓글 등록 실패:", response.error);
+        	} 
         },
         error: function(error) {
             console.error("댓글 등록 실패:", error);
         }
     });
 	});
-});
 	// 댓글 목록 조회 및 초기화 함수 (페이지 로드 시 호출)
-    function loadComments() {
-       $.get("/galleryView/getComments", function(comments) {
-           // 서버에서 받은 댓글 목록으로 화면 초기화
-           var commentsHtml = '';
-           for (var i = 0; i < comments.length; i++) {
-               commentsHtml += '<li><div class="row"><!-- 댓글 내용 생성 --></div></li>';
-           }
-           $(".comList_wrap").html(commentsHtml);
-       });
-   }
-	
+  function loadComments() {
+      $.ajax({  
+          url: '/galleryView/getComments',  // 수정된 URL로 변경
+          method: 'GET',
+          success: function (data) {
+              // 가져온 댓글 데이터를 사용하여 동적으로 댓글을 생성
+              for (var i = 0; i < data.length; i++) {
+                  var comment = data[i];
+                  var commentItem = '<li><div class="row">' +
+                      '<div class="col-lg-2 comImg_wrap">' +
+                          '<img src="../img/' + comment.user_image + '" alt="">' +
+                      '</div>' +
+                      '<div class="col-lg-10 comText_wrap">' +
+                          '<div class="user_wrap">' +
+                              '<span>' + comment.user_name + '</span>' +
+                              '<span>' + comment.cm_postdate + '</span>' +
+                          '</div>' +
+                          '<div class="content_wrap">' +
+                              '<span>' + comment.cm_comment + '</span>' +
+                          '</div>' +
+                      '</div>' +
+                  '</div></li>';
+                  $('.comList_wrap').append(commentItem);
+              }
+          },
+          error: function () {
+              console.error('Failed to load comments.');
+          }
+      });
+  }
 
+  // 페이지 로드 시 댓글 목록 초기화
+  loadComments();
+});
+	
+let deletePost = function(){
+	if(confirm("정말 삭제할까요?")) {
+		frm.action = "/galletyViewDelete";
+		frm.method = "post";
+		frm.submit();
+	}
+}
 </script>
 <body>
 <div id='wrap'>
@@ -117,7 +148,7 @@
                 <div class="gap1440">
                     <div class="container1440">
                     
-                    <form name="writeFrm" action="">
+                    <form name="writeFrm"  action="/galleryViewDelete" method="post">
                     	<input type="hidden" name="ga_id" value="${galleryDTO.ga_id }" />
                     </form>
                         <div class="view_content">
@@ -162,7 +193,7 @@
                         </div>
 
 											<div class="viewBtn_wrap">
-												<a href="" class="btn btn-light" onclick="">삭제하기</a>
+												<a href="" class="btn btn-light" onclick="deletePost(${ galleryDTO.ga_id });">삭제하기</a>
 												<a href="" class="btn btn-secondary" onclick="">수정하기</a>
 												<a href="/galleryList" class="btn btn-dark" >목록보기</a>
 											</div>
@@ -186,14 +217,14 @@
 																<li>
 																	<div class="row">
 																		<div class="col-lg-2 comImg_wrap">
-																			<img src="../img/profile.png" alt="">
+																			<img src="../img/${ userImg }" alt="">
 																		</div>
 																		<div class="col-lg-9 comWrite_wrap">
 																			<div class="user_wrap">
-																				<span>닉네임</span>
+																				<span>${ userName }</span>
 																			</div>
 																			<div class="content_wrap">
-																				<textarea name="" id="commentContent" cols="30" rows="2" placeholder="댓글을 남겨주세요."></textarea>
+																				<textarea name="cm_comment" id="commentContent" cols="30" rows="2" placeholder="댓글을 남겨주세요."></textarea>
 																			</div>
 																		</div>
 																		<div class="col-lg-1 commentBtn_wrap">
@@ -211,7 +242,7 @@
 																				<span>닉네임</span>
 																			</div>
 																			<div class="content_wrap">
-																			<span>${galleryCommentDTO.cm_comment}</span>
+																			<span>${ galleryCommentDTO.cm_comment }</span>
 																			</div>
 																		</div>
 																		<div class="btn_wrap">

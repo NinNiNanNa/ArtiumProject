@@ -69,18 +69,18 @@
 			UPDATE gallery SET ga_visitcount=ga_visitcount+1 WHERE ga_id=#{ga_id}
 		</update>
 		
+	
+		 <!-- 갤러리 댓글 목록 조회 -->
+			<select id="getGalleryComments" resultType="int" parameterType="com.edu.springboot.gallery.GalleryCommentDTO">
+			    SELECT COUNT(*) FROM comments WHERE cm_id = #{cm_id}
+			    <!-- ORDER BY cm_postdate DESC -->
+			</select>
+		
 		 <!-- 갤러리 댓글 등록 -->
     <insert id="addGalleryComment" parameterType="com.edu.springboot.gallery.GalleryCommentDTO">
-        INSERT INTO comments (cm_id, user_id, cm_content, cm_postdate)
-        VALUES (#{cm_id}, #{user_id}, #{cm_content}, sysdate)
+        INSERT INTO comments (cm_id, cm_content, cm_postdate, rv_id, mt_id, ga_id, user_id)
+        VALUES (seq_board_num.nextval, #{cm_content}, sysdate, #{rv_id}, #{mt_id}, #{ga_id) #{user_id})
     </insert>
 
-    <!-- 갤러리 댓글 목록 조회 -->
-		<select id="getGalleryComments" resultType="com.edu.springboot.gallery.GalleryCommentDTO">
-		    SELECT cm_id, user_id, cm_content, cm_postdate, rv_id, mt_id, ga_id
-		    FROM comments
-		    WHERE cm_id = #{cm_id}
-		    ORDER BY cm_postdate DESC
-		</select>
-		
+   
 	</mapper>

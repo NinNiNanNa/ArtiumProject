@@ -10,6 +10,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
@@ -150,7 +151,7 @@ public class ExhibitionController {
 		maps.put("lists", lists);
 		maps.put("pagingImg", pagingImg);
 		
-		System.out.println("맵이다"+maps);
+//		System.out.println("맵이다"+maps);
 		
 		return maps;
 	}
@@ -180,36 +181,46 @@ public class ExhibitionController {
 //		return maps;
 //	}
 	
-	@GetMapping("/restBoardView.do")
-	@ResponseBody
-	public SimpleReviewDTO restSimpleReviewView(Model model, SimpleReviewDTO simpleReviewDTO){
-		
-		simpleReviewDTO = dao.viewSimpleReview(simpleReviewDTO);
-		model.addAttribute("simpleReviewDTO"+ simpleReviewDTO);
-		
-		System.out.println("호잇!"+simpleReviewDTO);
-		return simpleReviewDTO;
-	}
+//	@GetMapping("/restBoardView.do")
+//	@ResponseBody
+//	public SimpleReviewDTO restSimpleReviewView(Model model, SimpleReviewDTO simpleReviewDTO){
+//		
+//		simpleReviewDTO = dao.viewSimpleReview(simpleReviewDTO);
+//		model.addAttribute("simpleReviewDTO"+ simpleReviewDTO);
+//		
+//		System.out.println("호잇!"+simpleReviewDTO);
+//		return simpleReviewDTO;
+//	}
 	
+	
+//	@PostMapping("/exhibitionReviewWrite.api")
+//	public String restSimpleReviewWrite(HttpServletRequest req, SimpleReviewDTO simpleReviewDTO) {
+//		HttpSession session = req.getSession();
+//		String id = (String) session.getAttribute("userId");
+//		simpleReviewDTO.setUser_id(id);
+//		
+//		// Exhibition의 일련번호(ex_seq)를 SimpleReviewDTO에 설정
+//		String exhibitionSeq = req.getParameter("ex_seq");
+//		simpleReviewDTO.setEx_seq(exhibitionSeq);
+//		
+//		int result = dao.writeSimpleReview(simpleReviewDTO);
+////		Map<String, Integer> map = new HashMap<>();
+////		map.put("result", result);
+//		return "redirect:exhibitionView?ex_seq="+exhibitionSeq;
+//	}
 	
 	@PostMapping("/exhibitionReviewWrite.api")
-	public String restSimpleReviewWrite(HttpServletRequest req, SimpleReviewDTO simpleReviewDTO) {
-		HttpSession session = req.getSession();
-		String id = (String) session.getAttribute("userId");
-		simpleReviewDTO.setUser_id(id);
-		
-		// Exhibition의 일련번호(ex_seq)를 SimpleReviewDTO에 설정
-		String exhibitionSeq = req.getParameter("ex_seq");
-		simpleReviewDTO.setEx_seq(exhibitionSeq);
-		
-//	    System.out.println("평점: " + simpleReviewDTO.getSrv_star());
-//	    System.out.println("일련번호: " + simpleReviewDTO.getEx_seq());
-//	    System.out.println("아이디: " + simpleReviewDTO.getUser_id());
-
-		int result = dao.writeSimpleReview(simpleReviewDTO);
-//		Map<String, Integer> map = new HashMap<>();
-//		map.put("result", result);
-		return "redirect:exhibitionView?ex_seq="+exhibitionSeq;
+	@ResponseBody
+	public Map<String, Object> restSimpleReviewWrite(@RequestBody SimpleReviewDTO simpleReviewDTO, HttpSession session) {
+	    Map<String, Object> resultMap = new HashMap<>();
+	    
+	    String userId = (String) session.getAttribute("userId");
+	    simpleReviewDTO.setUser_id(userId);
+	    
+	    int result = dao.writeSimpleReview(simpleReviewDTO);
+	    resultMap.put("result", result);
+	    
+	    return resultMap;
 	}
 	
 }

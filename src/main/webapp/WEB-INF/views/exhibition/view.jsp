@@ -62,36 +62,49 @@ function initMap() {
 window.onload = function(){
 	initMap();
 	// 페이지 로드 시 댓글을 가져와서 출력
-	loadComments();
+	loadComments(1);
 }
 
-//댓글 글자길이 카운트 이벤트
+//댓글 글자 길이 카운트 및 엔터 키 이벤트
 document.addEventListener('DOMContentLoaded', function () {
-	var srvContent = document.getElementById('srvContent');
-	var textCnt = document.getElementById('textCnt');
-	
-	srvContent.addEventListener('keyup', function () {
-	    // 입력된 텍스트의 길이를 가져와서 #textCnt에 표시
-	    textCnt.innerHTML = "(" + srvContent.value.length + " / 60)";
-	
-	    // 만약 입력된 텍스트의 길이가 60을 초과하면
-	    if (srvContent.value.length > 60) {
-	        // 입력된 텍스트를 60자까지만 자르고 다시 #srvContent에 설정
-	        srvContent.value = srvContent.value.substring(0, 60);
-	        // #textCnt에 "(60 / 60)"으로 표시
-	        textCnt.innerHTML = "(60 / 60)";
-	    }
-	});
+    var srvContent = document.getElementById('srvContent');
+    var textCnt = document.getElementById('textCnt');
+
+    srvContent.addEventListener('keydown', function (e) {
+        // 엔터 키가 눌렸을 때
+        if (e.keyCode === 13) {
+        	// 기본 동작인 줄바꿈 막음
+        	e.preventDefault();
+            // 댓글 작성 함수 호출
+            checkUserId();
+        }
+    });
+
+    srvContent.addEventListener('keyup', function () {
+        // 입력된 텍스트의 길이를 가져와서 #textCnt에 표시
+        textCnt.innerHTML = "(" + srvContent.value.length + " / 60)";
+
+        // 만약 입력된 텍스트의 길이가 60을 초과하면
+        if (srvContent.value.length > 60) {
+            // 입력된 텍스트를 60자까지만 자르고 다시 #srvContent에 설정
+            srvContent.value = srvContent.value.substring(0, 60);
+            // #textCnt에 "(60 / 60)"으로 표시
+            textCnt.innerHTML = "(60 / 60)";
+        }
+    });
 });
 
 //페이지 로드 시 댓글을 가져와서 화면에 출력하는 함수
-function loadComments() {
+function loadComments(pageNum) {
     $.ajax({  
 		contentType : "text/html;charset:utf-8", 
 		dataType : "json",
         url: '/exhibitionReviewList.api',  // 댓글을 가져올 URL
         method: 'GET',
+        data: { pageNum: pageNum },  // 페이지 번호를 서버에 전달
         success: function (data) {
+        	// 가져온 댓글 데이터를 사용하여 동적으로 댓글을 생성
+            $('#simpleReviewList').empty(); // 기존 댓글 목록 비우기
             // 가져온 댓글 데이터를 사용하여 동적으로 댓글을 생성
             for (var i = 0; i < data.lists.length; i++) {
                 var review = data.lists[i];
@@ -110,47 +123,50 @@ function loadComments() {
                 }
                 
                 var commentItem = '<li>' +
-                		'<div class="row commentBox">' +
-							'<div class="col-lg-2 comImg_wrap">' +
-								'<img src="../img/'+review.user_image+'" alt="">' +
-							'</div>' +
-							'<div class="col-lg-10 comText_wrap">' +
-								'<div class="user_wrap">' +
-									'<span>'+review.user_name+'</span>' +
-									'<span>'+review.srv_postdate+'</span>' +
-								'</div>' +
-								'<div class="content_wrap">' +
-									starRating +
-									'<p>'+review.srv_content+'</p>' +
-								'</div>' +
-							'</div>' +
-							buttons +
-						'</div>' +
+                	'<div class="row commentBox">' +
+					'<div class="col-lg-2 comImg_wrap">' +
+					'<img src="../img/'+review.user_image+'" alt="">' +
+					'</div>' +
+					'<div class="col-lg-10 comText_wrap">' +
+					'<div class="user_wrap">' +
+					'<span>'+review.user_name+'</span>' +
+					'<span>'+review.srv_postdate+'</span>' +
+					'</div>' +
+					'<div class="content_wrap">' +
+					starRating +
+					'<p>'+review.srv_content+'</p>' +
+					'</div>' +
+					'</div>' +
+					buttons +
+					'</div>' +
 					'</li>';
                 $('#simpleReviewList').append(commentItem);
             }
             $('.srtotalCount').html(data.totalCount);
             $('.paging_wrap').html(data.pagingImg);
             
-            registerPagingLinkClickHandler();
         },
         error: function () {
-            console.error('Failed to load comments.');
+            console.error('댓글 불러오기 실패');
         }
     });
 }
 
-// 페이지 버튼에 대한 클릭 이벤트 핸들러 등록하는 함수
-function registerPagingLinkClickHandler() {
-	$(document).on('click', '.paging_wrap a', function(e) {
-	 e.preventDefault();  // 기본 동작(새로고침) 방지
-	
-	 // 선택한 페이지 번호 가져오기
-	 var pageNum = $(this).data('page-num');
-	
-	 // 페이지 번호에 따라 댓글을 새로 불러옴
-	 loadComments(pageNum);
-	});
+//페이지 링크에 대한 클릭 이벤트 추가
+$(document).on('click', '.paging_wrap a', function (e) {
+    e.preventDefault(); // 기본 동작 방지 (링크 클릭 시 페이지 이동 방지)
+
+    // 클릭한 페이지 번호를 가져오기
+    var pageNum = getPageNumFromUrl($(this).attr('href'));
+
+    // 가져온 페이지 번호를 이용하여 댓글 목록 업데이트
+    loadComments(pageNum);
+});
+
+// 페이지 번호를 추출하는 함수
+function getPageNumFromUrl(url) {
+    var match = url.match(/pageNum=(\d+)/);
+    return match ? parseInt(match[1], 10) : 1;
 }
 
 function checkUserId() {
@@ -161,7 +177,6 @@ function checkUserId() {
 	if (userId === undefined || userId === null || userId.trim() === "") {
 		alert("로그인이 필요한 서비스입니다.");
 	} else {
-		//alert(userId+" 접속 확인");
 		if ( !selectedStar ) {
 			alert("별점을 선택해주세요.");
             return;
@@ -171,8 +186,43 @@ function checkUserId() {
             alert("댓글을 작성해주세요.");
             return;
         }
-		alert("리뷰가 등록되었습니다.");
-		$("#exhibitionReviewForm").submit();
+		
+		var srvStar = parseInt(selectedStar.value);
+		
+		var simpleReviewDTO = {
+            ex_seq: "${exhibitionDTO.ex_seq}",
+            user_id: userId,
+            srv_star: srvStar,
+            srv_content: srvContent
+        };
+		
+		$.ajax({
+		    type: "POST",
+		    contentType: "application/json",
+		    url: "/exhibitionReviewWrite.api",
+		    data: JSON.stringify(simpleReviewDTO), // SimpleReviewDTO를 JSON 문자열로 변환하여 전송
+		    success: function(response) {
+		        // 서버로부터의 응답을 처리
+		        console.log(response);
+
+		        if (response.result === 1) {	// 리뷰 작성 성공
+		            alert("리뷰 작성이 성공하였습니다.");
+		            
+		         	// 성공적인 댓글 제출 후 댓글을 업데이트하기 위해 loadComments() 함수 호출
+                    loadComments();
+		         	
+                 	// 폼 초기화
+                    document.getElementById('srvContent').value = "";
+                    document.querySelector('input[name="srv_star"]:checked').checked = false;
+		        } else {	// 리뷰 작성 실패
+		            alert("리뷰 작성에 실패하였습니다.");
+		        }
+		    },
+		    error: function(error) {
+		        // 에러 처리
+		        console.log(error);
+		    }
+		});
 	}
 }
 
@@ -303,7 +353,6 @@ function checkUserId() {
 				                            <div class="comment_content">
 												<ul class="comList_wrap">
 													<form method="post" action="exhibitionReviewWrite.api" id="exhibitionReviewForm">
-													<input type="hidden" name="ex_seq" value="${exhibitionDTO.ex_seq }" />
 													<li>
 														<div class="row commentBox">
 													<c:choose>
@@ -353,16 +402,15 @@ function checkUserId() {
 													</li>
 													</form>
 													<form method="post" action="exhibitionReviewWrite.api" id="exhibitionReviewForm">
-													<input type="hidden" name="ex_seq" value="${exhibitionDTO.ex_seq }" />
 													<li>
 														<div class="row commentBox">
 															<div class="col-lg-2 comImg_wrap">
-																<img src="../img/${userImg }" alt="">
+																<img src="../img/profile.png" alt="">
 															</div>
 															<div class="col-lg-9 comWrite_wrap">
 																<div class="user_wrap">
 																	<div class="user_wrap">
-																		<span>${userName }</span>
+																		<span>닉네임</span>
 																	</div>
 																</div>
 																<div class="content_wrap">
@@ -382,19 +430,19 @@ function checkUserId() {
 																</div>
 															</div>
 															<div class="col-lg-1 commentBtn_wrap">
-																<button type="button" id="srvSendBtn" class="btn btn-dark" onclick="checkUserId()">수정</button>
+																<button type="button" id="srvSendBtn" class="btn btn-dark" onclick="">수정</button>
 															</div>
 														</div>
 													</li>
 													</form>
 													<div id="simpleReviewList">
-														<!-- 한줄평 목록 출력 -->
+														<!-- 한줄평 목록 출력 부분 -->
 													</div>
 												</ul>
 				
 				                            </div>
 				                            <div class="paging_wrap">
-				                            
+				                            	<!-- 한줄평 페이지네이션 출력 부분 -->
 											</div>
 				                        </div>
 									</div>

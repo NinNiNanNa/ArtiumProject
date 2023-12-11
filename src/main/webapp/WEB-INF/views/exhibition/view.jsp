@@ -101,7 +101,7 @@ function loadComments() {
                 }
                 
                 var buttons = '';
-                var userId = '<%= session.getAttribute("userId") %>'; // 세션에서 현재 로그인한 사용자의 아이디를 가져옴
+                var userId = "${sessionScope.userId}"; // 세션에서 현재 로그인한 사용자의 아이디를 가져옴
                 if (userId && userId === review.user_id) {
                 	buttons = '<div class="btn_wrap">' +
                         '<a href="">수정</a>' +
@@ -112,11 +112,11 @@ function loadComments() {
                 var commentItem = '<li>' +
                 		'<div class="row commentBox">' +
 							'<div class="col-lg-2 comImg_wrap">' +
-								'<img src="../img/profile.png" alt="">' +
+								'<img src="../img/'+review.user_image+'" alt="">' +
 							'</div>' +
 							'<div class="col-lg-10 comText_wrap">' +
 								'<div class="user_wrap">' +
-									'<span>'+review.user_id+'</span>' +
+									'<span>'+review.user_name+'</span>' +
 									'<span>'+review.srv_postdate+'</span>' +
 								'</div>' +
 								'<div class="content_wrap">' +

@@ -13,6 +13,9 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.edu.springboot.member.IMemberService;
+import com.edu.springboot.member.MemberDTO;
+
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 import utils.PagingUtil;
@@ -22,6 +25,9 @@ public class ExhibitionController {
 	
 	@Autowired
 	IExhibitionService dao;
+	
+	@Autowired
+	IMemberService daoMember;
 	
 	// 구글 지도 api
 	private static final String apiKey = "AIzaSyB1oZppzwBJjVNHpCaL49H98eNEUcO3K_k";
@@ -144,7 +150,7 @@ public class ExhibitionController {
 		maps.put("lists", lists);
 		maps.put("pagingImg", pagingImg);
 		
-		System.out.println(maps);
+		System.out.println("맵이다"+maps);
 		
 		return maps;
 	}

@@ -61,11 +61,12 @@
 		resultType="com.edu.springboot.exhibition.SimpleReviewDTO"
 		parameterType="com.edu.springboot.exhibition.ParameterDTO">
 		SELECT * FROM (
-		    SELECT Tb.*, rownum rNum FROM (
-		        SELECT * FROM simple_review ORDER BY srv_id DESC
-		    ) Tb
-		)
-		WHERE rNum BETWEEN #{start} AND #{end}
+            SELECT Tb.*, rownum rNum FROM (
+                SELECT * FROM simple_review ORDER BY srv_id DESC
+            ) Tb
+        ) sr
+        JOIN members m ON sr.user_id = m.user_id
+        WHERE rNum<![CDATA[>=]]>#{start} AND rNum<![CDATA[<=]]>#{end}
 	</select>
 	
 	<select id="viewSimpleReview" resultType="com.edu.springboot.exhibition.SimpleReviewDTO"

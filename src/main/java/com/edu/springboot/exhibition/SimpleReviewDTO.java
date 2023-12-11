@@ -12,4 +12,7 @@ public class SimpleReviewDTO {
 	private String srv_star;
 	private String srv_content;
 	private Date srv_postdate;
+	
+	private String user_name;
+	private String user_image;
 }

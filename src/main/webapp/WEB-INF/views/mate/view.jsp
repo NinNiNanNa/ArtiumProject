@@ -84,21 +84,19 @@
                                     <li>
                                         <div>
                                             <span>메이트 성별</span>
-                                            <i>성별 무관</i>
+                                            <i>${mateDTO.mt_gender}</i>
                                         </div>
                                     </li>
                                     <li>
                                         <div>
                                             <span>메이트 나이</span>
-                                            <i>20대 중반 ~ 20대 후반</i>
+                                            <i>${mateDTO.mt_age}</i>
                                         </div>
                                     </li>
                                 </ul>
                                 <div class="longContent">
                                     <p>
-                                        전시메이트내용전시메이트내용전시메이트내용전시메이트내용<br>
-                                        전시메이트내용전시메이트내용전시메이트내용전시메이트내용<br>
-                                        전시메이트내용전시메이트내용전시메이트내용전시메이트내용<br>
+                                    	${mateDTO.mt_content}
                                     </p>
                                 </div>
                                 <div class="memInfo_wrap">
@@ -106,9 +104,9 @@
                                         <img src="../img/profile.png" alt="">
                                     </div>
                                     <div class="profileInfo_wrap">
-                                        <h4>닉네임</h4>
-                                         <span>작성일<i>2023-11-15</i></span>
-                                         <span>조회수<i>22</i></span>
+                                        <h4>${memberDTO.user_name}</h4>
+                                         <span>작성일<i>${mateDTO.mt_postdate}</i></span>
+                                         <span>조회수<i>${mateDTO.mt_bmcount}</i></span>
                                     </div>
 																		<div class="bmBtn_wrap">
 																			<a href="javascript:;" class="bmBtn">저장하기</a>
@@ -119,8 +117,8 @@
 
 												<div class="viewBtn_wrap">
 													<a href="" class="btn btn-light">삭제하기</a>
-													<a href="" class="btn btn-secondary">수정하기</a>
-													<a href="" class="btn btn-dark">모집등록</a>
+													<a href="/mateEdit" class="btn btn-secondary">수정하기</a>
+													<a href="/mateList" class="btn btn-dark">모집등록</a>
 												</div>
 
                     </div>
@@ -140,7 +138,7 @@
                             <div class="comment_content">
 															<ul class="comList_wrap">
 																<li>
-																	<div class="row">
+																	<div class="row commentBox">
 																		<div class="col-lg-2 comImg_wrap">
 																			<img src="../img/profile.png" alt="">
 																		</div>
@@ -158,7 +156,7 @@
 																	</div>
 																</li>
 																<li>
-																	<div class="row">
+																	<div class="row commentBox">
 																		<div class="col-lg-2 comImg_wrap">
 																			<img src="../img/profile.png" alt="">
 																		</div>
@@ -169,7 +167,7 @@
 																			<div class="content_wrap">
 																				댓글 내용댓글 내용댓글 내용댓글 내용댓글 내용댓글 내용댓글 내용댓글 내용<br>
 																				댓글 내용댓글 내용댓글 내용댓글 내용댓글 내용댓글 내용<br>
-																			</div>
+																			</div> 
 																		</div>
 																		<div class="btn_wrap">
 																			<a href="">수정</a>

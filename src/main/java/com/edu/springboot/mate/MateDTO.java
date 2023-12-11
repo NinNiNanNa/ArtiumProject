@@ -9,7 +9,6 @@ import lombok.Data;
 public class MateDTO {
 	private int mt_id;
 	private String mt_title;
-	private String mt_location;
 	//private String ex_info;
 	private LocalDate mt_viewdate;
 	private Date mt_postdate;
@@ -20,12 +19,15 @@ public class MateDTO {
 	private String mt_age;
 	private String mt_content;
 	
-	//view를 위한 생성
-	@Override
-    public String toString() {
-        return "MateDTO [mt_id=" + mt_id + ", mt_title=" + mt_title + ", mt_location=" + mt_location
-                + ", mt_viewdate=" + mt_viewdate + ", mt_postdate=" + mt_postdate + ", mt_visitcount=" + mt_visitcount + ", mt_bmcount=" + mt_bmcount
-                + ", mt_status=" + mt_status + ", mt_gender=" + mt_gender + ", mt_age=" + mt_age + ", mt_content="
-                + mt_content + "]";
-    }
+	
+
+	/*
+	 * //view를 위한 생성
+	 * 
+	 * @Override public String toString() { return "MateDTO [mt_id=" + mt_id +
+	 * ", mt_title=" + mt_title + ", mt_viewdate=" + mt_viewdate + ", mt_postdate="
+	 * + mt_postdate + ", mt_visitcount=" + mt_visitcount + ", mt_bmcount=" +
+	 * mt_bmcount + ", mt_status=" + mt_status + ", mt_gender=" + mt_gender +
+	 * ", mt_age=" + mt_age + ", mt_content=" + mt_content + "]"; }
+	 */
 }

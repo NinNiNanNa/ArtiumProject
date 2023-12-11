@@ -18,8 +18,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-import com.edu.springboot.jdbc.ParameterDTO;
-
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.Part;
 import utils.MyFunctions;

@@ -61,35 +61,176 @@ function initMap() {
 }
 window.onload = function(){
 	initMap();
+	// 페이지 로드 시 댓글을 가져와서 출력
+	loadComments(1);
 }
 
-//댓글 글자길이 카운트 이벤트
+//댓글 글자 길이 카운트 및 엔터 키 이벤트
 document.addEventListener('DOMContentLoaded', function () {
-	var srvContent = document.getElementById('srvContent');
-	var textCnt = document.getElementById('textCnt');
-	
-	srvContent.addEventListener('keyup', function () {
-	    // 입력된 텍스트의 길이를 가져와서 #textCnt에 표시
-	    textCnt.innerHTML = "(" + srvContent.value.length + " / 60)";
-	
-	    // 만약 입력된 텍스트의 길이가 60을 초과하면
-	    if (srvContent.value.length > 60) {
-	        // 입력된 텍스트를 60자까지만 자르고 다시 #srvContent에 설정
-	        srvContent.value = srvContent.value.substring(0, 60);
-	        // #textCnt에 "(60 / 60)"으로 표시
-	        textCnt.innerHTML = "(60 / 60)";
-	    }
-	});
+    var srvContent = document.getElementById('srvContent');
+    var textCnt = document.getElementById('textCnt');
+
+    srvContent.addEventListener('keydown', function (e) {
+        // 엔터 키가 눌렸을 때
+        if (e.keyCode === 13) {
+        	// 기본 동작인 줄바꿈 막음
+        	e.preventDefault();
+            // 댓글 작성 함수 호출
+            checkUserId();
+        }
+    });
+
+    srvContent.addEventListener('keyup', function () {
+        // 입력된 텍스트의 길이를 가져와서 #textCnt에 표시
+        textCnt.innerHTML = "(" + srvContent.value.length + " / 60)";
+
+        // 만약 입력된 텍스트의 길이가 60을 초과하면
+        if (srvContent.value.length > 60) {
+            // 입력된 텍스트를 60자까지만 자르고 다시 #srvContent에 설정
+            srvContent.value = srvContent.value.substring(0, 60);
+            // #textCnt에 "(60 / 60)"으로 표시
+            textCnt.innerHTML = "(60 / 60)";
+        }
+    });
 });
 
-// ajax 비동기
+//페이지 로드 시 댓글을 가져와서 화면에 출력하는 함수
+function loadComments(pageNum) {
+    $.ajax({  
+		contentType : "text/html;charset:utf-8", 
+		dataType : "json",
+        url: '/exhibitionReviewList.api',  // 댓글을 가져올 URL
+        method: 'GET',
+        data: { pageNum: pageNum },  // 페이지 번호를 서버에 전달
+        success: function (data) {
+        	// 가져온 댓글 데이터를 사용하여 동적으로 댓글을 생성
+            $('#simpleReviewList').empty(); // 기존 댓글 목록 비우기
+            // 가져온 댓글 데이터를 사용하여 동적으로 댓글을 생성
+            for (var i = 0; i < data.lists.length; i++) {
+                var review = data.lists[i];
+                var starRating = '';
+                for (var j = 0; j < review.srv_star; j++) {
+                    starRating += '<span class="star">⭐</span>';
+                }
+                
+                var buttons = '';
+                var userId = "${sessionScope.userId}"; // 세션에서 현재 로그인한 사용자의 아이디를 가져옴
+                if (userId && userId === review.user_id) {
+                	buttons = '<div class="btn_wrap">' +
+                        '<a href="">수정</a>' +
+                        '<a href="">삭제</a>' +
+                        '</div>';
+                }
+                
+                var commentItem = '<li>' +
+                	'<div class="row commentBox">' +
+					'<div class="col-lg-2 comImg_wrap">' +
+					'<img src="../img/'+review.user_image+'" alt="">' +
+					'</div>' +
+					'<div class="col-lg-10 comText_wrap">' +
+					'<div class="user_wrap">' +
+					'<span>'+review.user_name+'</span>' +
+					'<span>'+review.srv_postdate+'</span>' +
+					'</div>' +
+					'<div class="content_wrap">' +
+					starRating +
+					'<p>'+review.srv_content+'</p>' +
+					'</div>' +
+					'</div>' +
+					buttons +
+					'</div>' +
+					'</li>';
+                $('#simpleReviewList').append(commentItem);
+            }
+            $('.srtotalCount').html(data.totalCount);
+            $('.paging_wrap').html(data.pagingImg);
+            
+        },
+        error: function () {
+            console.error('댓글 불러오기 실패');
+        }
+    });
+}
+
+//페이지 링크에 대한 클릭 이벤트 추가
+$(document).on('click', '.paging_wrap a', function (e) {
+    e.preventDefault(); // 기본 동작 방지 (링크 클릭 시 페이지 이동 방지)
+
+    // 클릭한 페이지 번호를 가져오기
+    var pageNum = getPageNumFromUrl($(this).attr('href'));
+
+    // 가져온 페이지 번호를 이용하여 댓글 목록 업데이트
+    loadComments(pageNum);
+});
+
+// 페이지 번호를 추출하는 함수
+function getPageNumFromUrl(url) {
+    var match = url.match(/pageNum=(\d+)/);
+    return match ? parseInt(match[1], 10) : 1;
+}
+
+function checkUserId() {
+	var userId = "${sessionScope.userId}";
+	var selectedStar = document.querySelector('input[name="srv_star"]:checked');
+	var srvContent = document.getElementById('srvContent').value;
+	
+	if (userId === undefined || userId === null || userId.trim() === "") {
+		alert("로그인이 필요한 서비스입니다.");
+	} else {
+		if ( !selectedStar ) {
+			alert("별점을 선택해주세요.");
+            return;
+		} 
+
+		if (!srvContent) {
+            alert("댓글을 작성해주세요.");
+            return;
+        }
+		
+		var srvStar = parseInt(selectedStar.value);
+		
+		var simpleReviewDTO = {
+            ex_seq: "${exhibitionDTO.ex_seq}",
+            user_id: userId,
+            srv_star: srvStar,
+            srv_content: srvContent
+        };
+		
+		$.ajax({
+		    type: "POST",
+		    contentType: "application/json",
+		    url: "/exhibitionReviewWrite.api",
+		    data: JSON.stringify(simpleReviewDTO), // SimpleReviewDTO를 JSON 문자열로 변환하여 전송
+		    success: function(response) {
+		        // 서버로부터의 응답을 처리
+		        console.log(response);
+
+		        if (response.result === 1) {	// 리뷰 작성 성공
+		            alert("리뷰 작성이 성공하였습니다.");
+		            
+		         	// 성공적인 댓글 제출 후 댓글을 업데이트하기 위해 loadComments() 함수 호출
+                    loadComments();
+		         	
+                 	// 폼 초기화
+                    document.getElementById('srvContent').value = "";
+                    document.querySelector('input[name="srv_star"]:checked').checked = false;
+		        } else {	// 리뷰 작성 실패
+		            alert("리뷰 작성에 실패하였습니다.");
+		        }
+		    },
+		    error: function(error) {
+		        // 에러 처리
+		        console.log(error);
+		    }
+		});
+	}
+}
 
 </script>
 </head>
 <body>
 <div id='wrap'>
 
-	<input type="hidden" name="ex_seq" value="${exhibitionDTO.ex_seq }" />
 	<input type="hidden" id="longitude" name="ex_gpsX" value="${exhibitionDTO.ex_gpsX }" />
 	<input type="hidden" id="latitude" name="ex_gpsY" value="${exhibitionDTO.ex_gpsY }" />
 	
@@ -207,64 +348,109 @@ document.addEventListener('DOMContentLoaded', function () {
 									<div id="simple" class="tab-pane fade">
 										<div class="comment_wrap">
 				                            <div class="comment_title">
-				                                <h1><i>1</i>개의 댓글을 확인해보세요!</h1>
+				                                <h1><i class="srtotalCount"></i>개의 댓글을 확인해보세요!</h1>
 				                            </div>
 				                            <div class="comment_content">
 												<ul class="comList_wrap">
+													<form method="post" action="exhibitionReviewWrite.api" id="exhibitionReviewForm">
 													<li>
-														<div class="row">
+														<div class="row commentBox">
+													<c:choose>
+														<c:when test="${not empty userId }">
+															<div class="col-lg-2 comImg_wrap">
+																<img src="../img/${userImg }" alt="">
+															</div>
+															<div class="col-lg-9 comWrite_wrap">
+																<div class="user_wrap">
+																	<div class="user_wrap">
+																		<span>${userName }</span>
+																	</div>
+																</div>
+														</c:when>
+														<c:otherwise>
 															<div class="col-lg-2 comImg_wrap">
 																<img src="../img/profile.png" alt="">
 															</div>
 															<div class="col-lg-9 comWrite_wrap">
 																<div class="user_wrap">
-																	<div class="col-lg-3 star_wrap">
-																		<fieldset>
-																			<input type="radio" name="srv_star" value="5" id="rate1"><label for="rate1">⭐</label>
-																			<input type="radio" name="srv_star" value="4" id="rate2"><label for="rate2">⭐</label>
-																			<input type="radio" name="srv_star" value="3" id="rate3"><label for="rate3">⭐</label>
-																			<input type="radio" name="srv_star" value="2" id="rate4"><label for="rate4">⭐</label>
-																			<input type="radio" name="srv_star" value="1" id="rate5"><label for="rate5">⭐</label>
-																		</fieldset>
+																	<div class="user_wrap">
+																		<span>비회원 <i style="color: red;"> ※ 로그인이 필요합니다</i></span>
 																	</div>
 																</div>
+														</c:otherwise>
+													</c:choose>
 																<div class="content_wrap">
+																	<div class="row starAndtextcnt">
+																		<div class="col-lg-6 star_wrap">
+																			<fieldset>
+																				<input type="radio" name="srv_star" value="5" id="rate1"><label for="rate1">⭐</label>
+																				<input type="radio" name="srv_star" value="4" id="rate2"><label for="rate2">⭐</label>
+																				<input type="radio" name="srv_star" value="3" id="rate3"><label for="rate3">⭐</label>
+																				<input type="radio" name="srv_star" value="2" id="rate4"><label for="rate4">⭐</label>
+																				<input type="radio" name="srv_star" value="1" id="rate5"><label for="rate5">⭐</label>
+																			</fieldset>
+																		</div>
+																		<div id="textCnt" class="col-lg-6">(0/60)</div>
+																	</div>
 																	<textarea name="srv_content" id="srvContent" cols="30" rows="1" placeholder="댓글을 남겨주세요."></textarea>
-																	<div id="textCnt">(0/60)</div>
 																</div>
 															</div>
 															<div class="col-lg-1 commentBtn_wrap">
-																<button type="button" id="srvSendBtn" class="btn btn-dark">등록</button>
+																<button type="button" id="srvSendBtn" class="btn btn-dark" onclick="checkUserId()">등록</button>
 															</div>
 														</div>
 													</li>
+													</form>
+													<form method="post" action="exhibitionReviewWrite.api" id="exhibitionReviewForm">
 													<li>
-														<div class="row">
+														<div class="row commentBox">
 															<div class="col-lg-2 comImg_wrap">
 																<img src="../img/profile.png" alt="">
 															</div>
-															<div class="col-lg-10 comText_wrap">
+															<div class="col-lg-9 comWrite_wrap">
 																<div class="user_wrap">
-																	<span>닉네임</span>
-																	<span>작성일</span>
+																	<div class="user_wrap">
+																		<span>닉네임</span>
+																	</div>
 																</div>
 																<div class="content_wrap">
-																	한줄평 내용
+																	<div class="row starAndtextcnt">
+																		<div class="col-lg-6 star_wrap">
+																			<fieldset>
+																				<input type="radio" name="srv_star" value="5" id="rate1"><label for="rate1">⭐</label>
+																				<input type="radio" name="srv_star" value="4" id="rate2"><label for="rate2">⭐</label>
+																				<input type="radio" name="srv_star" value="3" id="rate3"><label for="rate3">⭐</label>
+																				<input type="radio" name="srv_star" value="2" id="rate4"><label for="rate4">⭐</label>
+																				<input type="radio" name="srv_star" value="1" id="rate5"><label for="rate5">⭐</label>
+																			</fieldset>
+																		</div>
+																		<div id="textCnt" class="col-lg-6">(0/60)</div>
+																	</div>
+																	<textarea name="srv_content" id="srvContent" cols="30" rows="1" placeholder="댓글을 남겨주세요."></textarea>
 																</div>
 															</div>
-															<div class="btn_wrap">
-																<a href="">수정</a>
-																<a href="">삭제</a>
+															<div class="col-lg-1 commentBtn_wrap">
+																<button type="button" id="srvSendBtn" class="btn btn-dark" onclick="">수정</button>
 															</div>
 														</div>
 													</li>
+													</form>
+													<div id="simpleReviewList">
+														<!-- 한줄평 목록 출력 부분 -->
+													</div>
 												</ul>
 				
 				                            </div>
+				                            <div class="paging_wrap">
+				                            	<!-- 한줄평 페이지네이션 출력 부분 -->
+											</div>
 				                        </div>
 									</div>
 								</div>
 
+								<div class="listBtnBox">
+									<a href="/exhibitionCurrentList" class="listBtn">목록보기</a>
+								</div>
 							</div>
 						</div>
 

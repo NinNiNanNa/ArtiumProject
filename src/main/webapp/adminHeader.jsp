@@ -30,7 +30,7 @@
                 </a>
                 <div id="collapseOne" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
                     <div class="bg-white py-2 collapse-inner rounded">
-                        <a class="collapse-item" href="/admin/exList">전시회</a>
+                        <a class="collapse-item" href="/admin/exhibitionCurrentList">전시회</a>
                         <a class="collapse-item" href="/admin/exComments">한줄평</a>
                     </div>
                 </div>

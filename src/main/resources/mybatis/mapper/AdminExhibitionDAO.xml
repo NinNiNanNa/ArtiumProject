@@ -6,7 +6,7 @@
 	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <!-- Controller에서 Mapper의 함수를 호출하기 위한 interface를 namespace속성에 설정한다. -->
-<mapper namespace="com.edu.springboot.exhibition.IExhibitionService">
+<mapper namespace="com.edu.springboot.admin.IAdminExhibitionService">
 	
 	<select id="getTotalCount" resultType="int" parameterType="com.edu.springboot.exhibition.ParameterDTO">
 		SELECT COUNT(*) FROM exhibition WHERE
@@ -57,20 +57,20 @@
 		SELECT COUNT(*) FROM simple_review WHERE ex_seq=#{ex_seq}
 	</select>
 	
-	<!-- 한줄평 목록 -->
 	<select id="listSimpleReview"
 		resultType="com.edu.springboot.exhibition.SimpleReviewDTO"
 		parameterType="com.edu.springboot.exhibition.ParameterDTO">
-		SELECT *
-			FROM (
-			    SELECT sr.srv_id, sr.ex_seq, sr.user_id, sr.srv_star, sr.srv_content, sr.srv_postdate,
-			           m.user_image, m.user_name,
-			           ROW_NUMBER() OVER (ORDER BY sr.srv_postdate DESC) AS rNum
-			    FROM simple_review sr
-			    JOIN members m ON sr.user_id = m.user_id
-			    WHERE ex_seq=#{ex_seq}
-			)
-			WHERE rNum<![CDATA[>=]]>#{start} AND rNum<![CDATA[<=]]>#{end}
+		SELECT * FROM (
+		    SELECT Tb.*, rownum rNum FROM (
+		        SELECT * FROM simple_review ORDER BY srv_id DESC
+		    ) Tb
+		)
+		WHERE rNum BETWEEN #{start} AND #{end}
+	</select>
+	
+	<select id="viewSimpleReview" resultType="com.edu.springboot.exhibition.SimpleReviewDTO"
+		parameterType="com.edu.springboot.exhibition.SimpleReviewDTO">
+		SELECT * FROM simple_review WHERE ex_seq=#{ex_seq}
 	</select>
 	
 	<!-- 한줄평 작성 -->
@@ -78,5 +78,18 @@
 	    INSERT INTO simple_review (srv_id, ex_seq, user_id, srv_star, srv_content, srv_postdate)
 	    VALUES (seq_board_num.nextval, #{ex_seq}, #{user_id}, #{srv_star, jdbcType=INTEGER}, #{srv_content}, sysdate)
 	</insert>
+	
+	<!-- 
+	<select id="listSimpleReview"
+		parameterType="com.edu.springboot.exhibition.ParameterDTO"
+		resultType="com.edu.springboot.exhibition.SimpleReviewDTO">
+		SELECT * FROM (
+		    SELECT Tb.*, rownum rNum FROM (
+		        SELECT * FROM simple_review ORDER BY srv_id DESC
+		    ) Tb
+		)
+		WHERE rNum BETWEEN #{start} AND #{end}
+	</select>
+	 -->
 
 </mapper>

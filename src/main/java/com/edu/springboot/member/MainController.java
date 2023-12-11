@@ -49,12 +49,14 @@ public class MainController {
 		int result = dao.loginCheck(memberDTO);
 		if(result == 1) {
 			MemberDTO member = dao.selectOne(memberDTO);
-//			System.out.println(member);
               
 			session.setAttribute("userId", member.getUser_id());
-			session.setAttribute("userImg", member.getUser_image());
-			session.setAttribute("userEmail", member.getUser_email());
+			session.setAttribute("userPass", member.getUser_pass());
 			session.setAttribute("userName", member.getUser_name());
+			session.setAttribute("userEmail", member.getUser_email());
+			session.setAttribute("userGender", member.getUser_gender());
+			session.setAttribute("userImg", member.getUser_image());
+			session.setAttribute("userType", member.getUser_type());
 		}
 		return result;
 	}
@@ -100,11 +102,36 @@ public class MainController {
         return code;
     }
 	
-	//회원 삭제
+	//회원삭제
 	@RequestMapping(value="/admin/accountUser/delete", method=RequestMethod.POST)
-	public String deleteMember(MemberDTO memberDTO) {
+	public String adminDeleteMember(MemberDTO memberDTO) {
 		dao.delete(memberDTO);
 		return "/admin/accountUser";
+	}
+	
+	//회원정보 수정
+	@RequestMapping(value="/mypage", method=RequestMethod.POST)
+	public String modifyMember(MemberDTO memberDTO, HttpServletRequest req) {
+		HttpSession session = req.getSession();
+		int result = dao.update(memberDTO);
+		if(result==1) {
+			
+			System.out.println("회원정보 수정이 완료되었습니다.");
+			session.setAttribute("userPass", memberDTO.getUser_pass());
+			session.setAttribute("userName", memberDTO.getUser_name());
+			session.setAttribute("userEmail", memberDTO.getUser_email());
+			session.setAttribute("userGender", memberDTO.getUser_gender());
+			session.setAttribute("userImg", memberDTO.getUser_image());
+		}
+		return "mypage";
+	}
+	
+	//회원탈퇴
+	@RequestMapping(value="/mypage/delete", method=RequestMethod.POST)
+	public String deleteMember(MemberDTO memberDTO, HttpSession session) {
+		session.invalidate();
+		dao.delete(memberDTO);
+		return "mypage";
 	}
 	
 	@GetMapping("/mypage")
@@ -120,6 +147,17 @@ public class MainController {
 	 * 
 	 * @GetMapping("/mateWrite") public String mateWrite() { return "/mate/write"; }
 	 */
+	
+	
+	@GetMapping("/idFind")
+	public String idFind() {
+		return "/idFind";
+	}
+	@GetMapping("/pwFind")
+	public String pwFind() {
+		return "/pwFind";
+	}
+	
 	
 
 	@GetMapping("/admin")
@@ -143,6 +181,12 @@ public class MainController {
 	@RequestMapping("/admin/accountUser")
 	public String accountUser(Model model) {
 		model.addAttribute("memberList", dao.select());
+		return "/admin/accountUser";
+	}
+	
+	@RequestMapping(value="/admin/accountUser", method=RequestMethod.POST)
+	public String search(MemberDTO memberDTO, Model model) throws Exception {
+		model.addAttribute("memberList", dao.search(memberDTO));
 		return "/admin/accountUser";
 	}
 	

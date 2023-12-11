@@ -41,6 +41,29 @@
     <link href="../vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
 
 </head>
+<script>
+    var slideIndex = 1;
+    showSlides(slideIndex);
+
+    function plusSlides(n) {
+        showSlides(slideIndex += n);
+    }
+
+    function currentSlide(n) {
+        showSlides(slideIndex = n);
+    }
+
+    function showSlides(n) {
+        var i;
+        var slides = document.getElementsByClassName("slide");
+        if (n > slides.length) { slideIndex = 1 }
+        if (n < 1) { slideIndex = slides.length }
+        for (i = 0; i < slides.length; i++) {
+            slides[i].style.display = "none";
+        }
+        slides[slideIndex - 1].style.display = "block";
+    }
+</script>
 <body>
 <div id='wrap'>
 	
@@ -107,7 +130,17 @@
                                     </li>
                                 </ul>
                                 <div class="slide_wrap">
-                                    ${reviewDTO.rv_image }
+                                    <div id="imageSlider" class="slider-container">
+								        <div id="slides" class="slides">
+								            <c:forEach items="${imagelists }" var="image" varStatus="status">
+								                <div class="slide ${status.index == 0 ? 'active' : ''}">
+								                    <img src="./uploads/${image.rv_image}" alt="Slide ${status.index + 1}">
+								                </div>
+								            </c:forEach>
+								        </div>
+								        <a class="prev" onclick="plusSlides(-1)">&#10094;</a>
+								        <a class="next" onclick="plusSlides(1)">&#10095;</a>
+								    </div>
                                 </div>
                                 <div class="longContent">
                                     <p>
@@ -131,8 +164,8 @@
                         </div>
 
 						<div class="viewBtn_wrap">
-							<a href="" class="btn btn-light">삭제하기</a>
-							<a href="" class="btn btn-secondary">수정하기</a>
+							<a href="/reviewDelete" class="btn btn-light">삭제하기</a>
+							<a href="/reviewEdit" class="btn btn-secondary">수정하기</a>
 							<a href="/reviewList" class="btn btn-dark">목록보기</a>
 						</div>
 

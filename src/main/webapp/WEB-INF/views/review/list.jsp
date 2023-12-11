@@ -99,7 +99,7 @@
 
 									<ul class='list_wrap row'>
 									
-									<c:forEach items="${ lists }" var="row" varStatus="loop">
+									<c:forEach items="${lists }" var="row" varStatus="loop">
 										<li class="col-lg-3">
 											<div class="listInfo">
 												<div class="image_wrap">

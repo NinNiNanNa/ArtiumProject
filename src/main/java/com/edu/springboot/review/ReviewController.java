@@ -55,19 +55,21 @@ public class ReviewController {
 		maps.put("pageNum", pageNum);
 		model.addAttribute("maps", maps);
 		
-		// 데이터베이스에서 인출한 게시물의 목록을 Model객체에 저장한다.
+		// 데이터베이스에서 인출한 게시물의 목록을 생성
 		ArrayList<ReviewDTO> lists = dao.listPage(parameterDTO);
-		model.addAttribute("lists", lists);
-		
+		// 게시물 목록마다 데이터베이스에서 이미지파일의 파일명을 불러와서 저장
 		for (ReviewDTO row : lists) {
 			Pattern pattern = Pattern.compile("([a-zA-Z0-9]+\\.[a-zA-Z0-9]+)");
-	        Matcher matcher = pattern.matcher(row.getRv_image());
-//			System.out.println(matcher);
-	        while (matcher.find()) {
-	            String fileNameWithExtension = matcher.group(1);
-	            System.out.println("파일명과 확장자: " + fileNameWithExtension);
-	        }
+			Matcher matcher = pattern.matcher(row.getRv_image());
+			while (matcher.find()) {
+				String fileNameWithExtension = matcher.group(1);
+				System.out.println("파일명과 확장자: " + fileNameWithExtension);
+				row.setRv_image(fileNameWithExtension);
+			}
 		}
+		// 데이터베이스에서 인출한 게시물의 목록을 Model객체에 저장한다.
+		model.addAttribute("lists", lists);
+		
 
 		// 게시판 하단에 출력한 페이지번호를 String으로 반환받은 후 Model객체에 저장한다.
 		String pagingImg = PagingUtil.pagingImg(totalCount, pageSize, blockPage, pageNum, req.getContextPath()+"/reviewList?list=?");

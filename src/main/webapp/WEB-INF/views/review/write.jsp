@@ -139,62 +139,62 @@ function validateForm(form) {
                                     <div class="col-lg-2 write_wrap">
                                         <select name="rv_stime" class="form-select">
                                             <option value="">관람시작시간</option>
-                                            <option value="00">00시</option>
-                                            <option value="01">01시</option>
-                                            <option value="02">02시</option>
-                                            <option value="03">03시</option>
-                                            <option value="04">04시</option>
-                                            <option value="05">05시</option>
-                                            <option value="06">06시</option>
-                                            <option value="07">07시</option>
-                                            <option value="08">08시</option>
-                                            <option value="09">09시</option>
-                                            <option value="10">10시</option>
-                                            <option value="11">11시</option>
-                                            <option value="12">12시</option>
-                                            <option value="13">13시</option>
-                                            <option value="14">14시</option>
-                                            <option value="15">15시</option>
-                                            <option value="16">16시</option>
-                                            <option value="17">17시</option>
-                                            <option value="18">18시</option>
-                                            <option value="19">19시</option>
-                                            <option value="20">20시</option>
-                                            <option value="21">21시</option>
-                                            <option value="22">22시</option>
-                                            <option value="23">23시</option>
-                                            <option value="24">24시</option>
+                                            <option value="00시">00시</option>
+                                            <option value="01시">01시</option>
+                                            <option value="02시">02시</option>
+                                            <option value="03시">03시</option>
+                                            <option value="04시">04시</option>
+                                            <option value="05시">05시</option>
+                                            <option value="06시">06시</option>
+                                            <option value="07시">07시</option>
+                                            <option value="08시">08시</option>
+                                            <option value="09시">09시</option>
+                                            <option value="10시">10시</option>
+                                            <option value="11시">11시</option>
+                                            <option value="12시">12시</option>
+                                            <option value="13시">13시</option>
+                                            <option value="14시">14시</option>
+                                            <option value="15시">15시</option>
+                                            <option value="16시">16시</option>
+                                            <option value="17시">17시</option>
+                                            <option value="18시">18시</option>
+                                            <option value="19시">19시</option>
+                                            <option value="20시">20시</option>
+                                            <option value="21시">21시</option>
+                                            <option value="22시">22시</option>
+                                            <option value="23시">23시</option>
+                                            <option value="24시">24시</option>
                                         </select>
                                     </div>
                                         ~
                                     <div class="col-lg-2 write_wrap">
                                         <select name="rv_etime" class="form-select">
                                             <option value="">관람종료시간</option>
-                                            <option value="00">00시</option>
-                                            <option value="01">01시</option>
-                                            <option value="02">02시</option>
-                                            <option value="03">03시</option>
-                                            <option value="04">04시</option>
-                                            <option value="05">05시</option>
-                                            <option value="06">06시</option>
-                                            <option value="07">07시</option>
-                                            <option value="08">08시</option>
-                                            <option value="09">09시</option>
-                                            <option value="10">10시</option>
-                                            <option value="11">11시</option>
-                                            <option value="12">12시</option>
-                                            <option value="13">13시</option>
-                                            <option value="14">14시</option>
-                                            <option value="15">15시</option>
-                                            <option value="16">16시</option>
-                                            <option value="17">17시</option>
-                                            <option value="18">18시</option>
-                                            <option value="19">19시</option>
-                                            <option value="20">20시</option>
-                                            <option value="21">21시</option>
-                                            <option value="22">22시</option>
-                                            <option value="23">23시</option>
-                                            <option value="24">24시</option>
+                                            <option value="00시">00시</option>
+                                            <option value="01시">01시</option>
+                                            <option value="02시">02시</option>
+                                            <option value="03시">03시</option>
+                                            <option value="04시">04시</option>
+                                            <option value="05시">05시</option>
+                                            <option value="06시">06시</option>
+                                            <option value="07시">07시</option>
+                                            <option value="08시">08시</option>
+                                            <option value="09시">09시</option>
+                                            <option value="10시">10시</option>
+                                            <option value="11시">11시</option>
+                                            <option value="12시">12시</option>
+                                            <option value="13시">13시</option>
+                                            <option value="14시">14시</option>
+                                            <option value="15시">15시</option>
+                                            <option value="16시">16시</option>
+                                            <option value="17시">17시</option>
+                                            <option value="18시">18시</option>
+                                            <option value="19시">19시</option>
+                                            <option value="20시">20시</option>
+                                            <option value="21시">21시</option>
+                                            <option value="22시">22시</option>
+                                            <option value="23시">23시</option>
+                                            <option value="24시">24시</option>
                                         </select>
                                     </div>
                                 </li>
@@ -205,10 +205,10 @@ function validateForm(form) {
                                     <div class="col-lg-2 write_wrap">
                                         <select name="rv_congestion" class="form-select">
                                             <option value="">혼잡도</option>
-                                            <option value="1">한산</option>
-                                            <option value="2">보통</option>
-                                            <option value="3">북적거림</option>
-                                            <option value="4">매우혼잡</option>
+                                            <option value="한산">한산</option>
+                                            <option value="보통">보통</option>
+                                            <option value="북적거림">북적거림</option>
+                                            <option value="매우혼잡">매우혼잡</option>
                                         </select>
                                     </div>
                                 </li>
@@ -219,10 +219,10 @@ function validateForm(form) {
                                     <div class="col-lg-2 write_wrap">
                                         <select name="rv_transportation" class="form-select">
                                             <option value="">교통수단</option>
-                                            <option value="1">도보</option>
-                                            <option value="2">버스</option>
-                                            <option value="3">지하철</option>
-                                            <option value="4">차</option>
+                                            <option value="도보">도보</option>
+                                            <option value="버스">버스</option>
+                                            <option value="지하철">지하철</option>
+                                            <option value="차">차</option>
                                         </select>
                                     </div>
                                 </li>
@@ -233,10 +233,10 @@ function validateForm(form) {
                                     <div class="col-lg-2 write_wrap">
                                         <select name="rv_revisit" class="form-select">
                                             <option value="">재방문 의향</option>
-                                            <option value="1">모르겠다</option>
-                                            <option value="2">전혀없다</option>
-                                            <option value="3">조금있다</option>
-                                            <option value="4">재방문예정</option>
+                                            <option value="모르겠다">모르겠다</option>
+                                            <option value="전혀없다">전혀없다</option>
+                                            <option value="조금있다">조금있다</option>
+                                            <option value="재방문예정">재방문예정</option>
                                         </select>
                                     </div>
                                 </li>

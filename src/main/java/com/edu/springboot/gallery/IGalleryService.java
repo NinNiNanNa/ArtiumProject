@@ -18,26 +18,27 @@ public interface IGalleryService {
     
 	// 작성하기(받은 폼값은 이름을 변경한 후 매퍼로 전달)
 	public int write(GalleryDTO galleryDTO);
-	public int write(@Param("_title") String ga_title, 
-            @Param("_name") String user_id,
-            @Param("_sdate") String ga_sdate,
-            @Param("_edate") String ga_edate,
-            @Param("_content") String ga_content,
-            @Param("_image1") String art_image1,
-            @Param("_title1") String art_title1,
-            @Param("_content1") String art_content1,
-            @Param("_image2") String art_image2,
-            @Param("_title2") String art_title2,
-            @Param("_content2") String art_content2,
-            @Param("_image3") String art_image3,
-            @Param("_title3") String art_title3,
-            @Param("_content3") String art_content3,
-            @Param("_image4") String art_image4,
-            @Param("_title4") String art_title4,
-            @Param("_content4") String art_content4,
-            @Param("_image5") String art_image5,
-            @Param("_title5") String art_title5,
-            @Param("_content5") String art_content5);
+//	public int write(
+//			@Param("_ga_title") String ga_title, 
+//            @Param("_user_id") String user_id,
+//            @Param("_ga_sdate") String ga_sdate,
+//            @Param("_ga_edate") String ga_edate,
+//            @Param("_ga_content") String ga_content,
+//            @Param("_art_image1") Object art_image1,
+//            @Param("_art_title1") String art_title1,
+//            @Param("_art_content1") String art_content1,
+//            @Param("_art_image2") Object art_image2,
+//            @Param("_art_title2") String art_title2,
+//            @Param("_art_content2") String art_content2,
+//            @Param("_art_image3") Object art_image3,
+//            @Param("_art_title3") String art_title3,
+//            @Param("_art_content3") String art_content3,
+//            @Param("_art_image4") Object art_image4,
+//            @Param("_art_title4") String art_title4,
+//            @Param("_art_content4") String art_content4,
+//            @Param("_art_image5") Object art_image5,
+//            @Param("_art_title5") String art_title5,
+//            @Param("_art_content5") String art_content5);
 	
 	// 내용보기
 	public GalleryDTO view(GalleryDTO galleryDTO);

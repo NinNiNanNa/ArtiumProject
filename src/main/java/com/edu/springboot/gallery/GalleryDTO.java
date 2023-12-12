@@ -19,23 +19,23 @@ public class GalleryDTO {
 	private int ga_visitcount;		// 조회수
 	private int ga_bmcount;			// 북마크수
 //	private MultipartFile art_image1;
-	private String art_image1;
+	private Object art_image1;
 	private String art_title1;
 	private String art_content1;
 //	private MultipartFile art_image2;
-	private String art_image2;
+	private Object art_image2;
 	private String art_title2;
 	private String art_content2;
 //	private MultipartFile art_image3;
-	private String art_image3;
+	private Object art_image3;
 	private String art_title3;
 	private String art_content3;
 //	private MultipartFile art_image4;
-	private String art_image4;
+	private Object art_image4;
 	private String art_title4;
 	private String art_content4;
 //	private MultipartFile art_image5;
-	private String art_image5;
+	private Object art_image5;
 	private String art_title5;
 	private String art_content5;
 	

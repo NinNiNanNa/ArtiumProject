@@ -84,11 +84,11 @@ $(document).ready(function(){
 	                                    </div>
 	                                    <div class="col-lg-2 write_wrap">
 	                                        <select name="galleryType" class="form-select">
-	                                            <option value="">현대미술</option>
-	                                            <option value="">순수미술</option>
-	                                            <option value="">추상화</option>
-	                                            <option value="">인물전</option>
-	                                            <option value="">개인전</option>
+	                                            <option value="현대미술">현대미술</option>
+	                                            <option value="순수미술">순수미술</option>
+	                                            <option value="추상화">추상화</option>
+	                                            <option value="인물전">인물전</option>
+	                                            <option value="개인전">개인전</option>
 	                                        </select>
 	                                    </div>
 	                                </li>

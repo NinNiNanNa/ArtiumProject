@@ -109,6 +109,7 @@ public class GalleryController {
     		
     		Set<String> saveFileSets = new HashSet<>();
 			Collection<Part> parts = req.getParts();
+			int idx = 0;
 			for(Part part : parts) {
 				if(!part.getName().equals("art_image1"))
 					continue;
@@ -126,6 +127,18 @@ public class GalleryController {
 	    			part.write(uploadDir+ File.separator +originalFileName);
 	    		}
 	    		saveFileSets.add(originalFileName);
+	    		
+	    		if (idx++ == 0) {
+	    			galleryDTO.setArt_image1(originalFileName);
+	    		} else if (idx++ == 1) {
+	    			galleryDTO.setArt_image2(originalFileName);
+	    		} else if (idx++ == 2) {
+	    			galleryDTO.setArt_image3(originalFileName);
+	    		} else if (idx++ == 3) {
+	    			galleryDTO.setArt_image4(originalFileName);
+	    		} else if (idx++ == 4) {
+	    			galleryDTO.setArt_image5(originalFileName);
+	    		}
     		}
     		// JDBC연동 하지 않았으므로 Model객체에 정보 저장
     		model.addAttribute("saveFileSets", saveFileSets);
@@ -138,7 +151,6 @@ public class GalleryController {
     		// JDBC연동
     		galleryDTO.setArt_title1(saveFileSets.toString());
     		dao.write(galleryDTO);
-    		
     	}
     	catch (Exception e) {
 			System.out.println("업로드 실패");
@@ -146,33 +158,33 @@ public class GalleryController {
 		}
   
     	// request 내장객체를 통해 폼값 받아오기 
-    	String title = req.getParameter("ga_title"); 
-	    String name = req.getParameter("user_id");
-	    String sdate = req.getParameter("ga_sdate"); 
-	    String edate = req.getParameter("ga_edate"); 
-	    String content = req.getParameter("ga_content");
-	    String image1 = galleryDTO.getArt_image1(); 
-	    String title1 = req.getParameter("art_title1");
-	    String content1 = req.getParameter("art_content1"); 
-	    String image2 = req.getParameter("art_image2"); 
-	    String title2 = req.getParameter("art_title2");
-	    String content2 = req.getParameter("art_content2"); 
-	    String image3 = req.getParameter("art_image3"); 
-	    String title3 = req.getParameter("art_title3");
-	    String content3 = req.getParameter("art_content3"); 
-	    String image4 = req.getParameter("art_image4"); 
-	    String title4 = req.getParameter("art_title4");
-	    String content4 = req.getParameter("art_content4"); 
-	    String image5 = req.getParameter("art_image5"); 
-	    String title5 = req.getParameter("art_title5");
-	    String content5 = req.getParameter("art_content5");
+//    	String title = req.getParameter("ga_title"); 
+//	    String name = req.getParameter("user_id");
+//	    String sdate = req.getParameter("ga_sdate"); 
+//	    String edate = req.getParameter("ga_edate"); 
+//	    String content = req.getParameter("ga_content");
+//	    Object image1 = galleryDTO.getArt_image1(); 
+//	    String title1 = req.getParameter("art_title1");
+//	    String content1 = req.getParameter("art_content1"); 
+//	    Object image2 = req.getParameter("art_image2"); 
+//	    String title2 = req.getParameter("art_title2");
+//	    String content2 = req.getParameter("art_content2"); 
+//	    Object image3 = req.getParameter("art_image3"); 
+//	    String title3 = req.getParameter("art_title3");
+//	    String content3 = req.getParameter("art_content3"); 
+//	    Object image4 = req.getParameter("art_image4"); 
+//	    String title4 = req.getParameter("art_title4");
+//	    String content4 = req.getParameter("art_content4"); 
+//	    Object image5 = req.getParameter("art_image5"); 
+//	    String title5 = req.getParameter("art_title5");
+//	    String content5 = req.getParameter("art_content5");
 	    
     	// 폼값 개별적으로 전달 
-	    int result = dao.write(title, name, sdate, edate, content,
-	    	    image1, title1, content1, image2, title2, content2, image3, title3, content3,
-	    	    image4, title4, content4, image5, title5, content5);
+//	    int result = dao.write(title, name, sdate, edate, content,
+//	    	    image1, title1, content1, image2, title2, content2, image3, title3, content3,
+//	    	    image4, title4, content4, image5, title5, content5);
 	  
-	    System.out.println("글쓰기 결과:"+ result);
+//	    System.out.println("글쓰기 결과:"+ result);
 	    //글쓰기 완료되면 목록으로이동 
 	    return "redirect:/galleryList";
 	    

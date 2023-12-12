@@ -116,14 +116,14 @@ function loadComments(pageNum) {
                 var userId = "${sessionScope.userId}"; // 세션에서 현재 로그인한 사용자의 아이디를 가져옴
                 if (userId && userId === review.user_id) {
                 	buttons = '<div class="btn_wrap">' +
-                        '<a href="" class="srvEditBtn">수정</a>' +
+                        '<a href="" class="srvEditBtn" data-edit-id="'+review.srv_id+'">수정</a>' +
                         '<a href="" class="srvDeleteBtn" data-comment-id="'+review.srv_id+'">삭제</a>' +
                         '</div>';
                 }
                 
-                var commentItem = '<li>' +
-                	'<input type="hid den" id="srvId" name="srv_id" value="'+review.srv_id+'" />' +
-                	'<div class="row commentBox">' +
+                var commentItem = '<li id="srvList'+review.srv_id+'">' +
+                	'<input type="hidden" id="srvId" name="srv_id" value="'+review.srv_id+'" />' +
+                	'<div class="row commentBox commentBox'+review.srv_id+'">' +
 					'<div class="col-lg-2 comImg_wrap">' +
 					'<img src="../img/'+review.user_image+'" alt="">' +
 					'</div>' +
@@ -267,12 +267,17 @@ $(document).on('click', 'a.srvDeleteBtn', function(e) {
 //댓글 수정 버튼 클릭 시 이벤트 처리
 $(document).on('click', 'a.srvEditBtn', function(e) {
     e.preventDefault();
+    
+ 	// data-edit-id 속성 값 가져오기
+    var editId = $(this).data('edit-id');
+ 	console.log("수정폼에들어옴?: "+editId);
+ 	
     // 수정할 댓글의 내용, 별점을 가져옴
     var srvEditStar = $(this).closest('.commentBox').find('.star').length;
     var srvEditContent = $(this).closest('.commentBox').find('.content_wrap p').text();
 
     // 동적으로 수정 폼 생성
-    var editForm = $('<li id="editCommentForm">' +
+    var editForm = $('<li id="editCommentForm" data-edit-id="'+editId+'">' +
         '<div class="row commentBox">' +
         '<div class="col-lg-2 comImg_wrap">' +
         '<img src="../img/${userImg }" alt="">' +
@@ -298,7 +303,7 @@ $(document).on('click', 'a.srvEditBtn', function(e) {
         '</div>' +
         '</div>' +
         '<div class="col-lg-1 commentBtn_wrap">' +
-        '<button type="button" id="srvUpdateBtn" class="btn btn-dark" onclick="">수정</button>' +
+        '<button type="button" id="srvUpdateBtn" class="btn btn-dark" data-edit-id="'+editId+'">수정</button>' +
         '</div>' +
         '</div>' +
         '</li>');
@@ -310,6 +315,24 @@ $(document).on('click', 'a.srvEditBtn', function(e) {
     
  	// 별점 체크
     editForm.find('input[name="srv_star"]').eq(5 - srvEditStar).prop('checked', true);
+ 	
+    // 수정 폼 내의 textarea에 입력된 텍스트의 길이를 초기 설정
+    $('#textEditCnt').html('(' + srvEditContent.length + ' / 60)');
+    
+ 	// 수정 폼 내에서 텍스트 입력 시 글자 수 카운트 및 제한
+    $(document).on('keyup', '#srvEditContent', function() {
+        // 입력된 텍스트의 길이를 가져와서 #textEditCnt에 표시
+        var editedContentLength = $(this).val().length;
+        $('#textEditCnt').html('(' + editedContentLength + ' / 60)');
+
+        // 만약 입력된 텍스트의 길이가 60을 초과하면
+        if (editedContentLength > 60) {
+            // 입력된 텍스트를 60자까지만 자르고 다시 #srvEditContent에 설정
+            $(this).val($(this).val().substring(0, 60));
+            // #textEditCnt에 "(60 / 60)"으로 표시
+            $('#textEditCnt').html('(60 / 60)');
+        }
+    });
 });
 
 //수정한 내용을 업데이트할 시 이벤트 처리
@@ -317,13 +340,13 @@ $(document).on('click', 'button#srvUpdateBtn', function (e) {
     e.preventDefault();
 
     // 수정할 댓글의 내용, 별점을 가져옴
-    var editedId = $('#srvId').val();
+    var editedId = $(this).data('edit-id');
     var editedStar = $('input[name="srv_star"]:checked').val();
     var editedContent = $('#editCommentForm textarea').val();
     
 	console.log("수정값들어오냐?!: "+editedId);    
-	console.log("수정값들어오냐?!: "+editedStar);    
-	console.log("수정값들어오냐?!: "+editedContent);    
+	//console.log("수정값들어오냐?!: "+editedStar);    
+	//console.log("수정값들어오냐?!: "+editedContent);    
     
     // 수정한 내용을 서버에 전송
     $.ajax({
@@ -331,8 +354,6 @@ $(document).on('click', 'button#srvUpdateBtn', function (e) {
         contentType: "application/json",
         url: '/exhibitionReviewEdit.api',
         data: JSON.stringify({
-            //editedStar: srv_star,
-            //editedContent: srv_content
             srv_id: editedId,
             srv_star: editedStar,
             srv_content: editedContent
@@ -340,16 +361,20 @@ $(document).on('click', 'button#srvUpdateBtn', function (e) {
         success: function (response) {
             if (response.result === 1) {
                 // 서버에서 수정이 성공하면 화면에 수정된 내용을 갱신
-                var commentBox = $('input[value="' + editedId + '"]');
+                var commentBox = $('.commentBox'+editedId);
                 commentBox.find('.star').remove();
+                var starHtml = '';
                 for (var i = 0; i < editedStar; i++) {
-                    commentBox.find('.content_wrap').append('<span class="star">⭐</span>');
+                	starHtml += '<span class="star">⭐</span>';
                 }
+                commentBox.find('.content_wrap').prepend(starHtml);
                 commentBox.find('.content_wrap p').text(editedContent);
 
                 // 수정 폼을 제거하고, 기존 댓글을 다시 보이게 함
                 $('#editCommentForm').remove();
-                $('.commentBox').show();
+                commentBox.show();
+                // 수정이 실패한 경우에 대한 처리
+                alert('댓글 수정이 완료되었습니다.');
             } else {
                 // 수정이 실패한 경우에 대한 처리
                 alert('댓글 수정에 실패했습니다.');

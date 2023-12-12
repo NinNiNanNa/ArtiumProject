@@ -91,7 +91,39 @@
 
 
 /* 이미지 슬라이드 구현 후 지울거임!!!!!! */
-.slide_wrap { height: 250px; background-color: gray; }
+/*.slide_wrap { height: 250px; background-color: gray; }*/
+.slider-container {
+	height: 500px; 
+	background-color: lightgray;
+    position: relative;
+}
+.slider-container .slides {
+    display: flex;
+}
+.slider-container .slides img {
+    height: 450px;
+    width: auto;
+    margin: 25px auto;
+}
+.slider-container .prev, .next {
+    position: absolute;
+        top: 50%;
+        width: auto;
+        padding: 16px;
+        margin-top: -22px;
+        color: white;
+        background-color: black;
+        font-weight: bold;
+        font-size: 18px;
+        cursor: pointer;
+        user-select: none;
+}
+.slider-container .prev:hover, .next:hover {
+	background-color: #212529;
+}
+.slider-container .prev { left: 0; }
+.slider-container .next { right: 0; }
+
 
 .longContent { margin-top: 15px; }
 .longContent p { line-height: 150%; margin-bottom: 0; }

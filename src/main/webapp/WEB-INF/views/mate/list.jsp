@@ -149,7 +149,7 @@
 																		<a class="txtSkip" href="javascript:;">전시회 제목</a>
 																		<span>관람예정일 <i>${row.mt_viewdate }</i></span>
 																		<span>성별 <i>${row.mt_gender }</i></span>
-																		<span>나이 <i>${row.mt_age }</i></span>
+																		<span>나이 <i>${row.mt_age1 }</i>~<i>${row.mt_age2 }</i></span>
 																	</div>
 																</div>
 															</div>

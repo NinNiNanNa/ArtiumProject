@@ -20,22 +20,24 @@ public interface IMateService {
 	public MateDTO view(MateDTO mateDTO);
 	
 	// 조회수 올리기 
-	public int visitCount(int mt_visitcount);
+	public int visitCount(String mt_id);
 		
 	// 북마크 올리기 
-	public int bomcount(String mt_bmcount);
+	public int bomcount(String mt_id);
 
 	
 	//작성하기(받은 폼값은 이름을 변경한 후 매퍼로 전달한다) 
-	public int write(
-			@Param("_mt_status") String mt_status,
-			@Param("_mt_title") String mt_title,
-			//추후 변경해야 함   
-			//@Param("_ex_info") String ex_info,
-			@Param("_mt_viewdate") LocalDate mt_viewdate,
-			@Param("_mt_gender") String mt_gender,
-			@Param("_mt_age") String mt_age,
-			@Param("_mt_content") String mt_content);
+//	public int write(
+//			@Param("_mt_status") String mt_status,
+//			@Param("_mt_title") String mt_title,
+//			//추후 변경해야 함   
+//			//@Param("_ex_info") String ex_info,
+//			@Param("_mt_viewdate") LocalDate mt_viewdate,
+//			@Param("_mt_gender") String mt_gender,
+//			@Param("_mt_age1") String mt_age1,
+//			@Param("_mt_age2") String mt_age2,
+//			@Param("_mt_content") String mt_content);
+	public int write(MateDTO mateDTO);
 	
 	
 	//수정하기 

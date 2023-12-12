@@ -128,7 +128,7 @@ $(document).ready(function(){
                                         <h2>메이트 나이</h2>
                                     </div>
                                     <div class="col-lg-2 write_wrap">
-                                        <select name="mt_age" class="form-select">
+                                        <select name="mt_age1" class="form-select">
                                             <option value="연령무관">연령무관</option>
                                             <option value="20대 초반">20대 초반</option>
                                             <option value="20대 중반">20대 중반</option>
@@ -143,7 +143,7 @@ $(document).ready(function(){
                                     </div>
                                         ~
                                     <div class="col-lg-2 write_wrap">
-                                        <select name="mt_age" class="form-select">
+                                        <select name="mt_age2" class="form-select">
                                             <option value="연령무관">연령무관</option>
                                             <option value="20대 초반">20대 초반</option>
                                             <option value="20대 중반">20대 중반</option>

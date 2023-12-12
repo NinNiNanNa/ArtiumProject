@@ -1,7 +1,6 @@
 package com.edu.springboot.mate;
 
 import java.time.LocalDate;
-import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
@@ -11,10 +10,9 @@ import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-
-import com.edu.springboot.review.ReviewDTO;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
@@ -26,11 +24,11 @@ public class MateController {
     @Autowired
     IMateService dao;
 
-    @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
-    private LocalDate mt_viewdate;
-
-    @Autowired
-    private IMateService mateService;
+//    @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
+//    private LocalDate mt_viewdate;
+//
+//    @Autowired
+//    private IMateService mateService;
     
     //작성하기 
     @GetMapping("/mateWrite")
@@ -49,28 +47,41 @@ public class MateController {
     @PostMapping("/mateWrite")
     public String mateWritePost(Model model, HttpServletRequest req, MateDTO mateDTO) {
         System.out.println("helloWorld");
+        
         try {
             // request 내장객체를 통해 폼값을 받아온다.
-            String mt_status = req.getParameter("mt_status");
-            String mt_title = req.getParameter("mt_title");
+//            String mt_status = req.getParameter("mt_status");
+//            String mt_title = req.getParameter("mt_title");
+//            
+//            LocalDate mt_viewdate = null;
+//            String mtViewDateParameter = req.getParameter("mt_viewdate");
+//            if (mtViewDateParameter != null && !mtViewDateParameter.isEmpty()) {
+//                try {
+//                    mt_viewdate = LocalDate.parse(mtViewDateParameter);
+//                } catch (DateTimeParseException e) {
+//                    System.out.println("날짜 형식이 잘못되었습니다. 날짜를 확인해주세요.");
+//                    e.printStackTrace();
+//                    return "redirect:/mateList";
+//                }
+//            }
+
+//            String mt_gender = req.getParameter("mt_gender");
+//            String mt_age1 = req.getParameter("mt_age1");
+//            String mt_age2 = req.getParameter("mt_age2");
+//            String mt_content = req.getParameter("mt_content");
             
-            LocalDate mt_viewdate = null;
-            String mtViewDateParameter = req.getParameter("mt_viewdate");
-            if (mtViewDateParameter != null && !mtViewDateParameter.isEmpty()) {
-                try {
-                    mt_viewdate = LocalDate.parse(mtViewDateParameter);
-                } catch (DateTimeParseException e) {
-                    System.out.println("날짜 형식이 잘못되었습니다. 날짜를 확인해주세요.");
-                    e.printStackTrace();
-                    return "redirect:/mateList";
-                }
-            }
+            HttpSession session = req.getSession();
+    		String userId = (String) session.getAttribute("userId");
+    		String userImg = (String) session.getAttribute("userImg");
+    		String userName = (String) session.getAttribute("userName");
+            mateDTO.setUser_id(userId);
+            mateDTO.setUser_image(userImg);
+            mateDTO.setUser_name(userName);
+            System.out.println("userId: "+userId);
+            
+            System.out.println("메이트작성결과 유저들어오냐? : "+mateDTO);
 
-            String mt_gender = req.getParameter("mt_gender");
-            String mt_age = req.getParameter("mt_age");
-            String mt_content = req.getParameter("mt_content");
-
-            int result = dao.write(mt_status, mt_title, mt_viewdate, mt_gender, mt_age, mt_content);
+            int result = dao.write(mateDTO);
             System.out.println("글쓰기결과:" + result);
 
             // 글쓰기가 완료되면 목록으로 이동한다.
@@ -84,7 +95,8 @@ public class MateController {
     
     //리스트 출력 
     @RequestMapping("/mateList")
-    public String mateList(Model model, HttpServletRequest req, ParameterDTO parameterDTO) {
+    public String mateList(Model model, HttpServletRequest req, ParameterDTO parameterDTO, MateDTO mateDTO) {
+        
         int totalCount = dao.getTotalCount(parameterDTO);
         int pageSize = 12;
         int blockPage = 12;
@@ -108,7 +120,7 @@ public class MateController {
                 req.getContextPath() + "/mateList?");
         model.addAttribute("pagingImg", pagingImg);
 
-        return "mate/list";
+        return "/mate/list";
     }
     
     //상세보기 
@@ -125,16 +137,20 @@ public class MateController {
     
     //수정하기
     @GetMapping("/mateEdit")
-	public String boardEditGet(Model model, MateDTO mateDTO) {
+	public String mateEditGet(Model model, MateDTO mateDTO) {
     	mateDTO = dao.view(mateDTO);
 		model.addAttribute("mateDTO", mateDTO);
+		System.out.println("수정GET: "+mateDTO);
 		return "mate/edit";       
 	}	
 	@PostMapping("/mateEdit")
-	public String boardEditPost(MateDTO mateDTO) {
+	public String mateEditPost(@ModelAttribute("mateDTO") MateDTO mateDTO) {
+		System.out.println("수정 전 mateDTO: " + mateDTO);
 		int result = dao.edit(mateDTO);
+		System.out.println("수정된 글의Mt_id: " + mateDTO.getMt_id());
 		System.out.println("글수정결과:"+ result);
-		return "redirect:view.do?idx="+ mateDTO.getMt_id();       
+		return "redirect:/mateView?Mt_id="+ mateDTO.getMt_id();   
+		//return "redirect:/mateList";
 	}
     
     

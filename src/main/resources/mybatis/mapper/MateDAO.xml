@@ -25,8 +25,21 @@
 	<!-- 리스트 출력 -->
 	<select id="listPage" 
 		resultType="com.edu.springboot.mate.MateDTO"
-		parameterType="com.edu.springboot.mate.ParameterDTO">			
+		parameterType="com.edu.springboot.mate.ParameterDTO">
 		SELECT * FROM (
+		    SELECT mt.MT_ID, mt.MT_TITLE, mt.USER_ID, mt.MT_STATUS, mt.MT_VIEWDATE, mt.MT_GENDER, mt.MT_AGE1, mt.MT_AGE2, mt.MT_CONTENT, mt.MT_POSTDATE,
+		           m.USER_IMAGE, m.USER_NAME,
+		           ROW_NUMBER() OVER (ORDER BY mt.MT_POSTDATE DESC) AS rNum
+		    FROM mate mt
+		    JOIN members m ON mt.user_id = m.user_id
+		    <if test="searchKeyword!=null 
+		        	and !searchKeyword.equals('')"> 
+				WHERE ${searchField} LIKE '%'||#{searchKeyword}||'%'
+				</if>
+		    )
+	    WHERE rNum<![CDATA[>=]]>#{start} AND rNum<![CDATA[<=]]>#{end}
+					
+		<!-- SELECT * FROM (
 		    SELECT Tb.*, rownum rNum FROM (
 		        SELECT * FROM mate 
 		        <if test="searchKeyword!=null 
@@ -37,29 +50,13 @@
 		        ORDER BY mt_id DESC
 		    ) Tb  
 		) 
-		WHERE rNum<![CDATA[>=]]>#{start} AND rNum<![CDATA[<=]]>#{end}		
+		WHERE rNum<![CDATA[>=]]>#{start} AND rNum<![CDATA[<=]]>#{end}	 -->	
 	</select>
 	
 	<!-- 작성하기 -->
 	<insert id="write">
-    INSERT INTO mate (
-        mt_id,  
-        mt_status, 
-        mt_title, 
-        mt_viewdate, 
-        mt_gender, 
-        mt_age, 
-        mt_content
-    )
-    VALUES(
-        seq_board_num.nextval, 
-        #{_mt_status}, 
-        #{_mt_title}, 
-        #{_mt_viewdate}, 
-        #{_mt_gender}, 
-        #{_mt_age}, 
-        #{_mt_content}
-    ) 
+    INSERT INTO mate (mt_id, mt_status, mt_title, mt_viewdate, mt_gender, mt_age1, mt_age2, mt_content, mt_postdate, user_id)
+    VALUES(seq_board_num.nextval, #{mt_status}, #{mt_title}, #{mt_viewdate}, #{mt_gender}, #{mt_age1}, #{mt_age2}, #{mt_content}, sysdate, #{user_id}) 
 	</insert>
 
 <select id="view" resultType="com.edu.springboot.mate.MateDTO" 
@@ -72,13 +69,14 @@
 </update>
 		
 <!-- 수정하기 -->		
-<update id="Edit" parameterType="com.edu.springboot.mate.MateDTO">
+<update id="edit" parameterType="com.edu.springboot.mate.MateDTO">
 		UPDATE mate SET 
 		mt_status=#{mt_status}, 
         mt_title=#{mt_title}, 
         mt_viewdate=#{mt_viewdate}, 
         mt_gender=#{mt_gender}, 
-        mt_age=#{mt_age}, 
+        mt_age1=#{mt_age1}, 
+        mt_age2=#{mt_age2},
         mt_content=#{mt_content}
 		WHERE mt_id=#{mt_id}
 </update>

@@ -126,7 +126,7 @@ function goToEditPage(mt_id) {
 										</li>
 										<li>
 											<div>
-												<span>메이트 나이</span> <i>${mateDTO.mt_age}</i>
+												<span>메이트 나이</span> <i>${mateDTO.mt_age1}</i>~<i>${mateDTO.mt_age2}</i>
 											</div>
 										</li>
 									</ul>
@@ -135,7 +135,7 @@ function goToEditPage(mt_id) {
 									</div>
 									<div class="memInfo_wrap">
 										<div class="profileImg_wrap">
-											<img src="../img/profile.png" alt="">
+											<img src="../img/${memberDTO.user_image}" alt="">
 										</div>
 										<div class="profileInfo_wrap">
 											<h4>${memberDTO.user_name}</h4>

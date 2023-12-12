@@ -11,6 +11,8 @@ public class ParameterDTO {
 	private int start;		 
 	private int end;
 	
+	private String mt_id;
+	
 }
 
 

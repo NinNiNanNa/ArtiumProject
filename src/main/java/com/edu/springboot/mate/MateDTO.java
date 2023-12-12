@@ -7,7 +7,7 @@ import lombok.Data;
 
 @Data
 public class MateDTO {
-	private int mt_id;
+	private String mt_id;
 	private String mt_title;
 	//private String ex_info;
 	private LocalDate mt_viewdate;
@@ -16,8 +16,13 @@ public class MateDTO {
 	private int mt_bmcount; 
 	private String mt_status;
 	private String mt_gender;
-	private String mt_age;
+	private String mt_age1;
+	private String mt_age2;
 	private String mt_content;
+	
+	private String user_id;
+	private String user_name;
+	private String user_image;
 	
 	
 

@@ -44,7 +44,7 @@
         $(document).ready(function(){
             // 등록버튼 클릭 시 폼 제출
             $("#registBtn").click(function(){
-                $("form").submit();
+                $("#mtForm").submit();
             });
 
             // 취소버튼 클릭시 이전 페이지로 이동
@@ -72,7 +72,8 @@
                 <div class="gap1440">
                     <div class="container1440">
 
-                        <form action="./mateWrite" id="mtForm" name="mtForm" method="post" >
+                        <form action="./mateEdit" id="mtForm" name="mtForm" method="post" >
+                        <input type="hid den" id="mtId" name="mt_id" value="${mateDTO.mt_id }" />
                         <div class="writeForm_wrap">
                             <ul>
                                 <li class="row">
@@ -129,22 +130,23 @@
                                         <h2>메이트 나이</h2>
                                     </div>
                                     <div class="col-lg-2 write_wrap">
-                                        <select name="mt_age" class="form-select" value="${mateDTO.mt_age}">
-                                            <option value="연령무관">연령무관</option>
-                                            <option value="20대 초반">20대 초반</option>
-                                            <option value="20대 중반">20대 중반</option>
-                                            <option value="20대 후반">20대 후반</option>
-                                            <option value="30대 초반">30대 초반</option>
-                                            <option value="30대 중반">30대 중반</option>
-                                            <option value="30대 후반">30대 후반</option>
-                                            <option value="40대 초반">40대 초반</option>
-                                            <option value="40대 중반">40대 중반</option>
-                                            <option value="40대 후반">40대 후반</option>
+                                        <select name="mt_age1" class="form-select">
+                                        	<option value="연령무관" ${mateDTO.mt_age1 == '연령무관' ? 'selected' : ''}>연령무관</option>
+                                            <option value="20대 초반" ${mateDTO.mt_age1 == '연령무관' ? 'selected' : ''}>연령무관</option>
+                                            <option value="20대 중반" ${mateDTO.mt_age1 == '연령무관' ? 'selected' : ''}>연령무관</option>
+                                            <option value="20대 후반" ${mateDTO.mt_age1 == '연령무관' ? 'selected' : ''}>연령무관</option>
+                                            <option value="30대 초반" ${mateDTO.mt_age1 == '연령무관' ? 'selected' : ''}>연령무관</option>
+                                            <option value="30대 중반" ${mateDTO.mt_age1 == '연령무관' ? 'selected' : ''}>연령무관</option>
+                                            <option value="30대 후반" ${mateDTO.mt_age1 == '연령무관' ? 'selected' : ''}>연령무관</option>
+                                            <option value="20대 초반" ${mateDTO.mt_age1 == '연령무관' ? 'selected' : ''}>연령무관</option>
+                                            <option value="20대 중반" ${mateDTO.mt_age1 == '연령무관' ? 'selected' : ''}>연령무관</option>
+                                            <option value="20대 후반" ${mateDTO.mt_age1 == '연령무관' ? 'selected' : ''}>연령무관</option>
                                         </select>
                                     </div>
                                         ~
                                     <div class="col-lg-2 write_wrap">
-                                        <select name="mt_age" class="form-select" value="${mateDTO.mt_age}">
+                                        <select name="mt_age2" class="form-select">
+                                        	<option value="연령무관" ${mateDTO.mt_age1 == '연령무관' ? 'selected' : ''}>연령무관</option>
                                             <option value="연령무관">연령무관</option>
                                             <option value="20대 초반">20대 초반</option>
                                             <option value="20대 중반">20대 중반</option>

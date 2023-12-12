@@ -167,6 +167,7 @@
 /* 한줄평 별점 */
 .star_wrap { padding: 0; }
 #textCnt { padding: 0; line-height: 21px; text-align: right; }
+#textEditCnt { padding: 0; line-height: 21px; text-align: right; }
 .star_wrap fieldset { display: inline-block; direction: rtl; border: 0; }
 .star_wrap input[type=radio] { display: none; }
 .star_wrap input[type=radio]:checked ~ label { text-shadow: 0 0 0 rgb(252, 252, 3); }

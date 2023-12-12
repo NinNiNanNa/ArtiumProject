@@ -152,63 +152,10 @@ public class ExhibitionController {
 		maps.put("lists", lists);
 		maps.put("pagingImg", pagingImg);
 		
-//		System.out.println("맵이다"+maps);
+//		System.out.println("한줄평 목록: "+maps);
 		
 		return maps;
 	}
-	
-	
-//	@RequestMapping("/exhibitionReviewList.api")
-//	@ResponseBody
-//	public Map<String, Object> simpleReviewList(HttpServletRequest req, ParameterDTO parameterDTO) {
-//		// 게시물의 갯수를 카운트(검색어가 있는 경우 DTO객체에 자동으로 저장된다.)
-//		int totalCount = dao.getSimpleReviewCount(parameterDTO);
-//		int pageSize = 10;
-//		int pageNum = parameterDTO.getPageNum() == null ? 1 : Integer.parseInt(parameterDTO.getPageNum());
-//		int start = (pageNum - 1) * pageSize + 1;
-//		int end = pageNum * pageSize;
-//		parameterDTO.setStart(start);
-//		parameterDTO.setEnd(end);
-//		
-//		ArrayList<SimpleReviewDTO> lists = dao.listSimpleReview(parameterDTO);
-//		
-//		// View 에서 게시물의 가상번호 계산을 위한 값들을 Map에 저장한다.
-//		Map<String, Object> maps = new HashMap<String, Object>();
-//		maps.put("totalCount", totalCount);
-//		maps.put("pageSize", pageSize);
-//		maps.put("pageNum", pageNum);
-//		maps.put("lists", lists);
-//		
-//		return maps;
-//	}
-	
-//	@GetMapping("/restBoardView.do")
-//	@ResponseBody
-//	public SimpleReviewDTO restSimpleReviewView(Model model, SimpleReviewDTO simpleReviewDTO){
-//		
-//		simpleReviewDTO = dao.viewSimpleReview(simpleReviewDTO);
-//		model.addAttribute("simpleReviewDTO"+ simpleReviewDTO);
-//		
-//		System.out.println("호잇!"+simpleReviewDTO);
-//		return simpleReviewDTO;
-//	}
-	
-	
-//	@PostMapping("/exhibitionReviewWrite.api")
-//	public String restSimpleReviewWrite(HttpServletRequest req, SimpleReviewDTO simpleReviewDTO) {
-//		HttpSession session = req.getSession();
-//		String id = (String) session.getAttribute("userId");
-//		simpleReviewDTO.setUser_id(id);
-//		
-//		// Exhibition의 일련번호(ex_seq)를 SimpleReviewDTO에 설정
-//		String exhibitionSeq = req.getParameter("ex_seq");
-//		simpleReviewDTO.setEx_seq(exhibitionSeq);
-//		
-//		int result = dao.writeSimpleReview(simpleReviewDTO);
-////		Map<String, Integer> map = new HashMap<>();
-////		map.put("result", result);
-//		return "redirect:exhibitionView?ex_seq="+exhibitionSeq;
-//	}
 	
 	// 한줄평 작성
 	@PostMapping("/exhibitionReviewWrite.api")
@@ -233,12 +180,11 @@ public class ExhibitionController {
 	    
 	    String userId = (String) session.getAttribute("userId");
 	    simpleReviewDTO.setUser_id(userId);
-	    System.out.println("아이디도 들어옴?"+simpleReviewDTO);
 	    
 	    int result = dao.editSimpleReview(simpleReviewDTO);
 	    resultMap.put("result", result);
 	    
-	    System.out.println(resultMap);
+//	    System.out.println(resultMap);
 	    
 	    return resultMap;
 	}
@@ -250,12 +196,8 @@ public class ExhibitionController {
 	    Map<String, Object> maps = new HashMap<>();
 	    
 	    int result = dao.deleteSimpleReview(req.getParameter("srv_id"));
-	    try {
-		    maps.put("result", 1);
-		} catch (Exception e) {
-			maps.put("result", 0);
-			maps.put("error", e.getMessage());
-		}
+	    maps.put("result", result);
+//	    System.out.println("한줄평삭제: "+ maps);
 	    
 	    return maps;
 	}

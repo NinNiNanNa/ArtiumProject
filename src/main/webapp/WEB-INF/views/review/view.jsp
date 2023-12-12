@@ -42,27 +42,45 @@
 
 </head>
 <script>
-    var slideIndex = 1;
-    showSlides(slideIndex);
+	var slideIndex = 0;
+	function plusSlides(n) {
+	    showSlides(slideIndex += n);
+	}
+	function showSlides(n) {
+	    var i;
+	    var slides = document.querySelector(".slides");
+	    if (!slides) return;
 
-    function plusSlides(n) {
-        showSlides(slideIndex += n);
-    }
+	    var slideList = slides.getElementsByTagName("img");
 
-    function currentSlide(n) {
-        showSlides(slideIndex = n);
-    }
-
-    function showSlides(n) {
-        var i;
-        var slides = document.getElementsByClassName("slide");
-        if (n > slides.length) { slideIndex = 1 }
-        if (n < 1) { slideIndex = slides.length }
-        for (i = 0; i < slides.length; i++) {
-            slides[i].style.display = "none";
-        }
-        slides[slideIndex - 1].style.display = "block";
-    }
+	    if (n >= slideList.length) {
+	        slideIndex = 0;
+	    }
+	    if (n < 0) {
+	        slideIndex = slideList.length - 1;
+	    }
+	    for (i = 0; i < slideList.length; i++) {
+	        slideList[i].style.display = "none";
+	    }
+	    slideList[slideIndex].style.display = "block";
+	}
+	setInterval(() => {
+	    plusSlides(1);
+	}, 5000);
+	window.onload = function() {
+	    showSlides(0);
+	};
+	
+	
+	function deletePost(rv_id){
+	    var confirmed = confirm("정말로 삭제하겠습니까?"); 
+	    if (confirmed) {
+	        var form = document.reviewFrm;      
+	        form.method = "post";  
+	        form.action = "reviewDelete";
+	        form.submit();  
+	    }
+	}
 </script>
 <body>
 <div id='wrap'>
@@ -95,6 +113,9 @@
                     <div class="container1440">
 
                         <div class="view_content">
+                        	<form name="reviewFrm">
+								<input type="hidden" name="rv_id" value="${reviewDTO.rv_id }" />
+							</form>
                             <div>
                                 <h2>${reviewDTO.rv_title }</h2>
                                 <ul>
@@ -129,19 +150,15 @@
                                         </div>
                                     </li>
                                 </ul>
-                                <div class="slide_wrap">
-                                    <div id="imageSlider" class="slider-container">
-								        <div id="slides" class="slides">
-								            <c:forEach items="${imagelists }" var="image" varStatus="status">
-								                <div class="slide ${status.index == 0 ? 'active' : ''}">
-								                    <img src="./uploads/${image.rv_image}" alt="Slide ${status.index + 1}">
-								                </div>
-								            </c:forEach>
-								        </div>
-								        <a class="prev" onclick="plusSlides(-1)">&#10094;</a>
-								        <a class="next" onclick="plusSlides(1)">&#10095;</a>
+                                <div class="slider-container">
+								    <div class="slides">
+								        <c:forEach items="${imageFileList}" var="image" varStatus="status">
+								            <img src="./uploads/${image}" alt="Slide ${status.index + 1}">
+								        </c:forEach>
 								    </div>
-                                </div>
+								    <a class="prev" onclick="plusSlides(-1)">&#10094;</a>
+									<a class="next" onclick="plusSlides(1)">&#10095;</a>
+								</div>
                                 <div class="longContent">
                                     <p>
                                         ${reviewDTO.rv_content }
@@ -164,8 +181,8 @@
                         </div>
 
 						<div class="viewBtn_wrap">
-							<a href="/reviewDelete" class="btn btn-light">삭제하기</a>
-							<a href="/reviewEdit" class="btn btn-secondary">수정하기</a>
+							<a href="./reviewEdit?rv_id=${ param.rv_id };" class="btn btn-secondary">수정하기</a>
+							<a href="javascript:void(0);" onclick="deletePost(${ param.rv_id });" class="btn btn-light">삭제하기</a>
 							<a href="/reviewList" class="btn btn-dark">목록보기</a>
 						</div>
 

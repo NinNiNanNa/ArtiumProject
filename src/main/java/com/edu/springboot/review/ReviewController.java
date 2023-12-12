@@ -2,9 +2,11 @@ package com.edu.springboot.review;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.regex.Matcher;
@@ -63,7 +65,7 @@ public class ReviewController {
 			Matcher matcher = pattern.matcher(row.getRv_image());
 			while (matcher.find()) {
 				String fileNameWithExtension = matcher.group(1);
-				System.out.println("파일명과 확장자: " + fileNameWithExtension);
+//				System.out.println("파일명과 확장자: " + fileNameWithExtension);
 				row.setRv_image(fileNameWithExtension);
 			}
 		}
@@ -84,8 +86,13 @@ public class ReviewController {
 	public String reviewView(Model model, ReviewDTO reviewDTO) {
 		reviewDTO = dao.view(reviewDTO);
 		reviewDTO.setRv_content(reviewDTO.getRv_content().replace("\r\n", "<br>"));
+		String imageFileNamesString = reviewDTO.getRv_image().replaceAll("[\\[\\] ]", "");
+		String[] imageFileNames = imageFileNamesString.split(",");
+		List<String> imageFileList = Arrays.asList(imageFileNames);
+		model.addAttribute("imageFileList", imageFileList);
+//		System.out.println("imageFileList: "+ imageFileList);
 		model.addAttribute("reviewDTO", reviewDTO);
-		System.out.println("reviewDTO"+ reviewDTO);
+//		System.out.println("reviewDTO: "+ reviewDTO);
 		return "/review/view";
 	}
 	
@@ -149,5 +156,29 @@ public class ReviewController {
 		System.out.println("글쓰기결과:"+ result);
 		// 글쓰기가 완료되면 목록으로 이동한다.
 		return "redirect:/reviewList";
+	}
+	
+	@GetMapping("/reviewEdit")
+	public String reviewEditGet(Model model, ReviewDTO reviewDTO) {
+		reviewDTO = dao.view(reviewDTO);
+		String imageFileNamesString = reviewDTO.getRv_image().replaceAll("[\\[\\] ]", "");
+		String[] imageFileNames = imageFileNamesString.split(",");
+		List<String> imageFileList = Arrays.asList(imageFileNames);
+		model.addAttribute("imageFileList", imageFileList);
+		model.addAttribute("boardDTO", reviewDTO);
+		return "/review/edit";       
+	}	
+	@PostMapping("/reviewEdit")
+	public String reviewEditPost(ReviewDTO reviewDTO) {
+		int result = dao.edit(reviewDTO);
+		System.out.println("글수정결과:"+ result);
+		return "redirect:/reviewView?idx="+ reviewDTO.getRv_id();       
+	}
+	
+	@PostMapping("/reviewDelete")
+	public String reviewDeletePost(HttpServletRequest req) {
+		int result = dao.delete(req.getParameter("rv_id"));
+		System.out.println("글삭제결과:"+ result);
+		return "redirect:/reviewList";       
 	}
 }

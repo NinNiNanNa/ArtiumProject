@@ -90,5 +90,5 @@
 	<delete id="deleteSimpleReview">
 		DELETE FROM simple_review WHERE srv_id=#{param1}
 	</delete>
-
+	
 </mapper>

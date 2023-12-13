@@ -43,6 +43,7 @@
 <script>
 $(document).ready(function() {
     var currentUrl = window.location.href;
+    var userId = "${sessionScope.userId}";
 
     function handleExhibitionButtonClick(status) {
         $(".nav-link").removeClass("active");
@@ -56,7 +57,37 @@ $(document).ready(function() {
     } else if (currentUrl.includes("/exhibitionPastList")) {
         handleExhibitionButtonClick("past");
     }
+    
+    
+    $(".bookMarkBtn").click(function(){
+    	var exSeq = $(this).data('exseq-id');
+    	$.ajax({  
+    		contentType : "text/html;charset:utf-8", 
+    		dataType : "json",
+            url: '/bookmark.api',
+            method: 'GET',
+            data: { 
+            	user_id: userId,
+            	ex_seq: exSeq
+            	},
+            success: function (data) {
+                console.log("완료");
+                console.log("(성공)아이디가져옴: "+userId);
+                console.log("(성공)일련번호가져옴: "+exSeq);
+                $(".bookMarkBtn i.far").css({'opacity':1});
+                $(".bookMarkBtn i.fas").css({'opacity':0});
+            },
+            error: function () {
+                console.error('북마크 작동 실패');
+                console.log("(실패)아이디가져옴: "+userId);
+                console.log("(실패)일련번호가져옴: "+exSeq);
+            }
+        });
+    });
+    
 });
+
+
 </script>
 </head>
 <body>
@@ -134,11 +165,19 @@ $(document).ready(function() {
 													<div class="listInfo">
 														<div class="image_wrap">
 															<img src="${row.ex_imgURL }" alt="">
+													<c:choose>
+														<c:when test="${not empty userId }">
 															<div class="listBtn_wrap">
-																<a href="#" class="bookMarkBtn">
+																<a href="javascript:;" class="bookMarkBtn" data-exseq-id="${row.ex_seq }">
 																	<i class="fas fa-bookmark"></i>
+																	<i class="far fa-bookmark"></i>
 																</a>
 															</div>
+														</c:when>
+														<c:otherwise>
+														
+														</c:otherwise>
+													</c:choose>
 														</div>
 														<div class="title_wrap">
 															<div>

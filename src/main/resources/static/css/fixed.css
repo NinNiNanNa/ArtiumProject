@@ -42,6 +42,15 @@
 .info_wrap > li > span { font-size: .7rem; }
 .info_wrap > li > span > i { font-style: normal; font-weight: bold; }
 
+/* 북마크 효과 */
+.bookMarkBtn { position: relative; transition: all .3s; }
+.bookMarkBtn i { transition: all .3s; }
+.bookMarkBtn i.fas { opacity: 0; position: absolute; top: 10px; left: 10px; }
+.bookMarkBtn:hover i.far { opacity: 0; }
+.bookMarkBtn:focus i.far { opacity: 0; }
+.bookMarkBtn:hover i.fas { opacity: 1; }
+.bookMarkBtn:focus i.fas { opacity: 1; }
+
 /* 전시회 메이트 관리 ****************************/
 .listInfo .title_wrap > div .userInfo span { font-size: .9rem; margin-right: 15px; }
 .listInfo .title_wrap > div .userInfo span i { font-style: normal; font-weight: bold; }

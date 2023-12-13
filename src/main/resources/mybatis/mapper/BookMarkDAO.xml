@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!-- 마이바티스 Doctype 설정 -->
+<!DOCTYPE mapper
+	PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!-- Controller에서 Mapper의 함수를 호출하기 위한 interface를 namespace속성에 설정한다. -->
+<mapper namespace="com.edu.springboot.common.IBookMarkService">
+
+	<select id="viewBM" resultType="com.edu.springboot.common.BookMarkDTO">
+		SELECT * FROM bookmark WHERE user_id=#{user_id} AND ex_seq=#{ex_seq}
+	</select>
+
+	<insert id="insertBM" parameterType="com.edu.springboot.common.BookMarkDTO">
+		INSERT INTO bookmark (bm_id, user_id, ex_seq)
+		VALUES (seq_board_num.nextval, #{user_id}, #{ex_seq})
+	</insert>
+	
+	<delete id="deleteBM">
+		DELETE FROM bookmark WHERE bm_id=#{bm_id}
+	</delete>
+
+</mapper>

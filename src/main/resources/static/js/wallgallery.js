@@ -223,7 +223,9 @@ var Gallery = (function() {
 		// element representing the wall
 		this.$mainWall = this.$el.find( 'div.gr-wall-main' ).css( 'transition', this.transitionSettings );
 		// 4 walls (or 1 if no support for 3dtransforms)
-		this.walls = [];
+		// this.walls = [];
+		// 수정된 코드
+		this.walls = [new Wall($items.slice(0, 3)), new Wall($items.slice(3, 5))];
 		// current rendered wall
 		this.currentWall = 0; // 0,1,2,3
 		// current item being shown
@@ -247,16 +249,32 @@ var Gallery = (function() {
 			var pos = 0, max = 0, prev = 0,
 				wallsCount = support.transforms3d ? 4 : 1;
 
-			for( var i = 0; i < wallsCount; ++i ) {
+			// 수정
+			for (var i = 0; i < wallsCount; ++i) {
 
-				var nmb = this.layout[ i ];
+				var nmb = this.layout[i];
 				max = nmb + prev;
 				prev += nmb;
-				var wall = new Wall( $items.slice( pos, max ).clone() );
-				pos = max;
-				this.walls.push( wall );
 
-			}
+				// 수정된 부분: 2개의 벽만 생성하도록 조건 추가
+				if (i < 2) {
+						var wall = new Wall($items.slice(pos, max).clone());
+						pos = max;
+						this.walls.push(wall);
+				}
+		}
+
+			// 수정 전 코드
+			// for( var i = 0; i < wallsCount; ++i ) {
+
+			// 	var nmb = this.layout[ i ];
+			// 	max = nmb + prev;
+			// 	prev += nmb;
+			// 	var wall = new Wall( $items.slice( pos, max ).clone() );
+			// 	pos = max;
+			// 	this.walls.push( wall );
+
+			// }
 
 			// add navigation
 			if( this.totalItems > 1 ) {
@@ -301,11 +319,11 @@ var Gallery = (function() {
 
 		},
 		getLayoutSettings : function() {
+			// 4 -> 2로 수정
+			var perwall = Math.floor( this.totalItems / 2 ),
+				lastwall = perwall + this.totalItems % 2;
 
-			var perwall = Math.floor( this.totalItems / 4 ),
-				lastwall = perwall + this.totalItems % 4;
-
-			return support.transforms3d ? [perwall,perwall,perwall,lastwall] : [this.totalItems];
+			return support.transforms3d ? [perwall,lastwall] : [this.totalItems];
 
 		},
 		// displays the items of a wall on a container $wallElem
@@ -387,7 +405,9 @@ var Gallery = (function() {
 			var auxfloor = this.$auxWall.find( 'div.gr-floor' );
 
 			// add next wall's items to $auxWall
-			this.renderWall( this.$auxWall );
+			// this.renderWall( this.$auxWall );
+			// 수정된 코드
+			this.renderWall(this.$auxWall, dir);
 
 			var auxWallWidth = this.$auxWall.width(),
 				auxWallInitialTranslationVal = dir === 'next' ? winsize.width : auxWallWidth * -1 + ( auxWallWidth - winsize.width ) * 1,
@@ -396,6 +416,7 @@ var Gallery = (function() {
 					'translate3d(' + auxWallInitialTranslationVal + 'px,0px,0px) rotate3d(0,1,0,' + auxWallInitialAngle + 'deg)' :
 					'translate(' + auxWallInitialTranslationVal + 'px)';
 			
+			// 벽 변경 애니메이션 적용
 			this.$auxWall.css( {
 				transform : auxWallTransform,
 				transformOrigin : dir === 'next' ? '0% 50%' : '100% 50%'
@@ -429,6 +450,7 @@ var Gallery = (function() {
 
 				this.$mainWall.css( 'transform', mainWallFinalTransform );
 				
+				// 벽 변경 애니메이션 적용(수정)
 				this.$auxWall.css( {
 					transition : this.transitionSettings,
 					transform : auxWallFinalTransform
@@ -549,6 +571,7 @@ var Gallery = (function() {
 
 			if( changeWall ) {
 				changeWall = false;
+
 				this.changeWall( dir );
 			}
 			else {

@@ -17,6 +17,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.util.ResourceUtils;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -30,6 +31,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import jakarta.servlet.http.Part;
+import utils.MyFunctions;
 import utils.PagingUtil;
 
 
@@ -43,13 +45,14 @@ public class GalleryController {
 	
 	// 갤러리 목록
 	@RequestMapping("/galleryList")
-	public String galleryList(Model model, HttpServletRequest req, ParameterDTO parameterDTO, HttpSession session) {
+	public String galleryList(Model model, HttpServletRequest req, GalleryDTO galleryDTO, HttpSession session) {
 		
 		// 세션에서 사용자 아이디 가져오기
 		String userId = (String) session.getAttribute("userId");
+		galleryDTO.setUser_id(userId);
 
 		// 게시물의 갯수를 카운트(검색어가 있는 경우 DTO객체에 자동으로 저장
-		int totalCount = dao.getTotalCount(parameterDTO);
+		int totalCount = dao.getTotalCount(galleryDTO);
 		
 		// 페이징을 위한 설정값
 		int pageSize = 12;	// 한 페이지당 게시물 수
@@ -63,8 +66,8 @@ public class GalleryController {
 		int end = pageNum * pageSize;
 		
 		// 계산된 값 DTO에 저장
-		parameterDTO.setStart(start);
-		parameterDTO.setEnd(end);
+		galleryDTO.setStart(start);
+		galleryDTO.setEnd(end);
 		
 		// View 에서 게시물의 가상번호 계산을 위한 값들을 Map에 저장
 		Map<String, Object> maps = new HashMap<String, Object>();
@@ -74,176 +77,93 @@ public class GalleryController {
 		model.addAttribute("maps", maps);
 		
 		// 데이터베이스에서 인출한 게시물의 목록을 Model객체에 저장
-		ArrayList<GalleryDTO> galleryList = dao.listPage(parameterDTO);
+		ArrayList<GalleryDTO> galleryList = dao.listPage(galleryDTO);
 		model.addAttribute("galleryList", galleryList);
+		
+//		System.out.println("뀨: "+galleryList);
 		
 		// 게시판 하단에 출력한 페이지번호를 String으로 반환받은 후 Model객체에 저장
 		String pagingImg = PagingUtil.pagingImg(totalCount, pageSize, blockPage, pageNum, req.getContextPath()+"/galleryList?");
 		model.addAttribute("pagingImg", pagingImg);
+		
+//		System.out.println(galleryDTO);
 
 		return "/gallery/list";
 	}
 
 	// 글쓰기 페이지 로딩
-		@GetMapping("/galleryWrite")
-		public String reviewWriteGet(Model model, HttpSession session) {
-			// 세션에서 사용자 아이디 가져오기
-			String userId = (String) session.getAttribute("userId");
-			// 사용자 아이디를 모델에 추가
-			model.addAttribute("userId", userId);
-			
-			return "/gallery/write";
-		}
+	@GetMapping("/galleryWrite")
+	public String reviewWriteGet(Model model, HttpSession session) {
+		// 세션에서 사용자 아이디 가져오기
+		String userId = (String) session.getAttribute("userId");
+		// 사용자 아이디를 모델에 추가
+		model.addAttribute("userId", userId);
+		
+		return "/gallery/write";
+	}
 	
 	
-	// 글쓰기 처리
+	// 글쓰기 처리		
     @PostMapping("/galleryWrite")
     public String galleryWritePost(Model model, HttpServletRequest req, GalleryDTO galleryDTO, HttpSession session) { 
-	  
-//    	System.out.println("galleryDTO="+ galleryDTO);
-    	
+
     	try {
     		// 업로드 디렉토리의 물리적 경로 얻어오기
     		String uploadDir = ResourceUtils.getFile("classpath:static/uploads/").toPath().toString();
     		System.out.println("물리적경로:"+uploadDir);
     		
-    		Set<String> saveFileSets = new HashSet<>();
-			Collection<Part> parts = req.getParts();
-			int idx = 0;
-			for(Part part : parts) {
-				if(!part.getName().equals("art_image1"))
-					continue;
-    			
-    			// 파일명 확인을 위해 해더값 얻어오기
-    			String partHeader = part.getHeader("content-disposition");
+    		// 파일명 저장을 위한 Map생성. Key는 원본파일명, value는 서버에 저장된 파일명을 저장한다.
+    		Map<String, String> saveFileMaps  = new HashMap<>();
+    		
+    		for(int i=1 ; i<=5 ; i++) {
+	    		// 전송된 첨부파일을 Part객체를 통해 얻어오기
+	    		Part part = req.getPart("art_image"+ i);
+	    		// 파일명 확인을 위해 해더값 얻어오기 
+				String partHeader = part.getHeader("content-disposition");
 	    		System.out.println("partHeader="+ partHeader);
 	    		// 헤더값에서 파일명 추출을 위해 문자열을 split()하기
 	    		String[] phArr = partHeader.split("filename=");
 	    		// 따옴표를 제거한 후 원본 파일명 추출.
 	    		String originalFileName = phArr[1].trim().replace("\"", "");
-	    		
 	    		// 전송된 파일이 있다면 서버에 저장하기
 	    		if(!originalFileName.isEmpty()) {
 	    			part.write(uploadDir+ File.separator +originalFileName);
 	    		}
-	    		saveFileSets.add(originalFileName);
+	    		// 저장된 파일명을 UUID로 생성한 새로운 파일명으로 저장한다.
+				String savedFileName = MyFunctions.renameFile(uploadDir, originalFileName);
+				
+	    		/* Map컬렉션에 원본파일명과 저장된 파일명을 key와 value로 저장한다. */
+	    		saveFileMaps.put(originalFileName, savedFileName);
+//	    		saveFileMaps.put(originalFileName, originalFileName);
 	    		
-	    		if (idx++ == 0) {
-	    			galleryDTO.setArt_image1(originalFileName);
-	    		} else if (idx++ == 1) {
-	    			galleryDTO.setArt_image2(originalFileName);
-	    		} else if (idx++ == 2) {
-	    			galleryDTO.setArt_image3(originalFileName);
-	    		} else if (idx++ == 3) {
-	    			galleryDTO.setArt_image4(originalFileName);
-	    		} else if (idx++ == 4) {
-	    			galleryDTO.setArt_image5(originalFileName);
-	    		}
+	    		if(i==1) galleryDTO.setArt_image1(savedFileName);
+	    		if(i==2) galleryDTO.setArt_image2(savedFileName);
+	    		if(i==3) galleryDTO.setArt_image3(savedFileName);
+	    		if(i==4) galleryDTO.setArt_image4(savedFileName);
+	    		if(i==5) galleryDTO.setArt_image5(savedFileName);
     		}
-    		// JDBC연동 하지 않았으므로 Model객체에 정보 저장
-    		model.addAttribute("saveFileSets", saveFileSets);
-    		
-    		// 세션에서 사용자 아이디 가져오기
-    		String userId = (String) session.getAttribute("userId");
-    		// 사용자 아이디를 GallerDTO에 설정
-    		galleryDTO.setUser_id(userId);
-    		
-    		// JDBC연동
-    		galleryDTO.setArt_title1(saveFileSets.toString());
-    		dao.write(galleryDTO);
-    	}
-    	catch (Exception e) {
+			
+			// 세션에서 사용자 아이디 가져오기
+			String userId = (String) session.getAttribute("userId");
+			// 사용자 아이디를 GallerDTO에 설정
+			galleryDTO.setUser_id(userId);
+			
+			System.out.println("galleryDTO"+galleryDTO);
+			
+			// JDBC연동			
+			dao.write(galleryDTO);
+		}
+		catch (Exception e) {
 			System.out.println("업로드 실패");
 			e.printStackTrace();
 		}
-  
-    	// request 내장객체를 통해 폼값 받아오기 
-//    	String title = req.getParameter("ga_title"); 
-//	    String name = req.getParameter("user_id");
-//	    String sdate = req.getParameter("ga_sdate"); 
-//	    String edate = req.getParameter("ga_edate"); 
-//	    String content = req.getParameter("ga_content");
-//	    Object image1 = galleryDTO.getArt_image1(); 
-//	    String title1 = req.getParameter("art_title1");
-//	    String content1 = req.getParameter("art_content1"); 
-//	    Object image2 = req.getParameter("art_image2"); 
-//	    String title2 = req.getParameter("art_title2");
-//	    String content2 = req.getParameter("art_content2"); 
-//	    Object image3 = req.getParameter("art_image3"); 
-//	    String title3 = req.getParameter("art_title3");
-//	    String content3 = req.getParameter("art_content3"); 
-//	    Object image4 = req.getParameter("art_image4"); 
-//	    String title4 = req.getParameter("art_title4");
-//	    String content4 = req.getParameter("art_content4"); 
-//	    Object image5 = req.getParameter("art_image5"); 
-//	    String title5 = req.getParameter("art_title5");
-//	    String content5 = req.getParameter("art_content5");
-	    
-    	// 폼값 개별적으로 전달 
-//	    int result = dao.write(title, name, sdate, edate, content,
-//	    	    image1, title1, content1, image2, title2, content2, image3, title3, content3,
-//	    	    image4, title4, content4, image5, title5, content5);
-	  
-//	    System.out.println("글쓰기 결과:"+ result);
-	    //글쓰기 완료되면 목록으로이동 
-	    return "redirect:/galleryList";
-	    
-	 }
-    
-//	@PostMapping("/galleryWrite")
-//    public String galleryWritePost(Model model, GalleryDTO galleryDTO, HttpSession session) {
-//        // 파일 업로드 처리
-//        try {
-//            // 업로드 디렉토리의 물리적 경로 얻어오기
-//            String uploadDir = ResourceUtils.getFile("classpath:static/uploads/").toPath().toString();
-//            System.out.println("물리적경로:" + uploadDir);
-//
-//            Map<String, String> saveFileMaps = new HashMap<>();
-//            
-//            // 각 이미지에 대한 처리 추가
-//            MultipartFile[] imageFiles = {
-//            		galleryDTO.getArt_image1(), 
-//            		galleryDTO.getArt_image2(), 
-//            		galleryDTO.getArt_image3(), 
-//            		galleryDTO.getArt_image4(), 
-//            		galleryDTO.getArt_image5()
-//            		};
-//            
-//            for (MultipartFile imageFile : imageFiles) {
-//                // 파일이 비어있지 않으면 저장
-//                if (!imageFile.isEmpty()) {
-//                    String originalFileName = imageFile.getOriginalFilename();
-//                    imageFile.transferTo(new File(uploadDir + File.separator + originalFileName));
-//                    saveFileMaps.put(originalFileName, " ");
-//                }
-//            }
-//
-//            // JDBC연동 하지 않았으므로 Model객체에 정보 저장
-//            model.addAttribute("saveFileMaps", saveFileMaps);
-//            
-//            // 세션에서 사용자 아이디 가져오기
-//            String userId = (String) session.getAttribute("userId");
-//            // 사용자 아이디를 GallerDTO에 설정
-//            galleryDTO.setUser_id(userId);
-//            
-//            // JDBC연동
-//    		galleryDTO.setArt_title1(saveFileMaps.toString());
-//    		dao.write(galleryDTO);
-//
-//        } 
-//        catch (Exception e) {
-//            System.out.println("업로드 실패");
-//            e.printStackTrace();
-//        }
-//
-//        //글쓰기 완료되면 목록으로 이동
-//        return "redirect:/galleryList";
-//    }
-
 	
-
-	 
+	    //글쓰기 완료되면 목록으로이동 
+	    return "redirect:/galleryList";  	    
+	 }
+     
 	// 갤러리 내용
+
 	@RequestMapping("/galleryView")
 	public String galleryView(Model model, GalleryDTO galleryDTO, HttpSession session) {
 		
@@ -251,12 +171,52 @@ public class GalleryController {
 		String userId = (String) session.getAttribute("userId");
 		// 사용자 아이디를 GallerDTO에 설정
         galleryDTO.setUser_id(userId);
+        
+//        System.out.println("DTO: "+ galleryDTO);
 		
 		dao.visitCount(galleryDTO.getGa_id());
+		
 		galleryDTO = dao.view(galleryDTO);
 		galleryDTO.setGa_content(galleryDTO.getGa_content().replace("\r\n", "<br/>"));
-		model.addAttribute("galleryDTO", galleryDTO);		
-		return "/gallery/view";
+		model.addAttribute("galleryDTO", galleryDTO);	
+        
+//        System.out.println("모델DTO: "+ galleryDTO);	
+        
+		return "gallery/view";
+//        return "redirect:/galleryView";
+	}
+
+	// 온라인 갤러리
+	@GetMapping("/galleryRoom")
+	public String galleryRoom(Model model, GalleryDTO galleryDTO, HttpSession session) {
+		
+//		System.out.println("온라인갤러리: "+ galleryDTO);
+		
+		galleryDTO = dao.onlineGallery(galleryDTO);
+		galleryDTO.setGa_content(galleryDTO.getGa_content().replace("\r\n", "<br/>"));
+//		System.out.println("온라인갤러리나오나: "+ galleryDTO);
+		
+		model.addAttribute("galleryDTO", galleryDTO);
+		
+		return "/gallery/room";
+	}
+	
+	// 수정하기
+	@GetMapping("/galleryEdit")
+	public String galletEditGet(Model model, GalleryDTO galleryDTO) {
+		galleryDTO = dao.view(galleryDTO);
+		model.addAttribute("galleryDTO", galleryDTO);
+		System.out.println("수정 전: "+ galleryDTO);
+		return "gallery/edit";
+	}
+	
+	@PostMapping("/galleryEdit")
+	public String galletEditPost(@ModelAttribute("galleryDTO") GalleryDTO galleryDTO) {
+		System.out.println("수정이 되는거니...?: "+ galleryDTO);
+		int result = dao.edit(galleryDTO);
+		System.out.println("수정결과: "+ result);
+		return "redirect:/galleryView?Ga_id="+ galleryDTO.getGa_id();
+//		return "redirect:/galleryView?idx="+ galleryDTO.getGa_id(); 
 	}
 	
 	// 갤러리 댓글 조회 기능
@@ -293,21 +253,17 @@ public class GalleryController {
         }
     }
 	     
-	// 수정하기
 	
 	// 삭제하기
-	@PostMapping("/galletyViewDelete")
-	public String galletyViewDelete(HttpServletRequest req) {
+	@PostMapping("/galleryList")
+	public String galleryViewDelete(HttpServletRequest req, Model model) {
 		int result = dao.delete(req.getParameter("ga_id"));
 		System.out.println("글삭제결과: "+ result);
-		return "redirect:/gallery/list";
+
+		return "redirect:/galleryList";
 	}
 	
-	// 온라인 갤러리
-	@GetMapping("/galleryRoom")
-	public String galleryRoom() {
-		return "/gallery/room";
-	}
+	
 	
 	
 	/* 관리자 */

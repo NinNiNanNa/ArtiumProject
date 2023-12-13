@@ -134,7 +134,7 @@
 														<div class="title_wrap">
 															<div>
 																<a class="txtSkip" href="/galleryView?ga_id=${ gallery.ga_id }">${ gallery.ga_title }</a>
-																<h6 class="txtSkip">${ gallery.user_id } </h6>
+																<h6 class="txtSkip">${ gallery.user_name } </h6>
 																<h5>${ gallery.ga_sdate } ~ ${ gallery.ga_edate }</h5>
 																<ul class="info_wrap">
 																	<li>

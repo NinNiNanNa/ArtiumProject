@@ -11,10 +11,10 @@ import org.apache.ibatis.annotations.Param;
 public interface IGalleryService {
 
 	// Paging처리를 위한 게시물의 갯수 카운트
-	public int getTotalCount(ParameterDTO parameterDTO);
+	public int getTotalCount(GalleryDTO galleryDTO);
 	
 	// 게시판 목록 (페이징 기능 추가)
-	public ArrayList<GalleryDTO> listPage(ParameterDTO parameterDTO);
+	public ArrayList<GalleryDTO> listPage(GalleryDTO galleryDTO);
     
 	// 작성하기(받은 폼값은 이름을 변경한 후 매퍼로 전달)
 	public int write(GalleryDTO galleryDTO);
@@ -42,6 +42,9 @@ public interface IGalleryService {
 	
 	// 내용보기
 	public GalleryDTO view(GalleryDTO galleryDTO);
+	
+	// 온라인 갤러리
+	public GalleryDTO onlineGallery(GalleryDTO galleryDTO);
 	
 	// 수정하기
 	public int edit(GalleryDTO galleryDTO);

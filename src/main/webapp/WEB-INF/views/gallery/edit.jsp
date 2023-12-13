@@ -75,7 +75,7 @@ $(document).ready(function(){
                 <div class="gap1440">
                     <div class="container1440">
 
-                        <form name="writeFrm" action="/galleryWrite" method="post" enctype="multipart/form-data" id="artworkUploadForm">
+                        <form name="writeFrm" action="/galleryEdit" name="gaForm" method="post" enctype="multipart/form-data" id="gaForms">
 	                        <div class="writeForm_wrap">
 	                            <ul>
 	                                <li class="row">
@@ -97,7 +97,7 @@ $(document).ready(function(){
 	                                        <h2>제목</h2>
 	                                    </div>
 	                                    <div class="col-lg-10 write_wrap">
-	                                        <input type="text" name="ga_title" class="form-control" placeholder="제목을 입력하세요.">
+	                                        <input type="text" name="ga_title" class="form-control" placeholder="제목을 입력하세요." value="${galleryDTO.ga_title }">
 	                                    </div>
 	                                </li>
 	                                <li class="row">
@@ -105,7 +105,7 @@ $(document).ready(function(){
 	                                        <h2>작가 이름</h2>
 	                                    </div>
 	                                    <div class="col-lg-10 write_wrap">
-	                                        <input type="text" name="user_id" class="form-control" placeholder="작가 이름을 입력하세요.">
+	                                        <input type="text" name="user_id" class="form-control" placeholder="작가 이름을 입력하세요." value="${galleryDTO.user_name }">
 	                                    </div>
 	                                </li>
 	                                <li class="row">
@@ -113,11 +113,11 @@ $(document).ready(function(){
 	                                        <h2>관람 기간</h2>
 	                                    </div>
 	                                    <div class="col-lg-2 write_wrap">
-	                                        <input type="date" name="ga_sdate" class="form-control" placeholder="날짜 선택" required>
+	                                        <input type="date" name="ga_sdate" class="form-control" placeholder="날짜 선택" required value="${galleryDTO.ga_sdate }">
 	                                    </div>
 																				~
 	                                    <div class="col-lg-2 write_wrap">
-	                                        <input type="date" name="ga_edate" class="form-control" placeholder="날짜 선택" required>
+	                                        <input type="date" name="ga_edate" class="form-control" placeholder="날짜 선택" required value="${galleryDTO.ga_edate }">
 	                                    </div>
 	                                </li>
 	                                <li class="row">
@@ -125,7 +125,7 @@ $(document).ready(function(){
 	                                        <h2>내용</h2>
 	                                    </div>
 	                                    <div class="col-lg-10 write_wrap">
-	                                        <textarea name="ga_content" id="ga_content" cols="30" rows="10" placeholder="내용을 입력해주세요."></textarea>
+	                                        <textarea name="ga_content" id="ga_content" cols="30" rows="10" placeholder="내용을 입력해주세요.">${galleryDTO.ga_content }</textarea>
 	                                    </div>
 	                                </li>
 	                            </ul>
@@ -137,72 +137,72 @@ $(document).ready(function(){
 																</li>
 																<li class="row">
 																	<div class="col-lg-8 artWrite_wrap">
-																		<input type="text" name="art_title1" class="form-control mb-3" placeholder="작품1 제목을 입력해주세요">
-																		<input type="date" name="art_date1" class="form-control mb-3" placeholder="작품1 제작일" required>
-																		<textarea name="art_content1" id="" cols="30" rows="10" placeholder="작품1 내용을 입력해주세요."></textarea>
+																		<input type="text" name="art_title1" class="form-control mb-3" placeholder="작품1 제목을 입력해주세요" value="${galleryDTO.art_title1 }">
+																		<input type="date" name="art_date1" class="form-control mb-3" placeholder="작품1 제작일" required value="${galleryDTO.art_date1 }">
+																		<textarea name="art_content1" id="" cols="30" rows="10" placeholder="작품1 내용을 입력해주세요.">${galleryDTO.art_content1 }</textarea>
 																	</div>
 																	<div class="col-lg-4 artImg_wrap">
 	                                  <label for="artImgFile1">
 	                                      <div class="uploadBtn">작품1 올리기</div>
 	                                  </label>
-	                                  <input type="file" name="art_image1" id="artImgFile1" accept="image/gif, image/jpeg, image/png">
+	                                  <input type="file" name="art_image1" id="artImgFile1" accept="image/gif, image/jpeg, image/png" value="${galleryDTO.art_image1 }">
 																		<img id="preview1" src="" alt="">
 																	</div>
 																</li>
 																<li class="row">
 																	<div class="col-lg-8 artWrite_wrap">
-																		<input type="text" name="art_title2" class="form-control mb-3" placeholder="작품2 제목을 입력해주세요">
-																		<input type="date" name="art_date2" class="form-control mb-3" placeholder="작품2 제작일" required>
-																		<textarea name="art_content2" id="" cols="30" rows="10" placeholder="작품2 내용을 입력해주세요."></textarea>
+																		<input type="text" name="art_title2" class="form-control mb-3" placeholder="작품2 제목을 입력해주세요" value="${galleryDTO.art_title2 }">
+																		<input type="date" name="art_date2" class="form-control mb-3" placeholder="작품2 제작일" required value="${galleryDTO.art_date2 }">
+																		<textarea name="art_content2" id="" cols="30" rows="10" placeholder="작품2 내용을 입력해주세요.">${galleryDTO.art_content2 }</textarea>
 																	</div>
 																	<div class="col-lg-4 artImg_wrap">
 			                               <label for="artImgFile2">
 			                                   <div class="uploadBtn">작품2 올리기</div>
 			                               </label>
-			                               <input type="file" name="art_image2" id="artImgFile2" accept="image/gif, image/jpeg, image/png">
+			                               <input type="file" name="art_image2" id="artImgFile2" accept="image/gif, image/jpeg, image/png" value="${galleryDTO.art_image1 }">
 																		 <img id="preview2" src="" alt="">
 																	</div>																	
 																</li>
 																<li class="row">
 																	<div class="col-lg-8 artWrite_wrap">
-																		<input type="text" name="art_title3" class="form-control mb-3" placeholder="작품3 제목을 입력해주세요">
-																		<input type="date" name="art_date3"  class="form-control mb-3" placeholder="작품3 제작일" required>
-																		<textarea name="art_content3" id="" cols="30" rows="10" placeholder="작품3 내용을 입력해주세요."></textarea>
+																		<input type="text" name="art_title3" class="form-control mb-3" placeholder="작품3 제목을 입력해주세요" value="${galleryDTO.art_title3 }">
+																		<input type="date" name="art_date3"  class="form-control mb-3" placeholder="작품3 제작일" required value="${galleryDTO.art_date3 }">
+																		<textarea name="art_content3" id="" cols="30" rows="10" placeholder="작품3 내용을 입력해주세요.">${galleryDTO.art_content3 }</textarea>
 																	</div>
 																	<div class="col-lg-4 artImg_wrap">
 		                                <label for="artImgFile3">
 		                                    <div class="uploadBtn">작품3 올리기</div>
 		                                </label>
-		                                <input type="file" name="art_image3" id="artImgFile3" accept="image/gif, image/jpeg, image/png">
+		                                <input type="file" name="art_image3" id="artImgFile3" accept="image/gif, image/jpeg, image/png" value="${galleryDTO.art_image3 }">
 																		<img id="preview3" src="" alt="">
 																	</div>
 																</li>
 																<li class="row">
 																	<div class="col-lg-8 artWrite_wrap">
-																		<input type="text" name="art_title4" class="form-control mb-3" placeholder="작품4 제목을 입력해주세요">
-																		<input type="date" name="art_date4"  class="form-control mb-3" placeholder="작품4 제작일" required>
-																		<textarea name="art_content4" id="" cols="30" rows="10" placeholder="작품4 내용을 입력해주세요."></textarea>
+																		<input type="text" name="art_title4" class="form-control mb-3" placeholder="작품4 제목을 입력해주세요" value="${galleryDTO.art_title4 }">
+																		<input type="date" name="art_date4"  class="form-control mb-3" placeholder="작품4 제작일" required value="${galleryDTO.art_date4 }">
+																		<textarea name="art_content4" id="" cols="30" rows="10" placeholder="작품4 내용을 입력해주세요.">${galleryDTO.art_content4 }</textarea>
 																	</div>
 																	<div class="col-lg-4 artImg_wrap">
 	                                  <label for="artImgFile4">
 	                                      <div class="uploadBtn">작품4 올리기</div>
 	                                  </label>
-	                                  <input type="file" name="art_image4" id="artImgFile4" accept="image/gif, image/jpeg, image/png">
+	                                  <input type="file" name="art_image4" id="artImgFile4" accept="image/gif, image/jpeg, image/png" value="${galleryDTO.art_image4 }">
 																		<img id="preview4" src="" alt="">
 																	</div>
 																</li>
 																<li class="row">
 																	<div class="col-lg-8 artWrite_wrap">
-																		<input type="text" name="art_title5" class="form-control mb-3" placeholder="작품5 제목을 입력해주세요">
-																		<input type="date" name="art_date5"  class="form-control mb-3" placeholder="작품5 제작일" required>
-																		<textarea name="art_content5" id="" cols="30" rows="10" placeholder="작품5 내용을 입력해주세요."></textarea>
+																		<input type="text" name="art_title5" class="form-control mb-3" placeholder="작품5 제목을 입력해주세요" value="${galleryDTO.art_title5 }">
+																		<input type="date" name="art_date5"  class="form-control mb-3" placeholder="작품5 제작일" required value="${galleryDTO.art_date5 }">
+																		<textarea name="art_content5" id="" cols="30" rows="10" placeholder="작품5 내용을 입력해주세요.">${galleryDTO.art_content5 }</textarea>
 																	</div>
 																	<div class="col-lg-4 artImg_wrap">
 	                                  <label for="artImgFile5">
 	                                      <div class="uploadBtn">작품5 올리기</div>
 	                                  </label>
-	                                  <input type="file" name="art_image5" id="artImgFile5" accept="image/gif, image/jpeg, image/png">
-																		<img id="preview5" src="" alt="">
+	                                  <input type="file" name="art_image5" id="artImgFile5" accept="image/gif, image/jpeg, image/png" >
+																		<img id="preview5" src="" alt="" value="${galleryDTO.art_image5 }">
 																	</div>
 																</li>
 															</ul>
@@ -210,7 +210,7 @@ $(document).ready(function(){
 
 	                        <div class="button_wrap">
 	                            <a href="" class="btn btn-light cancelBtn">취소하기</a>
-	                            <a href="javascript:void(0);" class="btn btn-dark registBtn" id="registBtn">등록하기</a>
+	                            <a href="javascript:void(0);" class="btn btn-dark registBtn" id="registBtn" onclick="">등록하기</a>
 	                        </div>
 
                     	</form>

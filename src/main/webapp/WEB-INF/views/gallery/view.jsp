@@ -57,7 +57,7 @@
            form.appendChild(hiddenInput);
            
            form.method = "post";
-           form.action = "galleryViewDelete";
+           form.action = "galleryList";
            form.submit();
        } 
        else {
@@ -70,9 +70,9 @@
 } */
 
 let deletePost = function(){
-	let frm = document.writeFrm;
+	let frm = document.forms['writeFrm'];
 	if(confirm("정말 삭제할까요?")){
-		frm.action = "galleryViewDelete";
+		frm.action = "galleryList";
 		frm.method = "post";
 		frm.submit();
 	}
@@ -191,7 +191,7 @@ function postComment() {
                 <div class="gap1440">
                     <div class="container1440">
                     
-                    <form name="writeFrm"  action="/galleryViewDelete" method="post">
+                    <form name="writeFrm"  action="/galleryList" method="post">
                     	<input type="hidden" name="ga_id" value="${galleryDTO.ga_id }" />
                     </form>
                         <div class="view_content">
@@ -208,7 +208,7 @@ function postComment() {
                                     <li>
                                         <div>
                                             <span>작가 이름</span>
-                                            <i>${ galleryDTO.user_id }</i>
+                                            <i>${ galleryDTO.user_name }</i>
                                         </div>
                                     </li>
                                 </ul>
@@ -217,14 +217,14 @@ function postComment() {
                                 </div>
                                 
 																<div class="galleryBtn_wrap">
-																	<a href="/galleryRoom" class="galleryBtn">ONLINE GALLERY</a>
+																	<a href="/galleryRoom?ga_id=${galleryDTO.ga_id }" class="galleryBtn">ONLINE GALLERY</a>
 																</div>
                                 <div class="memInfo_wrap">
                                     <div class="profileImg_wrap">
-                                        <img src="../img/profile.png" alt="">
+                                        <img src="../img/${galleryDTO.user_image }" alt="">
                                     </div>
                                     <div class="profileInfo_wrap">
-                                     		 <h4>${ galleryDTO.user_id }</h4>
+                                     		 <h4>${ galleryDTO.user_name }</h4>
                                          <span>작성일<i>${ galleryDTO.ga_postdate }</i></span>
                                          <span>조회수<i>${ galleryDTO.ga_visitcount }</i></span>
                                     </div>
@@ -236,8 +236,8 @@ function postComment() {
                         </div>
 
 											<div class="viewBtn_wrap">
-												<a href="" class="btn btn-light" onclick="deletePost(${ galleryDTO.ga_id });">삭제하기</a>
-												<a href="" class="btn btn-secondary" onclick="">수정하기</a><!-- /galleryEdit?ga_id=${ galleryDTO.ga_id } -->
+												<a href="#" class="btn btn-light" onclick="deletePost(${ galleryDTO.ga_id });">삭제하기</a>
+												<a href="/galleryEdit?ga_id=${ galleryDTO.ga_id }" class="btn btn-secondary" onclick="">수정하기</a><!-- /galleryEdit?ga_id=${ galleryDTO.ga_id } -->
 												<a href="/galleryList" class="btn btn-dark" >목록보기</a>
 											</div>
 

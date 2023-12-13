@@ -1,5 +1,5 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8"%>
+    pageEncoding="UTF-8"%>    
 <!DOCTYPE html>
 <html lang="en" class="no-js">
 	<head>
@@ -27,92 +27,67 @@
 				<div class="gr-main">
 					<figure>
 						<div>
-							<img src="../img/1.jpg" alt="img01" />
+							<img src="./uploads/${galleryDTO.art_image1 }" alt="img01" />
 						</div>
 						<figcaption>
-							<h2><span>소리 작품</span></h2>
-							<div><p>New York City, 2009, by <a href="http://www.flickr.com/photos/thomasclaveirole">Thomas Claveirole</a></p></div>
+							<h2><span>${galleryDTO.art_title1 }</span></h2>
+							<div>
+							<span style="margin-right:10px">${galleryDTO.art_date1 }</span>
+							<span>${galleryDTO.user_name }</span>
+							<p>${galleryDTO.art_content1 }</p>
+							</div>
 						</figcaption>
 					</figure>
 					<figure>
 						<div>
-							<img src="../img/2.jpg" alt="img02" />
+							<img src="./uploads/${galleryDTO.art_image2 }" alt="img01" />
 						</div>
 						<figcaption>
-							<h2><span>American Museum of Natural History #1</span></h2>
-							<div><p>New York City, 2009, by <a href="http://www.flickr.com/photos/thomasclaveirole">Thomas Claveirole</a></p></div>
+							<h2><span>${galleryDTO.art_title2 }</span></h2>
+							<div>
+							<span style="margin-right:10px">${galleryDTO.art_date2 }</span>
+							<span>${galleryDTO.user_name }</span>
+							<p>${galleryDTO.art_content2 }</p>
+							</div>
 						</figcaption>
 					</figure>
 					<figure>
 						<div>
-							<img src="../img/3.jpg" alt="img03" />
+							<img src="./uploads/${galleryDTO.art_image3 }" alt="img01" />
 						</div>
 						<figcaption>
-							<h2><span>NYC Marathon in Harlem #4</span></h2>
-							<div><p>New York City, 2009, by <a href="http://www.flickr.com/photos/thomasclaveirole">Thomas Claveirole</a></p></div>
+							<h2><span>${galleryDTO.art_title3 }</span></h2>
+							<div>
+							<span style="margin-right:10px">${galleryDTO.art_date3 }</span>
+							<span>${galleryDTO.user_name }</span>
+							<p>${galleryDTO.art_content3 }</p>
+							</div>
 						</figcaption>
 					</figure>
 					<figure>
 						<div>
-							<img src="../img/4.jpg" alt="img04" />
+							<img src="./uploads/${galleryDTO.art_image4 }" alt="img01" />
 						</div>
 						<figcaption>
-							<h2><span>Cathedral Church of Saint John the Divine #3</span></h2>
-							<div><p>New York City, 2009, by <a href="http://www.flickr.com/photos/thomasclaveirole">Thomas Claveirole</a></p></div>
+							<h2><span>${galleryDTO.art_title4 }</span></h2>
+							<div>
+							<span style="margin-right:10px">${galleryDTO.art_date5 }</span>
+							<span>${galleryDTO.user_name }</span>
+							<p>${galleryDTO.art_content5 }</p>
+							</div>
 						</figcaption>
 					</figure>
 					<figure>
 						<div>
-							<img src="../img/5.jpg" alt="img01" />
+							<img src="./uploads/${galleryDTO.art_image5 }" alt="img01" />
 						</div>
 						<figcaption>
-							<h2><span>SoHo</span></h2>
-							<div><p>New York City, 2009, by <a href="http://www.flickr.com/photos/thomasclaveirole">Thomas Claveirole</a></p></div>
-						</figcaption>
-					</figure>
-					<figure>
-						<div>
-							<img src="../img/imgBg.jpg" alt="img02" />
-						</div>
-						<figcaption>
-							<h2><span>Manhattan Downtown/Wall St. Heliport</span></h2>
-							<div><p>New York City, 2009, by <a href="http://www.flickr.com/photos/thomasclaveirole">Thomas Claveirole</a></p></div>
-						</figcaption>
-					</figure>
-					<figure>
-						<div>
-							<img src="../img/imgBg.jpg" alt="img03" />
-						</div>
-						<figcaption>
-							<h2><span>Musée National du Moyen Âge</span></h2>
-							<div><p>Paris, 2009, by <a href="http://www.flickr.com/photos/thomasclaveirole">Thomas Claveirole</a></p></div>
-						</figcaption>
-					</figure>
-					<figure>
-						<div>
-							<img src="../img/imgBg.jpg" alt="img08" />
-						</div>
-						<figcaption>
-							<h2><span>Métro Jussieu</span></h2>
-							<div><p>Paris, 2009, by <a href="http://www.flickr.com/photos/thomasclaveirole">Thomas Claveirole</a></p>
-						</figcaption>
-					</figure>
-					<figure>
-						<div>
-							<img src="../img/imgBg.jpg" alt="img09" />
-						</div>
-						<figcaption>
-							<h2><span>Rose Main Reading Room, New York Public Library</span></h2>
-							<div><p>New York City, 2009, by <a href="http://www.flickr.com/photos/thomasclaveirole">Thomas Claveirole</a></p></div>
-						</figcaption>
-					</figure>
-					<figure>
-						<div>
-							<img src="../img/imgBg.jpg" alt="img10" />
-						</div>
-						<figcaption>
-							<h2><span>Midtown Manhattan</span></h2>
-							<div><p>New York City, 2009, by <a href="http://www.flickr.com/photos/thomasclaveirole">Thomas Claveirole</a></p></div>
+							<h2><span>${galleryDTO.art_title5 }</span></h2>
+							<div>
+							<span style="margin-right:10px">${galleryDTO.art_date5 }</span>
+							<span>${galleryDTO.user_name }</span>
+							<p>${galleryDTO.art_content5 }</p>
+							</div>
 						</figcaption>
 					</figure>
 				</div>
@@ -124,11 +99,9 @@
 		<script src="../js/wallgallery.js"></script>
 		<script>
 			$(function() {
-
 				Gallery.init( {
-					layout : [3,2,3,2]
+					layout : [3,2]
 				} );
-
 			});
 		</script>
 	</body>

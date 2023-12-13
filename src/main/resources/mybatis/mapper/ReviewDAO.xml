@@ -20,7 +20,7 @@
 	<select id="listPage" resultType="com.edu.springboot.review.ReviewDTO" parameterType="com.edu.springboot.review.ParameterDTO">
 		SELECT * FROM (
 			SELECT Tb.*, rownum rNum FROM (
-				SELECT * FROM review
+				SELECT r.*, m.user_name, m.user_image FROM review r JOIN members m ON r.user_id = m.user_id
 				<if test="searchKeyword!=null and !searchKeyword,equals('')">
 					WHERE ${searchField} LIKE '%'||#{searchKeyword}||'%'
 				</if>
@@ -39,7 +39,10 @@
 	</select>
 	
 	<select id="view" resultType="com.edu.springboot.review.ReviewDTO" parameterType="com.edu.springboot.review.ReviewDTO">
-		SELECT * FROM review WHERE rv_id=#{rv_id}
+		SELECT * FROM (
+			SELECT r.*, m.user_name, m.user_image FROM review r JOIN members m ON r.user_id = m.user_id
+		)
+		WHERE rv_id=#{rv_id}
 	</select>
 	<update id="visitCount" parameterType="com.edu.springboot.review.ReviewDTO">
 		UPDATE review SET rv_visitcount = rv_visitcount + 1 WHERE rv_id=#{rv_id}

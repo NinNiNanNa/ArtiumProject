@@ -5,6 +5,7 @@ import lombok.Data;
 @Data
 public class ReviewDTO {
 	private String rv_id;
+	private String user_id;
 	private String rv_title;
 	private java.sql.Date rv_date;
 	private String rv_stime;
@@ -17,4 +18,7 @@ public class ReviewDTO {
 	private java.sql.Date rv_postdate;
 	private int rv_visitcount;
 	private int rv_bmcount;
+	
+	private String user_name;
+	private String user_image;
 }

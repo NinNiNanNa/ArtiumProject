@@ -13,6 +13,11 @@
 
             // 파일업로드 미리보기
             $("#rvImgFile").on("change", function(event) {
+            // 기존에 선택한 파일 초기화
+             sel_files = [];
+         
+             // 미리보기 이미지 영역 초기화
+             $(".uploadimg_wrap").empty();
                 
                 var files = event.target.files;
                 var filesArr = Array.prototype.slice.call(files);

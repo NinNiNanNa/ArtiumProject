@@ -79,6 +79,11 @@ function validateForm(form) {
       form.rv_revisit.focus();
       return false;
    }
+   if (form.rv_image.src == ""){
+      alert("사진을 업로드하세요.");
+      form.rvUpload.focus();
+      return false;
+   }
    if (form.rv_content.value == ""){
       alert("내용을 입력하세요.");
       form.rv_content.focus();
@@ -105,8 +110,9 @@ function validateForm(form) {
                 <div class="gap1440">
                     <div class="container1440">
 
-                        <form action="/reviewWrite" id="rvForm" name="rvForm" method="post" enctype="multipart/form-data">
+                        <form action="/reviewEdit" id="rvForm" name="rvForm" method="post" enctype="multipart/form-data">
                         <input type="hidden" name="rv_id" value="${reviewDTO.rv_id }" />
+                        <input type="hidden" name="prev_rv_image" value="${reviewDTO.rv_image }" />
                         <div class="writeForm_wrap">
                             <ul>
                                 <li class="row">
@@ -114,7 +120,7 @@ function validateForm(form) {
                                         <h2>제목</h2>
                                     </div>
                                     <div class="col-lg-10 write_wrap">
-                                        <input type="text" name="rv_title" class="form-control" placeholder="제목을 입력하세요." value="<c:out value='${reviewDTO.rv_title}' />">
+                                        <input type="text" name="rv_title" class="form-control" placeholder="제목을 입력하세요." value="${reviewDTO.rv_title}">
                                     </div>
                                 </li>
                                 <li class="row">
@@ -140,62 +146,62 @@ function validateForm(form) {
                                     <div class="col-lg-2 write_wrap">
                                         <select name="rv_stime" class="form-select" value="${reviewDTO.rv_stime }">
                                             <option value="">관람시작시간</option>
-                                            <option value="00시">00시</option>
-                                            <option value="01시">01시</option>
-                                            <option value="02시">02시</option>
-                                            <option value="03시">03시</option>
-                                            <option value="04시">04시</option>
-                                            <option value="05시">05시</option>
-                                            <option value="06시">06시</option>
-                                            <option value="07시">07시</option>
-                                            <option value="08시">08시</option>
-                                            <option value="09시">09시</option>
-                                            <option value="10시">10시</option>
-                                            <option value="11시">11시</option>
-                                            <option value="12시">12시</option>
-                                            <option value="13시">13시</option>
-                                            <option value="14시">14시</option>
-                                            <option value="15시">15시</option>
-                                            <option value="16시">16시</option>
-                                            <option value="17시">17시</option>
-                                            <option value="18시">18시</option>
-                                            <option value="19시">19시</option>
-                                            <option value="20시">20시</option>
-                                            <option value="21시">21시</option>
-                                            <option value="22시">22시</option>
-                                            <option value="23시">23시</option>
-                                            <option value="24시">24시</option>
+                                            <option value="00시" ${reviewDTO.rv_stime=='00시' ? 'selected':''}>00시</option>
+                                            <option value="01시" ${reviewDTO.rv_stime=='01시' ? 'selected':''}>01시</option>
+                                            <option value="02시" ${reviewDTO.rv_stime=='02시' ? 'selected':''}>02시</option>
+                                            <option value="03시" ${reviewDTO.rv_stime=='03시' ? 'selected':''}>03시</option>
+                                            <option value="04시" ${reviewDTO.rv_stime=='04시' ? 'selected':''}>04시</option>
+                                            <option value="05시" ${reviewDTO.rv_stime=='05시' ? 'selected':''}>05시</option>
+                                            <option value="06시" ${reviewDTO.rv_stime=='06시' ? 'selected':''}>06시</option>
+                                            <option value="07시" ${reviewDTO.rv_stime=='07시' ? 'selected':''}>07시</option>
+                                            <option value="08시" ${reviewDTO.rv_stime=='08시' ? 'selected':''}>08시</option>
+                                            <option value="09시" ${reviewDTO.rv_stime=='09시' ? 'selected':''}>09시</option>
+                                            <option value="10시" ${reviewDTO.rv_stime=='10시' ? 'selected':''}>10시</option>
+                                            <option value="11시" ${reviewDTO.rv_stime=='11시' ? 'selected':''}>11시</option>
+                                            <option value="12시" ${reviewDTO.rv_stime=='12시' ? 'selected':''}>12시</option>
+                                            <option value="13시" ${reviewDTO.rv_stime=='13시' ? 'selected':''}>13시</option>
+                                            <option value="14시" ${reviewDTO.rv_stime=='14시' ? 'selected':''}>14시</option>
+                                            <option value="15시" ${reviewDTO.rv_stime=='15시' ? 'selected':''}>15시</option>
+                                            <option value="16시" ${reviewDTO.rv_stime=='16시' ? 'selected':''}>16시</option>
+                                            <option value="17시" ${reviewDTO.rv_stime=='17시' ? 'selected':''}>17시</option>
+                                            <option value="18시" ${reviewDTO.rv_stime=='18시' ? 'selected':''}>18시</option>
+                                            <option value="19시" ${reviewDTO.rv_stime=='19시' ? 'selected':''}>19시</option>
+                                            <option value="20시" ${reviewDTO.rv_stime=='20시' ? 'selected':''}>20시</option>
+                                            <option value="21시" ${reviewDTO.rv_stime=='21시' ? 'selected':''}>21시</option>
+                                            <option value="22시" ${reviewDTO.rv_stime=='22시' ? 'selected':''}>22시</option>
+                                            <option value="23시" ${reviewDTO.rv_stime=='23시' ? 'selected':''}>23시</option>
+                                            <option value="24시" ${reviewDTO.rv_stime=='24시' ? 'selected':''}>24시</option>
                                         </select>
                                     </div>
                                         ~
                                     <div class="col-lg-2 write_wrap">
                                         <select name="rv_etime" class="form-select" value="${reviewDTO.rv_etime }">
                                             <option value="">관람종료시간</option>
-                                            <option value="00시">00시</option>
-                                            <option value="01시">01시</option>
-                                            <option value="02시">02시</option>
-                                            <option value="03시">03시</option>
-                                            <option value="04시">04시</option>
-                                            <option value="05시">05시</option>
-                                            <option value="06시">06시</option>
-                                            <option value="07시">07시</option>
-                                            <option value="08시">08시</option>
-                                            <option value="09시">09시</option>
-                                            <option value="10시">10시</option>
-                                            <option value="11시">11시</option>
-                                            <option value="12시">12시</option>
-                                            <option value="13시">13시</option>
-                                            <option value="14시">14시</option>
-                                            <option value="15시">15시</option>
-                                            <option value="16시">16시</option>
-                                            <option value="17시">17시</option>
-                                            <option value="18시">18시</option>
-                                            <option value="19시">19시</option>
-                                            <option value="20시">20시</option>
-                                            <option value="21시">21시</option>
-                                            <option value="22시">22시</option>
-                                            <option value="23시">23시</option>
-                                            <option value="24시">24시</option>
+                                            <option value="00시" ${reviewDTO.rv_etime=='00시' ? 'selected':''}>00시</option>
+                                            <option value="01시" ${reviewDTO.rv_etime=='01시' ? 'selected':''}>01시</option>
+                                            <option value="02시" ${reviewDTO.rv_etime=='02시' ? 'selected':''}>02시</option>
+                                            <option value="03시" ${reviewDTO.rv_etime=='03시' ? 'selected':''}>03시</option>
+                                            <option value="04시" ${reviewDTO.rv_etime=='04시' ? 'selected':''}>04시</option>
+                                            <option value="05시" ${reviewDTO.rv_etime=='05시' ? 'selected':''}>05시</option>
+                                            <option value="06시" ${reviewDTO.rv_etime=='06시' ? 'selected':''}>06시</option>
+                                            <option value="07시" ${reviewDTO.rv_etime=='07시' ? 'selected':''}>07시</option>
+                                            <option value="08시" ${reviewDTO.rv_etime=='08시' ? 'selected':''}>08시</option>
+                                            <option value="09시" ${reviewDTO.rv_etime=='09시' ? 'selected':''}>09시</option>
+                                            <option value="10시" ${reviewDTO.rv_etime=='10시' ? 'selected':''}>10시</option>
+                                            <option value="11시" ${reviewDTO.rv_etime=='11시' ? 'selected':''}>11시</option>
+                                            <option value="12시" ${reviewDTO.rv_etime=='12시' ? 'selected':''}>12시</option>
+                                            <option value="13시" ${reviewDTO.rv_etime=='13시' ? 'selected':''}>13시</option>
+                                            <option value="14시" ${reviewDTO.rv_etime=='14시' ? 'selected':''}>14시</option>
+                                            <option value="15시" ${reviewDTO.rv_etime=='15시' ? 'selected':''}>15시</option>
+                                            <option value="16시" ${reviewDTO.rv_etime=='16시' ? 'selected':''}>16시</option>
+                                            <option value="17시" ${reviewDTO.rv_etime=='17시' ? 'selected':''}>17시</option>
+                                            <option value="18시" ${reviewDTO.rv_etime=='18시' ? 'selected':''}>18시</option>
+                                            <option value="19시" ${reviewDTO.rv_etime=='19시' ? 'selected':''}>19시</option>
+                                            <option value="20시" ${reviewDTO.rv_etime=='20시' ? 'selected':''}>20시</option>
+                                            <option value="21시" ${reviewDTO.rv_etime=='21시' ? 'selected':''}>21시</option>
+                                            <option value="22시" ${reviewDTO.rv_etime=='22시' ? 'selected':''}>22시</option>
+                                            <option value="23시" ${reviewDTO.rv_etime=='23시' ? 'selected':''}>23시</option>
+                                            <option value="24시" ${reviewDTO.rv_etime=='24시' ? 'selected':''}>24시</option>
                                         </select>
                                     </div>
                                 </li>
@@ -206,10 +212,10 @@ function validateForm(form) {
                                     <div class="col-lg-2 write_wrap">
                                         <select name="rv_congestion" class="form-select" value="${reviewDTO.rv_congestion }">
                                             <option value="">혼잡도</option>
-                                            <option value="한산">한산</option>
-                                            <option value="보통">보통</option>
-                                            <option value="북적거림">북적거림</option>
-                                            <option value="매우혼잡">매우혼잡</option>
+                                            <option value="한산" ${reviewDTO.rv_congestion=='한산' ? 'selected':''}>한산</option>
+                                            <option value="보통" ${reviewDTO.rv_congestion=='보통' ? 'selected':''}>보통</option>
+                                            <option value="북적거림" ${reviewDTO.rv_congestion=='북적거림' ? 'selected':''}>북적거림</option>
+                                            <option value="매우혼잡" ${reviewDTO.rv_congestion=='매우혼잡' ? 'selected':''}>매우혼잡</option>
                                         </select>
                                     </div>
                                 </li>
@@ -220,10 +226,10 @@ function validateForm(form) {
                                     <div class="col-lg-2 write_wrap">
                                         <select name="rv_transportation" class="form-select" value="${reviewDTO.rv_transportation }">
                                             <option value="">교통수단</option>
-                                            <option value="도보">도보</option>
-                                            <option value="버스">버스</option>
-                                            <option value="지하철">지하철</option>
-                                            <option value="차">차</option>
+                                            <option value="도보" ${reviewDTO.rv_transportation=='도보' ? 'selected':''}>도보</option>
+                                            <option value="버스" ${reviewDTO.rv_transportation=='버스' ? 'selected':''}>버스</option>
+                                            <option value="지하철" ${reviewDTO.rv_transportation=='지하철' ? 'selected':''}>지하철</option>
+                                            <option value="차" ${reviewDTO.rv_transportation=='차' ? 'selected':''}>차</option>
                                         </select>
                                     </div>
                                 </li>
@@ -234,10 +240,10 @@ function validateForm(form) {
                                     <div class="col-lg-2 write_wrap">
                                         <select name="rv_revisit" class="form-select" value="${reviewDTO.rv_revisit }">
                                             <option value="">재방문 의향</option>
-                                            <option value="모르겠다">모르겠다</option>
-                                            <option value="전혀없다">전혀없다</option>
-                                            <option value="조금있다">조금있다</option>
-                                            <option value="재방문예정">재방문예정</option>
+                                            <option value="모르겠다" ${reviewDTO.rv_revisit=='모르겠다' ? 'selected':''}>모르겠다</option>
+                                            <option value="전혀없다" ${reviewDTO.rv_revisit=='전혀없다' ? 'selected':''}>전혀없다</option>
+                                            <option value="조금있다" ${reviewDTO.rv_revisit=='조금있다' ? 'selected':''}>조금있다</option>
+                                            <option value="재방문예정" ${reviewDTO.rv_revisit=='재방문예정' ? 'selected':''}>재방문예정</option>
                                         </select>
                                     </div>
                                 </li>

@@ -30,6 +30,7 @@ public class ReviewController {
 	// DAO호출을 위한 빈 자동주입. 이 인터페이스를 통해 Mapper를 호출한다.
 	@Autowired
 	IReviewService dao; 
+	
 	// 리뷰 목록
 	@RequestMapping("/reviewList") 
 	//매개변수는 View로 전달할 데이터를 저장하기 위한 Model객체와 요청을 받아 처리하기위한 requset내장객체, DTO객체를 추가한다.
@@ -65,7 +66,6 @@ public class ReviewController {
 			Matcher matcher = pattern.matcher(row.getRv_image());
 			while (matcher.find()) {
 				String fileNameWithExtension = matcher.group(1);
-//				System.out.println("파일명과 확장자: " + fileNameWithExtension);
 				row.setRv_image(fileNameWithExtension);
 			}
 		}
@@ -90,9 +90,7 @@ public class ReviewController {
 		String[] imageFileNames = imageFileNamesString.split(",");
 		List<String> imageFileList = Arrays.asList(imageFileNames);
 		model.addAttribute("imageFileList", imageFileList);
-//		System.out.println("imageFileList: "+ imageFileList);
 		model.addAttribute("reviewDTO", reviewDTO);
-//		System.out.println("reviewDTO: "+ reviewDTO);
 		return "/review/view";
 	}
 	
@@ -101,6 +99,7 @@ public class ReviewController {
 	public String reviewWriteGet(Model model) {
 		return "/review/write";
 	}
+	
 	// 글쓰기 처리
 	@PostMapping("/reviewWrite")
 	public String reviewWritePost(Model model, HttpServletRequest req, ReviewDTO reviewDTO) {
@@ -165,14 +164,63 @@ public class ReviewController {
 		String[] imageFileNames = imageFileNamesString.split(",");
 		List<String> imageFileList = Arrays.asList(imageFileNames);
 		model.addAttribute("imageFileList", imageFileList);
-		model.addAttribute("boardDTO", reviewDTO);
+		model.addAttribute("reviewDTO", reviewDTO);
 		return "/review/edit";       
 	}	
+	
 	@PostMapping("/reviewEdit")
-	public String reviewEditPost(ReviewDTO reviewDTO) {
+	public String reviewEditPost(Model model, HttpServletRequest req, ReviewDTO reviewDTO) {
+		try {
+			//물리적 경로 얻어오기 
+			String uploadDir = ResourceUtils.getFile("classpath:static/uploads/").toPath().toString();
+			System.out.println("물리적경로:"+uploadDir);
+			/* 파일명 저장을 위한 Set 생성. value는 서버에 저장된 파일명을 저장한다. */
+			Set<String> saveFileSets = new HashSet<>();
+			//2개 이상의 파일이므로 getParts() 메서드를 통해 폼값을 받는다. 
+			Collection<Part> parts = req.getParts();
+			//폼값의 갯수만큼 반복 
+			for(Part part : parts) {
+				/* 폼값 중 파일인 경우에만 업로드 처리를 위해 continue를 걸어준다. 즉 파일이 아니라면 for문의 처음으로 돌아간다. */
+				if(!part.getName().equals("rvUpload"))
+					continue;
+				
+				//파일명 추출을 위해 헤더값을 얻어온다.
+		        String partHeader = part.getHeader("content-disposition");
+		        //파일명을 추출한 후 따옴표를 제거한다. 
+		        String[] phArr = partHeader.split("filename=");
+		        String originalFileName = phArr[1].trim().replace("\"", "");
+
+		         
+				if (!originalFileName.isEmpty()) {	
+			        //파일을 원본파일명으로 저장한다.
+					part.write(uploadDir+ File.separator +originalFileName);
+					//저장된 파일을 UUID로 생성한 새로운 파일명으로 저장한다. 
+					String savedFileName = MyFunctions.renameFile(uploadDir, originalFileName);
+					/* Set에 저장된파일명을 저장한다.*/
+					saveFileSets.add(savedFileName);
+				}else {
+					String imageFileNamesString = req.getParameter("prev_rv_image").replaceAll("[\\[\\] ]", "");
+					String[] imageFileNames = imageFileNamesString.split(",");
+					for (String filenames : imageFileNames) {
+						String imageFileList = filenames.trim().replace("\"", "");
+						// 파일을 수정하지 않은경우
+						saveFileSets.add(imageFileList);
+					}
+				}
+				
+			}
+			//View로 전달하기 위해 Model객체에 저장한다. (일단 혹시몰라서 그대로 두는중)
+		    model.addAttribute("saveFileSets", saveFileSets);
+		    //View로 전달하기 위해 DTO객체에 문자열타입으로 저장한다. 
+		    reviewDTO.setRv_image(saveFileSets.toString());
+		}
+		catch (Exception e) {			
+			System.out.println("업로드 실패");
+			e.printStackTrace();
+		}
 		int result = dao.edit(reviewDTO);
 		System.out.println("글수정결과:"+ result);
-		return "redirect:/reviewView?idx="+ reviewDTO.getRv_id();       
+		return "redirect:reviewView?rv_id="+ reviewDTO.getRv_id();       
 	}
 	
 	@PostMapping("/reviewDelete")

@@ -93,8 +93,7 @@
 /* 이미지 슬라이드 구현 후 지울거임!!!!!! */
 /*.slide_wrap { height: 250px; background-color: gray; }*/
 .slider-container {
-	height: 500px; 
-	background-color: lightgray;
+	height: 500px;
     position: relative;
 }
 .slider-container .slides {

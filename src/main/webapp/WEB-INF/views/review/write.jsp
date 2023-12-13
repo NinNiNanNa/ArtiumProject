@@ -46,7 +46,6 @@ function validateForm(form) {
    if (form.rv_title.value == ""){
       alert("제목을 입력하세요.");
       form.rv_title.focus();
-      
       return false;
    }
    if (form.rv_date.value == ""){

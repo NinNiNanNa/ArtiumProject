@@ -113,7 +113,7 @@
 												<div class="title_wrap">
 													<div>
 														<a class="txtSkip" href="/reviewView?rv_id=${row.rv_id }">${row.rv_title }</a>
-														<h6>사용자 닉네임</h6>
+														<h6>${row.user_name }</h6>
 														<h5>${row.rv_postdate }</h5>
 														<ul class="info_wrap">
 															<li>

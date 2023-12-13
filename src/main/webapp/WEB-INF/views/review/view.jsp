@@ -166,10 +166,10 @@
                                 </div>
                                 <div class="memInfo_wrap">
                                     <div class="profileImg_wrap">
-                                        <img src="../img/profile.png" alt="">
+                                        <img src="../img/${reviewDTO.user_image==null ? 'profile.png' : reviewDTO.user_image }" alt="">
                                     </div>
                                     <div class="profileInfo_wrap">
-                                        <h4>닉네임</h4>
+                                        <h4>${reviewDTO.user_name }</h4>
                                          <span>작성일<i>${reviewDTO.rv_postdate }</i></span>
                                          <span>조회수<i>${reviewDTO.rv_visitcount }</i></span>
                                     </div>
@@ -181,7 +181,7 @@
                         </div>
 
 						<div class="viewBtn_wrap">
-							<a href="./reviewEdit?rv_id=${ param.rv_id };" class="btn btn-secondary">수정하기</a>
+							<a href="javascript:void(0);" onclick="location.href='./reviewEdit?rv_id=${ param.rv_id }';" class="btn btn-secondary">수정하기</a>
 							<a href="javascript:void(0);" onclick="deletePost(${ param.rv_id });" class="btn btn-light">삭제하기</a>
 							<a href="/reviewList" class="btn btn-dark">목록보기</a>
 						</div>

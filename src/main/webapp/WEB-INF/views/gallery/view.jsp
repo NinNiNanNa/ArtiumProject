@@ -41,6 +41,21 @@
     <link href="../vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
 
 <script>
+<!-- 로그인 세션 -->
+function checkLoginAndRedirect(destination) {
+    // 세션에서 userId 가져오기
+    var userId = "${sessionScope.userId}";
+    console.log(userId);
+    if (userId === undefined || userId === null || userId.trim() === "") {
+        // 로그인이 되어 있지 않은 경우
+        alert("작가회원 로그인 후  작성하실 수 있습니다.");
+       	window.location.href = "/login";
+    } 
+    else {
+        // 로그인이 된 경우 지정된 페이지로 이동
+        window.location.href = destination;
+    }
+}
 <!-- 게시글 삭제하기 -->
 let deletePost = function(){
 	let frm = document.forms['writeFrm'];
@@ -53,7 +68,6 @@ let deletePost = function(){
 
 <!-- 댓글 작성 및 등록을 처리하는 스크립트 -->
 window.onload = function(){
-	initMap();
 	// 페이지 로드 시 댓글 가져와서 출력
 	loadComments(1);
 }
@@ -88,12 +102,15 @@ document.addEventListener('DOMContentLoaded', function () {
 
 //페이지 로드 시 댓글 가져와서 화면에 출력하는 함수
 function loadComments(pageNum) {
+	var ga_id = ${ga_id};
+	console.log(ga_id + "ga_id값이다.");
+	
   $.ajax({  
-  contentType : "text/html;charset:utf-8", 
-  dataType : "json",
+		  contentType : "text/html;charset:utf-8", 
+		  dataType : "json",
       url: '/galleryCommentList.api',  // 댓글 가져올 URL
       method: 'GET',
-      data: { pageNum: pageNum },  // 페이지 번호 서버에 전달
+      data: { pageNum: pageNum, ga_id: ga_id },  // 페이지 번호 서버에 전달
       success: function (data) {
         // 가져온 댓글 데이터 사용하여 동적으로 댓글 생성
           $('#galleryCommentList').empty(); // 기존 댓글 목록 비우기
@@ -222,7 +239,7 @@ function loadComments(pageNum) {
 
 											<div class="viewBtn_wrap">
 												<a href="#" class="btn btn-light" onclick="deletePost(${ galleryDTO.ga_id });">삭제하기</a>
-												<a href="/galleryEdit?ga_id=${ galleryDTO.ga_id }" class="btn btn-secondary" onclick="">수정하기</a><!-- /galleryEdit?ga_id=${ galleryDTO.ga_id } -->
+												<a href="/galleryEdit?ga_id=${ galleryDTO.ga_id }" class="btn btn-secondary" onclick="checkLoginAndRedirect('/galleryWrite')">수정하기</a><!-- /galleryEdit?ga_id=${ galleryDTO.ga_id } -->
 												<a href="/galleryList" class="btn btn-dark" >목록보기</a>
 											</div>
 
@@ -230,7 +247,8 @@ function loadComments(pageNum) {
                 </div>
             </div>
         </section>
-
+        
+        
         <section id="section3">
             <div class="wrap1440">
                 <div class="gap1440">
@@ -238,10 +256,11 @@ function loadComments(pageNum) {
 
                         <div class="comment_wrap">
                             <div class="comment_title">
-                                <h1><i>5</i>개의 댓글을 확인해보세요!</h1>
+                                <h1><i class="cmtotalCount">5</i>개의 댓글을 확인해보세요!</h1>
                             </div>
                             <div class="comment_content">
 															<ul class="comList_wrap">
+															<form method="post" action="galleryCommentWrite.api"  id="galleryCommentviewForm">
 																<li>
 																	<div class="row commentBox" >
 																<c:choose>
@@ -267,22 +286,29 @@ function loadComments(pageNum) {
 																		</c:otherwise>
 																	</c:choose>
 																			<div class="content_wrap">
-																				<textarea name="cm_comment" id="commentContent" cols="30" rows="2" placeholder="댓글을 남겨주세요."></textarea>
+																				<div id="textCnts" class="col-lg-6" style="width:100%; text-align: right;">(0/150)</div>
+																				<textarea name="cm_comment" id="cmContent" cols="30" rows="2" placeholder="댓글을 남겨주세요."></textarea>
 																			</div>
 																		</div>
 																		<div class="col-lg-1 commentBtn_wrap">
-																			<button type="button" class="btn btn-dark" id="addComment" onclick="postComment()">등록</button>
+																			<button type="button" class="btn btn-dark" id="cmCntBtn" onclick="postComment()">등록</button>
 																		</div>
 																	</div>
 																</li>
+																</form>
 																<li>
+																	<div id="onGalleryCommentList">
+																		<!-- 갤러리 댓글 목록 출력 부분 -->
+																	</div>
+																</li> 
+																<%-- <li>
 																	<div class="row commentBox">
 																		<div class="col-lg-2 comImg_wrap">
-																			<img src="../img/profile.png" alt="">
+																			<img src="../img/${galleryCommentDTO.user_image }" alt="">
 																		</div>
 																		<div class="col-lg-10 comText_wrap">
 																			<div class="user_wrap">
-																				<span>닉네임</span>
+																				<span>${galleryCommentDTO.user_name }</span>
 																			</div>
 																			<div class="content_wrap">
 																			<span>${ galleryCommentDTO.cm_comment }</span>
@@ -293,9 +319,11 @@ function loadComments(pageNum) {
 																			<a href="">삭제</a>
 																		</div>
 																	</div>
-																</li>
+																</li> --%>
 															</ul>
-
+                            </div>
+                            <div class="paging_wrap">
+                            	<!-- 갤러리 댓글 페이지네이션 출력 부분 -->
                             </div>
                         </div>
 

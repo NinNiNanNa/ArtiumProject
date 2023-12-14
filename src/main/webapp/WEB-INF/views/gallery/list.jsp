@@ -40,8 +40,8 @@
 	<!-- 아이콘 -->
     <link href="../vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
     
-<!-- 로그인 세션 -->
 <script>
+<!-- 로그인 세션 -->
   function checkLoginAndRedirect(destination) {
       // 세션에서 userId 가져오기
       var userId = "${sessionScope.userId}";

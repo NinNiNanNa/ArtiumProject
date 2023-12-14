@@ -165,7 +165,7 @@ public class GalleryController {
 	// 갤러리 내용
 
 	@RequestMapping("/galleryView")
-	public String galleryView(Model model, GalleryDTO galleryDTO, HttpSession session) {
+	public String galleryView(Model model, GalleryDTO galleryDTO, HttpSession session, HttpServletRequest req) {
 		
 		// 세션에서 사용자 아이디 가져오기
 		String userId = (String) session.getAttribute("userId");
@@ -179,6 +179,9 @@ public class GalleryController {
 		galleryDTO = dao.view(galleryDTO);
 		galleryDTO.setGa_content(galleryDTO.getGa_content().replace("\r\n", "<br/>"));
 		model.addAttribute("galleryDTO", galleryDTO);	
+		
+//		System.out.println(req.getParameter("ga_id") + "gaid값이다.");
+		model.addAttribute("ga_id", req.getParameter("ga_id"));
         
 //        System.out.println("모델DTO: "+ galleryDTO);	
         
@@ -208,7 +211,6 @@ public class GalleryController {
 		String userId = (String) session.getAttribute("userId");
 		// 사용자 아이디를 모델에 추가
 		model.addAttribute("userId", userId);
-		
 		galleryDTO = dao.view(galleryDTO);
 		model.addAttribute("galleryDTO", galleryDTO);
 		System.out.println("수정 전: "+ galleryDTO);
@@ -223,7 +225,7 @@ public class GalleryController {
     		String uploadDir = ResourceUtils.getFile("classpath:static/uploads/").toPath().toString();
     		System.out.println("물리적경로:"+uploadDir);
     		
-    		// 파일명 저장을 위한 Map생성. Key는 원본파일명, value는 서버에 저장된 파일명을 저장한다.
+    		// 파일명 저장을 위한 Map생성. Key는 원본파일명, value는 서버에 저장된 파일명을 저장
     		Map<String, String> saveFileMaps  = new HashMap<>();
     		
     		for(int i=1 ; i<=5 ; i++) {
@@ -232,36 +234,36 @@ public class GalleryController {
 	    		// 파일명 확인을 위해 해더값 얻어오기 
 				String partHeader = part.getHeader("content-disposition");
 	    		System.out.println("partHeader="+ partHeader);
-	    		// 헤더값에서 파일명 추출을 위해 문자열을 split()하기
+	    		// 헤더값에서 파일명 추출을 위해 문자열 split()하기
 	    		String[] phArr = partHeader.split("filename=");
-	    		// 따옴표를 제거한 후 원본 파일명 추출.
+	    		// 따옴표를 제거한 후 원본 파일명 추출
 	    		String originalFileName = phArr[1].trim().replace("\"", "");
-	    		// 전송된 파일이 있다면 서버에 저장하기
+	    		// 전송된 파일이 있다면 서버에 저장
 	    		if(!originalFileName.isEmpty()) {
 	    			part.write(uploadDir+ File.separator +originalFileName);
+	    			// 저장된 파일명을 UUID로 생성한 새로운 파일명으로 저장
+	    			String savedFileName = MyFunctions.renameFile(uploadDir, originalFileName);
+	    			/* Map컬렉션에 원본파일명과 저장된 파일명을 key와 value로 저장 */
+	    			saveFileMaps.put(originalFileName, savedFileName);
+	    			
+	    			if(i==1) galleryDTO.setArt_image1(savedFileName);
+	    			if(i==2) galleryDTO.setArt_image2(savedFileName);
+	    			if(i==3) galleryDTO.setArt_image3(savedFileName);
+	    			if(i==4) galleryDTO.setArt_image4(savedFileName);
+	    			if(i==5) galleryDTO.setArt_image5(savedFileName);
 	    		}
-	    		else { 
-	    			String imageFileNamesString = req.getParameter(originalFileName).replaceAll("[\\[\\] ]", "");
-	    			String[] imageFileNames = imageFileNamesString.split(",");
-	    			for(String filenames : imageFileNames) {
-	    				String imageFileList = filenames.trim().replace("\"", "");
-	    				// 파일을 수정하지 않은경우
-	    				saveFileMaps.put(imageFileList, imageFileList);
-	    				
-	    			}
-	    		}
-	    		// 저장된 파일명을 UUID로 생성한 새로운 파일명으로 저장한다.
-				String savedFileName = MyFunctions.renameFile(uploadDir, originalFileName);
-				
-	    		/* Map컬렉션에 원본파일명과 저장된 파일명을 key와 value로 저장한다. */
-	    		saveFileMaps.put(originalFileName, savedFileName);
-//	    		saveFileMaps.put(originalFileName, originalFileName);
-	    		
-	    		if(i==1) galleryDTO.setArt_image1(savedFileName);
-	    		if(i==2) galleryDTO.setArt_image2(savedFileName);
-	    		if(i==3) galleryDTO.setArt_image3(savedFileName);
-	    		if(i==4) galleryDTO.setArt_image4(savedFileName);
-	    		if(i==5) galleryDTO.setArt_image5(savedFileName);
+	    		else {
+	    	        // 파일을 수정하지 않은 경우
+	    	        String savedFileName = req.getParameter("preview_GaImg"+ i);
+	    	        saveFileMaps.put(originalFileName, savedFileName);
+
+	    	        // 각각의 이미지에 대해 필요한 처리
+	    	        if (i == 1) galleryDTO.setArt_image1(savedFileName);
+	    	        if (i == 2) galleryDTO.setArt_image2(savedFileName);
+	    	        if (i == 3) galleryDTO.setArt_image3(savedFileName);
+	    	        if (i == 4) galleryDTO.setArt_image4(savedFileName);
+	    	        if (i == 5) galleryDTO.setArt_image5(savedFileName);
+	    	    }
     		}
 			
 			// 세션에서 사용자 아이디 가져오기
@@ -271,17 +273,18 @@ public class GalleryController {
 			
 			System.out.println("galleryDTO"+galleryDTO);
 			
-			// JDBC연동			
-			dao.write(galleryDTO);
+			// JDBC연동
+			System.out.println("수정이 되는거니...?: "+ galleryDTO);
+			int result = dao.edit(galleryDTO);
+			System.out.println("수정결과: "+ result);
 		}
 		catch (Exception e) {
 			System.out.println("업로드 실패");
+			
+			
 			e.printStackTrace();
 		}
 		
-		System.out.println("수정이 되는거니...?: "+ galleryDTO);
-		int result = dao.edit(galleryDTO);
-		System.out.println("수정결과: "+ result);
 		return "redirect:/galleryView?ga_id="+ galleryDTO.getGa_id();
 	}
 	
@@ -296,17 +299,20 @@ public class GalleryController {
 	
 /************************************************************************************************************/
 
-	// 갤러리 댓글 조회
+	// 갤러리 댓글 목록 조회
 	@RequestMapping("/galleryCommentList.api")
 	@ResponseBody
-	public Map<String, Object> galleryCommentList(HttpServletRequest req, GalleryDTO galleryDTO) {
-		HttpSession session = req.getSession();
-		String gaid = (String)session.getAttribute("ga_id");
-		galleryDTO.setGa_id(gaid);
-		System.out.println(gaid);
+	public Map<String, Object> onGalleryCommentList(HttpServletRequest req, ParameterDTO parameterDTO) {
+//		HttpSession session = req.getSession();
+//		String gaid = (String)session.getAttribute("ga_id");
+		String gaid = req.getParameter("ga_id");
+		parameterDTO.setGa_id(gaid);
+		System.out.println("이유가 뭐야: "+ gaid);
 		
 		// 게시물의 갯수를 카운트(검색어가 있는 경우 DTO객체에 자동으로 저장)
-		int totalCount = dao.getGalleryComments(galleryDTO);
+		int totalCount = dao.getGalleryComments(parameterDTO);
+		System.out.println("왜 안되는거야: "+ parameterDTO);
+		
 		// 페이징을 위한 설정값(하드코딩)
 		int pageSize = 10;		// 한 페이지당 게시물 수
 		int blockPage = 5;	// 한 블럭당 페이지번호 수
@@ -320,10 +326,10 @@ public class GalleryController {
 		int end = pageNum * pageSize;
 		
 		// 계산된 값 DTO에 저장
-		galleryDTO.setStart(start);
-		galleryDTO.setEnd(end);
+		parameterDTO.setStart(start);
+		parameterDTO.setEnd(end);
 		
-		ArrayList<GalleryCommentDTO> lists = dao.listGalleryComments(galleryDTO);
+		ArrayList<GalleryCommentDTO> lists = dao.listGalleryComments(parameterDTO);
 		
 		String pagingImg = PagingUtil.pagingImg(totalCount, pageSize, blockPage, pageNum, req.getContextPath()+"/galleryView?ga_id="+gaid+"&");
 		

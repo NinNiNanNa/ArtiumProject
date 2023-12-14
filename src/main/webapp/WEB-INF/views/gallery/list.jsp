@@ -39,6 +39,24 @@
 
 	<!-- 아이콘 -->
     <link href="../vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
+    
+<!-- 로그인 세션 -->
+<script>
+  function checkLoginAndRedirect(destination) {
+      // 세션에서 userId 가져오기
+      var userId = "${sessionScope.userId}";
+      console.log(userId);
+      if (userId === undefined || userId === null || userId.trim() === "") {
+          // 로그인이 되어 있지 않은 경우
+          alert("로그인 후 작성하실 수 있습니다.");
+         	window.location.href = "/login";
+      } 
+      else {
+          // 로그인이 된 경우 지정된 페이지로 이동
+          window.location.href = destination;
+      }
+  }
+</script>
 
 </head>
 <body>
@@ -110,7 +128,7 @@
 									</div>
 								</div>
 								<div class="writeBtn_wrap">
-									<a href="/galleryWrite">작품 등록</a>
+									<a href="javascript:void(0);" onclick="checkLoginAndRedirect('/galleryWrite')">작품 등록</a>
 								</div>
 								
 

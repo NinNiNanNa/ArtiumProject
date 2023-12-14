@@ -60,17 +60,22 @@ public interface IGalleryService {
 	
 	////////////////////////////////////////////////////////////
 	
+	// 갤러리 댓글 목록 Paging처리를 위해 게시물의 갯수 카운트
+	public int getGalleryComments(GalleryDTO parameterDTO);
+	
 	// 갤러리 댓글 목록 조회
-    public List<GalleryCommentDTO> getGalleryComments(int cm_id);
-
+    public ArrayList<GalleryCommentDTO> listGalleryComments(GalleryDTO galleryDTO);
+    
+    // 갤러리 댓글 내용
+    public GalleryCommentDTO viewGalleryComments(GalleryCommentDTO galleryCommentDTO);
+    
     // 갤러리 댓글 작성
-    public int addGalleryComment(GalleryCommentDTO galleryCommentDTO);
-
-//	public int galleryComments(GalleryCommentDTO galleryCommentDTO);
+	public int writeGalleryComments(GalleryCommentDTO galleryCommentDTO);
     
     // 댓글 수정
+	public int editGalleryComments(GalleryCommentDTO galleryCommentDTO);
     
     // 댓글 삭제
-
+	public int deleteGalleryComments(String cm_id);
 
 }

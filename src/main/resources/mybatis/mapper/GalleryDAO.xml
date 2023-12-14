@@ -91,7 +91,7 @@
 			    g.ga_id=#{ga_id}
 		</select>
 		
-		<!-- 온라인 갤러리 -->	
+		<!-- ///// 온라인 갤러리 ////// -->		
 		<select id="onlineGallery" resultType="com.edu.springboot.gallery.GalleryDTO" parameterType="com.edu.springboot.gallery.GalleryDTO">
 			SELECT
 			    g.*,
@@ -111,7 +111,8 @@
 		
 		<update id="edit" parameterType="com.edu.springboot.gallery.GalleryDTO">
 			UPDATE gallery SET
-			ga_title=#{ga_title}, user_id=#{user_id}, ga_sdate=#{ga_sdate}, ga_edate=#{ga_edate}, ga_content=#{ga_content},
+			ga_title=#{ga_title}, user_id=#{user_id}, 
+			ga_sdate=#{ga_sdate}, ga_edate=#{ga_edate}, ga_content=#{ga_content}, ga_postdate=#{ga_postdate},
         art_image1=#{art_image1}, art_title1=#{art_title1}, art_date1=#{art_date1}, art_content1=#{art_content1}, 
         art_image2=#{art_image2}, art_title2=#{art_title2}, art_date2=#{art_date2}, art_content2=#{art_content2}, 
         art_image3=#{art_image3}, art_title3=#{art_title3}, art_date3=#{art_date3}, art_content3=#{art_content3}, 
@@ -125,18 +126,47 @@
 			DELETE FROM gallery WHERE ga_id=#{ga_id}
 		</delete>
 		
+		
+<!-- ///// 댓글 ////// -->
+		
+		<!-- 갤러리 댓글 총 갯수 -->
+		<select id="getSGalleryComments" resultType="int" parameterType="com.edu.springboot.gallery.GalleryDTO">
+		SELECT COUNT(*) FROM comments WHERE ga_id=#{ga_id}
+		</select>
 	
-		 <!-- 갤러리 댓글 목록 조회 -->
-			<select id="getGalleryComments" resultType="int" parameterType="com.edu.springboot.gallery.GalleryCommentDTO">
-			    SELECT COUNT(*) FROM comments WHERE cm_id = #{cm_id}
-			    <!-- ORDER BY cm_postdate DESC -->
-			</select>
+		<!-- 갤러리 댓글 목록 조회 -->
+		<select id="listGalleryComments" 
+		resultType="com.edu.springboot.gallery.GalleryCommentDTO" 
+		parameterType="com.edu.springboot.gallery.GalleryDTO">
+		SELECT *
+			FROM (
+			    SELECT c.cm_id, c.cm_content, c.cm_postdate, c.rv_id, c.mt_id, c.ga_id, c.user_id,
+			           m.user_image, m.user_name,
+			           ROW_NUMBER() OVER (ORDER BY c.cm_postdate DESC) AS rNum
+			    FROM comments c
+			    JOIN members m ON c.user_id = m.user_id
+			    WHERE c.ga_id=#{ga_id}
+			)
+			WHERE rNum<![CDATA[>=]]>#{start} AND rNum<![CDATA[<=]]>#{end}
+		</select>
 		
 		 <!-- 갤러리 댓글 등록 -->
-    <insert id="addGalleryComment" parameterType="com.edu.springboot.gallery.GalleryCommentDTO">
+    <insert id="writeGalleryComment" parameterType="com.edu.springboot.gallery.GalleryCommentDTO">
         INSERT INTO comments (cm_id, cm_content, cm_postdate, rv_id, mt_id, ga_id, user_id)
         VALUES (seq_board_num.nextval, #{cm_content}, sysdate, #{rv_id}, #{mt_id}, #{ga_id) #{user_id})
     </insert>
-
-   
+    
+    <!-- 갤러리 댓글 수정 -->
+    <update id="editGalleryComment" parameterType="com.edu.springboot.gallery.GalleryCommentDTO">
+		UPDATE comments SET
+			cm_content=#{cm_content}
+		WHERE cm_id=#{cm_id}
+		</update>
+	
+    <!-- 갤러리 댓글 삭제 -->
+    <delete id="deleteGalleryComment">
+		DELETE FROM comments WHERE cm_id=#{param1}
+		</delete>
+		
+		
 	</mapper>

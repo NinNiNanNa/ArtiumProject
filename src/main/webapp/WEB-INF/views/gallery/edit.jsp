@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ taglib uri="jakarta.tags.core" prefix="c" %>
 <!DOCTYPE HTML>
 <html lang='ko' class=''>
 <head>
@@ -39,9 +40,7 @@
 
 	<!-- 아이콘 -->
     <link href="../vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
-
-</head>
-
+    
 <!-- 등록/취소버튼에 대한 클릭 이벤트 -->
 <script>
 $(document).ready(function(){
@@ -57,6 +56,7 @@ $(document).ready(function(){
 });
 </script>
 
+</head>
 <body>
 <div id='wrap'>
 	
@@ -105,7 +105,7 @@ $(document).ready(function(){
 	                                        <h2>작가 이름</h2>
 	                                    </div>
 	                                    <div class="col-lg-10 write_wrap">
-	                                        <input type="text" name="user_id" class="form-control" placeholder="작가 이름을 입력하세요." value="${galleryDTO.user_name }">
+	                                        <input type="text" name="user_id" class="form-control" placeholder="작가 이름을 입력하세요." readonly value="${galleryDTO.user_name }">
 	                                    </div>
 	                                </li>
 	                                <li class="row">
@@ -142,10 +142,17 @@ $(document).ready(function(){
 																		<textarea name="art_content1" id="" cols="30" rows="10" placeholder="작품1 내용을 입력해주세요.">${galleryDTO.art_content1 }</textarea>
 																	</div>
 																	<div class="col-lg-4 artImg_wrap">
+																	<div class="uploadImg_wrap">
+																		<c:forEach items="${imageFileList }" var="image" varStatus="status">
+																			<div class="uploadImgBox">
+																				<img src="./uploads/${image }" alt="" />
+																			</div>
+																		</c:forEach>
+																	</div>
 	                                  <label for="artImgFile1">
 	                                      <div class="uploadBtn">작품1 올리기</div>
 	                                  </label>
-	                                  <input type="file" name="art_image1" id="artImgFile1" accept="image/gif, image/jpeg, image/png" value="${galleryDTO.art_image1 }">
+	                                  <input type="file" name="art_image1" id="artImgFile1" accept="image/gif, image/jpeg, image/png">
 																		<img id="preview1" src="" alt="">
 																	</div>
 																</li>
@@ -159,7 +166,7 @@ $(document).ready(function(){
 			                               <label for="artImgFile2">
 			                                   <div class="uploadBtn">작품2 올리기</div>
 			                               </label>
-			                               <input type="file" name="art_image2" id="artImgFile2" accept="image/gif, image/jpeg, image/png" value="${galleryDTO.art_image1 }">
+			                               <input type="file" name="art_image2" id="artImgFile2" accept="image/gif, image/jpeg, image/png">
 																		 <img id="preview2" src="" alt="">
 																	</div>																	
 																</li>
@@ -173,7 +180,7 @@ $(document).ready(function(){
 		                                <label for="artImgFile3">
 		                                    <div class="uploadBtn">작품3 올리기</div>
 		                                </label>
-		                                <input type="file" name="art_image3" id="artImgFile3" accept="image/gif, image/jpeg, image/png" value="${galleryDTO.art_image3 }">
+		                                <input type="file" name="art_image3" id="artImgFile3" accept="image/gif, image/jpeg, image/png">
 																		<img id="preview3" src="" alt="">
 																	</div>
 																</li>
@@ -187,7 +194,7 @@ $(document).ready(function(){
 	                                  <label for="artImgFile4">
 	                                      <div class="uploadBtn">작품4 올리기</div>
 	                                  </label>
-	                                  <input type="file" name="art_image4" id="artImgFile4" accept="image/gif, image/jpeg, image/png" value="${galleryDTO.art_image4 }">
+	                                  <input type="file" name="art_image4" id="artImgFile4" accept="image/gif, image/jpeg, image/png" >
 																		<img id="preview4" src="" alt="">
 																	</div>
 																</li>
@@ -202,7 +209,7 @@ $(document).ready(function(){
 	                                      <div class="uploadBtn">작품5 올리기</div>
 	                                  </label>
 	                                  <input type="file" name="art_image5" id="artImgFile5" accept="image/gif, image/jpeg, image/png" >
-																		<img id="preview5" src="" alt="" value="${galleryDTO.art_image5 }">
+																		<img id="preview5" src="" alt="">
 																	</div>
 																</li>
 															</ul>
@@ -210,7 +217,7 @@ $(document).ready(function(){
 
 	                        <div class="button_wrap">
 	                            <a href="" class="btn btn-light cancelBtn">취소하기</a>
-	                            <a href="javascript:void(0);" class="btn btn-dark registBtn" id="registBtn" onclick="">등록하기</a>
+	                            <a href="javascript:void(0);" class="btn btn-dark registBtn" id="registBtn">등록하기</a>
 	                        </div>
 
                     	</form>

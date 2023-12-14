@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ taglib uri="jakarta.tags.core" prefix="c" %>
 <!DOCTYPE HTML>
 <html lang='ko' class=''>
 <head>
@@ -39,36 +40,8 @@
 	<!-- 아이콘 -->
     <link href="../vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
 
-</head>
-
-<!-- 댓글 작성 및 등록을 처리하는 스크립트 -->
 <script>
-
 <!-- 게시글 삭제하기 -->
-/* function deletePost(ga_id) {
-   var confirmed = confirm("정말로 삭제하겠습니까?");
-   if (confirmed) {
-       var form = document.forms['writeFrm']; 
-       if (form) {
-           var hiddenInput = document.createElement("input");
-           hiddenInput.type = "hidden";
-           hiddenInput.name = "ga_id";
-           hiddenInput.value = ga_id;
-           form.appendChild(hiddenInput);
-           
-           form.method = "post";
-           form.action = "galleryList";
-           form.submit();
-       } 
-       else {
-           console.error("Form with name 'writeFrm' not found.");
-       }
-   } 
-   else {
-       console.log("삭제를 취소했습니다.")
-   }
-} */
-
 let deletePost = function(){
 	let frm = document.forms['writeFrm'];
 	if(confirm("정말 삭제할까요?")){
@@ -78,86 +51,98 @@ let deletePost = function(){
 	}
 }
 
-
-$(document).ready(function(){
-	// 댓글 등록 버튼 클릭 시
-	$("#addComment").on("click", function(){
-		// 사용자가 작성한 댓글 내용 가져오기
-		var commentContent = $("#commentContent").val();
-		
-		// 서버로 댓글 내용 전송(Ajax를 사용하여 서버에 전송), 성공 시 화면에 댓글 추가
-		$.ajax({
-		type: 'POST',  // 댓글 등록은 POST 방식을 사용
-		url: "/galleryWriteComment",
-		contentType: "application/json", // 데이터 타입을 JSON형태로 저장
-		data: JSON.stringify({ commentContent: commentContent }),
-		success: function(response) {
-			if(response.success) {
-				// 서버에서 성공적으로 응답을 받으면 댓글 목록 갱신 및 새로운 댓글을 화면에 추가
-				loadComments();
-				// 댓글 작성 폼 초기화
-				$("#commentContent").val('');
-			}
-			else {
-				console.error("댓글 등록 실패:", response.error);
-			} 
-		},
-		error: function(error) {
-				console.error("댓글 등록 실패:", error);
-		}
-	});
-});
-	
-// 댓글 목록 조회 및 초기화 함수 (페이지 로드 시 호출)
-function loadComments() {
-	$.ajax({  
-		url: '/galleryView/getComments',  //URL
-		method: 'GET',
-		success: function (data) {
-			// 가져온 댓글 데이터를 사용하여 동적으로 댓글을 생성
-			for (var i = 0; i < data.length; i++) {
-				var comment = data[i];
-				var commentItem = '<li><div class="row">' +
-				'<div class="col-lg-2 comImg_wrap">' +
-				'<img src="../img/' + comment.user_image + '" alt="">' +
-				'</div>' +
-				'<div class="col-lg-10 comText_wrap">' +
-				'<div class="user_wrap">' +
-				'<span>' + comment.user_name + '</span>' +
-				'<span>' + comment.cm_postdate + '</span>' +
-				'</div>' +
-				'<div class="content_wrap">' +
-				'<span>' + comment.cm_comment + '</span>' +
-				'</div>' +
-				'</div>' +
-				'</div></li>';
-				$('.comList_wrap').append(commentItem);
-			}
-		},
-		error: function () {
-			 console.error('Failed to load comments.');
-		}
-	});
+<!-- 댓글 작성 및 등록을 처리하는 스크립트 -->
+window.onload = function(){
+	initMap();
+	// 페이지 로드 시 댓글 가져와서 출력
+	loadComments(1);
 }
-  // 페이지 로드 시 댓글 목록 초기화
-  loadComments();
+
+//댓글 글자 길이 카운트 및 엔터 키 이벤트
+document.addEventListener('DOMContentLoaded', function () {
+    var cmContent = document.getElementById('cmContent');
+    var textCnts = document.getElementById('textCnts');
+
+    cmContent.addEventListener('keydown', function (e) {
+        // 엔터 키가 눌렸을 때
+        if (e.keyCode === 13) {
+        	// 기본 동작인 줄바꿈 막음
+        	e.preventDefault();
+            // 댓글 작성 함수 호출
+            postComment();
+        }
+    });
+    cmContent.addEventListener('keyup', function () {
+        // 입력된 텍스트의 길이를 #textCnts에 표시
+        textCnts.innerHTML = "(" + cmContent.value.length + " / 150)";
+
+        // 만약 입력된 텍스트의 길이가 150을 초과하면
+        if (cmContent.value.length > 150) {
+        	// 입력된 텍스트를 150자까지만 자르고 다시 #cmContent에 설정
+          cmContent.value = cmContent.value.substring(0, 150);
+         // #textCnt에 (15 / 150)으로 표시
+         textCnts.innerHTML = "(150 / 150)";
+        }
+    });
 });
 
-function postComment() {
-	var userId = "${sessionScope.userId}";
-	var commentContent = document.getElementById('commentContent').value;
-	
-	if (userId === undefined || userId === null || userId.trim() === "") {
-		alert("로그인이 필요한 서비스입니다.");
-	}
-	else { 
-		if (!commentContent) {
-			alert("댓글을 작성해주세요.");
-			return;
-		}
-	}
-}	
+//페이지 로드 시 댓글 가져와서 화면에 출력하는 함수
+function loadComments(pageNum) {
+  $.ajax({  
+  contentType : "text/html;charset:utf-8", 
+  dataType : "json",
+      url: '/galleryCommentList.api',  // 댓글 가져올 URL
+      method: 'GET',
+      data: { pageNum: pageNum },  // 페이지 번호 서버에 전달
+      success: function (data) {
+        // 가져온 댓글 데이터 사용하여 동적으로 댓글 생성
+          $('#galleryCommentList').empty(); // 기존 댓글 목록 비우기
+          // 가져온 댓글 데이터 사용하여 동적으로 댓글 생성
+          for (var i = 0; i < data.lists.length; i++) {
+              var comments = data.lists[i];
+              var buttons = '';
+              var userId = "${sessionScope.userId}"; // 세션에서 현재 로그인한 사용자 아이디 가져옴
+              if (userId && userId === comments.user_id) {
+                buttons = '<div class="btn_wrap">' +
+                      '<a href="" class="cmEditBtn" data-edit-id="'+comments.cm_id+'">수정</a>' +
+                      '<a href="" class="cmDeleteBtn" data-comment-id="'+comments.cm_id+'">삭제</a>' +
+                      '</div>';
+              }
+              
+              var commentItem = '<li id="cmList'+comments.cm_id+'">' +
+                '<input type="hidden" id="cmId" name="cm_id" value="'+comments.cm_id+'" />' +
+                '<div class="row commentBox commentBox'+comments.cm_id+'">' +
+        '<div class="col-lg-2 comImg_wrap">' +
+        '<img src="../img/'+comments.user_image+'" alt="">' +
+        '</div>' +
+        '<div class="col-lg-10 comText_wrap">' +
+        '<div class="user_wrap">' +
+        '<span>'+comments.user_name+'</span>' +
+        '<span>'+comments.cm_postdate+'</span>' +
+        '</div>' +
+        '<div class="content_wrap">' +
+        '<p>'+comments.srv_content+'</p>' +
+        '</div>' +
+        '</div>' +
+        buttons +
+        '</div>' +
+        '</li>';
+        
+              $('#galleryCommentList').append(commentItem);
+          }
+          $('.cmtotalCount').html(data.totalCount);
+          $('.paging_wrap').html(data.pagingImg);
+          
+      },
+      error: function () {
+          console.error('댓글 불러오기 실패');
+      }
+  });
+}
+
 </script>
+
+</head>
 <body>
 <div id='wrap'>
 	

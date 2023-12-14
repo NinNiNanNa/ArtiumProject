@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.edu.springboot.smtp.IdFindMail;
 import com.edu.springboot.smtp.RegisterMail;
 
 import jakarta.servlet.http.Cookie;
@@ -27,6 +28,10 @@ public class MainController {
 	//회원가입 메일 서비스
 	@Autowired
 	RegisterMail registerMail;
+	
+	//아이디 찾기 메일 서비스
+	@Autowired
+	IdFindMail idFindMail;
 	
 	@RequestMapping("/")
 	public String main() {
@@ -61,12 +66,14 @@ public class MainController {
 		return result;
 	}
 	
+	
 	//로그아웃
 	@RequestMapping("/logout")
 	public String logout(HttpSession session) {
 		session.invalidate();
 		return "login";
 	}
+	
 	
 	//회원가입
 	@RequestMapping(value="/join", method=RequestMethod.GET)
@@ -80,6 +87,7 @@ public class MainController {
 		if(result==1) System.out.println("입력되었습니다.");
 		return "login";
 	}
+	
 	
 	//아이디 중복 확인
 	@ResponseBody
@@ -139,25 +147,49 @@ public class MainController {
 		return "mypage";
 	}
 	
-
-	/*
-	 * @GetMapping("/mateList") public String mateList() { return "/mate/list"; }
-	 * 
-	 * @GetMapping("/mateView") public String mateView() { return "/mate/view"; }
-	 * 
-	 * @GetMapping("/mateWrite") public String mateWrite() { return "/mate/write"; }
-	 */
 	
+	//아이디 찾기
+//	@ResponseBody
+//	@RequestMapping(value="/idFind/searchId", method=RequestMethod.POST)
+//	public String searchId(@RequestParam("id") String id) {
+//		MemberDTO memberDTO = new MemberDTO();
+//		memberDTO.setUser_id(id);
+//		String result = dao.searchId(memberDTO);
+//		
+//		return "login";
+//	}
 	
 	@GetMapping("/idFind")
 	public String idFind() {
-		return "/idFind";
+		return "idFind";
 	}
+	
+	
+	@ResponseBody
+	@RequestMapping(value="/idFind/searchId", method=RequestMethod.POST)
+	public String searchId(@RequestParam("name") String name, @RequestParam("email") String email, HttpServletRequest req, HttpServletResponse rsp) throws Exception {
+		MemberDTO memberDTO = new MemberDTO();
+		String code;
+		memberDTO.setUser_name(name);
+		memberDTO.setUser_email(email);
+		String result = dao.searchId(memberDTO);
+		if(result == null) {
+			code = null;
+		} else {
+			code = idFindMail.sendSimpleMessage(email, result);
+			System.out.println("사용자에게 발송한 회원아이디 ==> " + code);
+		}
+		
+		return code;
+	}
+	
+	
+		
+	//비밀번호 찾기	
 	@GetMapping("/pwFind")
 	public String pwFind() {
 		return "/pwFind";
 	}
-	
 	
 
 	@GetMapping("/admin")

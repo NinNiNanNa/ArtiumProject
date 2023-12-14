@@ -22,7 +22,7 @@ import jakarta.mail.internet.MimeMessage.RecipientType;
 public class RegisterMail implements MailServiceInter {
 
     @Autowired
-    JavaMailSender emailSender; // MailConfig에서 등록해둔 Bean을 autowired하여 사용하기
+    JavaMailSender emailSender; 
 
     private String ePw; // 사용자가 메일로 받을 인증번호
 
@@ -35,7 +35,7 @@ public class RegisterMail implements MailServiceInter {
         MimeMessage message = emailSender.createMimeMessage();
         
         message.addRecipients(RecipientType.TO, to); // 메일 받을 사용자
-        message.setSubject("[Fligent] 회원가입 인증을 위한 이메일 인증코드 입니다"); // 이메일 제목
+        message.setSubject("[Artium] 회원가입 인증을 위한 이메일 인증코드 입니다"); // 이메일 제목
 
         String msgg = "";
         msgg += "<div style='margin:100px;'>";
@@ -47,7 +47,7 @@ public class RegisterMail implements MailServiceInter {
         msgg += "<p>감사합니다!<p>";
         msgg += "<br>";
         msgg += "<div align='center' style='border:1px solid black; font-family:verdana';>";
-        msgg += "<h3 style='color:blue'>회원가입 인증코드 입니다</h3>";
+        msgg += "<h3 style='color:blue'>회원가입 인증코드 입니다.</h3>";
         msgg += "<div style='font-size:130%'>";
         msgg += "CODE : <strong>";
         msgg += "<strong>" + ePw + "</strong></div><br/>" ; // 메일에 인증번호 ePw 넣기

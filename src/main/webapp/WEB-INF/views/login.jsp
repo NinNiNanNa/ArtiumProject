@@ -156,7 +156,7 @@ function loginCheck(){
 									<li>
 										<hr>
 										<a href="./join" class="buttons joinBtn">회원가입</a>
-										<a href="javascript:void(0);" class="buttons searchBtn">아이디 / 비밀번호 찾기</a>
+										<a href="./idFind" class="buttons searchBtn">아이디 / 비밀번호 찾기</a>
 									</li>
 								</ul>
 								</form>

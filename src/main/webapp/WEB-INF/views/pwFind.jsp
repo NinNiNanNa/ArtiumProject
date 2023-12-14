@@ -67,12 +67,12 @@
 								<ul class="tabBtn_wrap clearfix">
 									<li>
 										<div>
-											<a href="./idFind.html" class="idSearchBtn">아이디 찾기</a>
+											<a href="./idFind" class="idSearchBtn">아이디 찾기</a>
 										</div>
 									</li>
 									<li>
 										<div>
-											<a href="./pwFind.html" class="pwSearchBtn addSelectBtn">비밀번호 찾기</a>
+											<a href="./pwFind" class="pwSearchBtn addSelectBtn">비밀번호 찾기</a>
 										</div>
 									</li>
 								</ul>

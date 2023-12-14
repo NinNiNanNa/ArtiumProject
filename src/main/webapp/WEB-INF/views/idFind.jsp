@@ -35,11 +35,35 @@
 
 	<!-- 브라우저별 접두사 쓸 필요 없음 -->
 	<script src='./js/lib/prefixfree.min.js'></script>
+	
+	<script type="text/javascript">
+	    function sendNumber(){
+	        $("#mail_number").css("display","block");
+	        $.ajax({
+	            url:"/idFind/searchId",
+	            type:"post",
+	            data:{"email" : $("#email").val(),
+	            	"name" : $("#name").val()},
+	            success: function(data){
+	            	checkId(data);
+	            }
+	        });
+	    }
+	    
+	    function checkId(data){
+	        if(!data){
+	            alert("아이디가 존재하지 않습니다.");
+	        }else{
+	        	alert("아이디가 발송되었습니다.");
+	        }
+	    }
+    </script>
 
 	<!-- 아이콘 -->
     <link href="./vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
 
 </head>
+
 <body>
 <div id='wrap'>
 	
@@ -52,7 +76,6 @@
 	<%@ include file="/header.jsp"%>
 	
 	<main id='main'>
-
 		<section id="section">
 			<div class="wrap1440">
 				<div class="gap1440">
@@ -67,12 +90,12 @@
 								<ul class="tabBtn_wrap clearfix">
 									<li>
 										<div>
-											<a href="./idFind.html" class="idSearchBtn addSelectBtn">아이디 찾기</a>
+											<a href="./idFind" class="idSearchBtn addSelectBtn">아이디 찾기</a>
 										</div>
 									</li>
 									<li>
 										<div>
-											<a href="./pwFind.html" class="pwSearchBtn">비밀번호 찾기</a>
+											<a href="./pwFind" class="pwSearchBtn">비밀번호 찾기</a>
 										</div>
 									</li>
 								</ul>
@@ -80,29 +103,27 @@
 									<li>
 										<h2>닉네임</h2>
 										<div class="inputBox inputBoxName">
-											<input type="text" name="name" id="name" placeholder="닉네임을 입력해주세요.">
+											<input type="text" name="user_name" id="name" placeholder="닉네임을 입력해주세요.">
 											<a href="javascript:void(0);" class="delBtn"><img src="./img/icon_close_circle.svg" alt=""></a>
 											<p></p>
 										</div>
 									</li>
 									<li>
 										<h2>이메일</h2>
-										<div class="inputBox inputBoxEmail">
-											<input type="text" name="email" id="email" placeholder="이메일을 입력해주세요.">
+										<div class="inputBox inputBoxEmail" id="mail_number">
+											<input type="text" name="user_email" id="email" placeholder="이메일을 입력해주세요.">
 											<a href="javascript:void(0);" class="delBtn"><img src="./img/icon_close_circle.svg" alt=""></a>
 											<p></p>
 										</div>
 									</li>
 									<li>
 										<div class="buttonBox">
-											<a href="javascript:void(0);" class="conBtn">확인</a>
+											<a href="javascript:void(0);" onclick="sendNumber()" class="conBtn">확인</a>
 										</div>
 									</li>
 								</ul>
-								
 							</div>
 						</div>
-
 					</div>
 				</div>
 			</div>
@@ -123,4 +144,5 @@
 	
 </div>  
 </body>
+
 </html>

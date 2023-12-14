@@ -13,7 +13,7 @@
 		select * from members order by user_regidate desc
 	</select>
 	
-	
+	<!-- 검색하기 -->
 	<select id="search"
 		resultType="com.edu.springboot.member.MemberDTO">
 		select * from members where ${searchOption} like '%'||#{keyword}||'%' order by user_regidate desc 
@@ -32,6 +32,12 @@
 	<select id="idCheck"
 		parameterType="com.edu.springboot.member.MemberDTO">
 		select COUNT(*) from members where user_id = #{user_id}
+	</select>
+	
+	<!-- 아이디 찾기 -->
+	<select id="searchId"
+		parameterType="com.edu.springboot.member.MemberDTO">
+		select user_id from members where user_name = #{user_name} and user_email = #{user_email}
 	</select>
 	
 	<!-- 기존 회원정보 인출하기 -->

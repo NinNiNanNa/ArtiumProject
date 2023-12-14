@@ -11,6 +11,8 @@ public interface IMemberService {
 	public List<MemberDTO> select();
 	//회원검색
 	public List<MemberDTO> search(MemberDTO memberDTO);
+	//아이디 찾기
+	public String searchId(MemberDTO memberDTO);
 	//회원가입
 	public int insert(MemberDTO memberDTO);
 	//아이디 중복 확인

@@ -40,6 +40,12 @@
 		select user_id from members where user_name = #{user_name} and user_email = #{user_email}
 	</select>
 	
+	<!-- 비밀번호 찾기 -->
+	<select id="searchPw"
+		parameterType="com.edu.springboot.member.MemberDTO">
+		select user_pass from members where user_id = #{user_id} and user_email = #{user_email}
+	</select>
+	
 	<!-- 기존 회원정보 인출하기 -->
 	<select id="selectOne"
 		parameterType="com.edu.springboot.member.MemberDTO"

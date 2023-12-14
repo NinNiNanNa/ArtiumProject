@@ -35,6 +35,29 @@
 
 	<!-- 브라우저별 접두사 쓸 필요 없음 -->
 	<script src='./js/lib/prefixfree.min.js'></script>
+	
+	<script type="text/javascript">
+	    function sendNumber(){
+	        $("#mail_number").css("display","block");
+	        $.ajax({
+	            url:"/pwFind/searchPw",
+	            type:"post",
+	            data:{"email" : $("#email").val(),
+	            	"id" : $("#id").val()},
+	            success: function(data){
+	            	checkId(data);
+	            }
+	        });
+	    }
+	    
+	    function checkId(data){
+	        if(!data){
+	            alert("비밀번호가 존재하지 않습니다.");
+	        }else{
+	        	alert("비밀번호가 발송되었습니다.");
+	        }
+	    }
+    </script>
 
 	<!-- 아이콘 -->
     <link href="./vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
@@ -80,29 +103,27 @@
 									<li>
 										<h2>아이디</h2>
 										<div class="inputBox inputBoxId">
-											<input type="text" name="id" id="id" placeholder="아이디를 입력해주세요.">
+											<input type="text" name="user_id" id="id" placeholder="아이디를 입력해주세요.">
 											<a href="javascript:void(0);" class="delBtn"><img src="./img/icon_close_circle.svg" alt=""></a>
 											<p></p>
 										</div>
 									</li>
 									<li>
 										<h2>이메일</h2>
-										<div class="inputBox inputBoxEmail">
-											<input type="text" name="email" id="email" placeholder="이메일을 입력해주세요.">
+										<div class="inputBox inputBoxEmail" id="mail_number">
+											<input type="text" name="user_email" id="email" placeholder="이메일을 입력해주세요.">
 											<a href="javascript:void(0);" class="delBtn"><img src="./img/icon_close_circle.svg" alt=""></a>
 											<p></p>
 										</div>
 									</li>
 									<li>
 										<div class="buttonBox">
-											<a href="javascript:void(0);" class="conBtn">확인</a>
+											<a href="javascript:void(0);" onclick="sendNumber()" class="conBtn">확인</a>
 										</div>
 									</li>
 								</ul>
-								
 							</div>
 						</div>
-
 					</div>
 				</div>
 			</div>

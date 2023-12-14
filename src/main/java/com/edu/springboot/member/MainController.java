@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.edu.springboot.smtp.IdFindMail;
+import com.edu.springboot.smtp.PwFindMail;
 import com.edu.springboot.smtp.RegisterMail;
 
 import jakarta.servlet.http.Cookie;
@@ -32,6 +33,10 @@ public class MainController {
 	//아이디 찾기 메일 서비스
 	@Autowired
 	IdFindMail idFindMail;
+	
+	//비밀번호 찾기 메일 서비스
+	@Autowired
+	PwFindMail pwFindMail;
 	
 	@RequestMapping("/")
 	public String main() {
@@ -149,21 +154,10 @@ public class MainController {
 	
 	
 	//아이디 찾기
-//	@ResponseBody
-//	@RequestMapping(value="/idFind/searchId", method=RequestMethod.POST)
-//	public String searchId(@RequestParam("id") String id) {
-//		MemberDTO memberDTO = new MemberDTO();
-//		memberDTO.setUser_id(id);
-//		String result = dao.searchId(memberDTO);
-//		
-//		return "login";
-//	}
-	
 	@GetMapping("/idFind")
 	public String idFind() {
 		return "idFind";
 	}
-	
 	
 	@ResponseBody
 	@RequestMapping(value="/idFind/searchId", method=RequestMethod.POST)
@@ -184,12 +178,31 @@ public class MainController {
 	}
 	
 	
-		
 	//비밀번호 찾기	
 	@GetMapping("/pwFind")
 	public String pwFind() {
-		return "/pwFind";
+		return "pwFind";
 	}
+	
+	@ResponseBody
+	@RequestMapping(value="/pwFind/searchPw", method=RequestMethod.POST)
+	public String searchPw(@RequestParam("id") String id, @RequestParam("email") String email, HttpServletRequest req, HttpServletResponse rsp) throws Exception {
+		MemberDTO memberDTO = new MemberDTO();
+		String code;
+		memberDTO.setUser_id(id);
+		memberDTO.setUser_email(email);
+		String result = dao.searchPw(memberDTO);
+		if(result == null) {
+			code = null;
+		} else {
+			code = pwFindMail.sendSimpleMessage(email, result);
+			System.out.println("사용자에게 발송한 회원비밀번호 ==> " + code);
+		}
+		
+		return code;
+	}
+	
+	
 	
 
 	@GetMapping("/admin")

@@ -74,8 +74,8 @@ $(document).ready(function() {
                 console.log("완료");
                 console.log("(성공)아이디가져옴: "+userId);
                 console.log("(성공)일련번호가져옴: "+exSeq);
-                $(".bookMarkBtn i.far").css({'opacity':1});
-                $(".bookMarkBtn i.fas").css({'opacity':0});
+                $(".bookMarkBtn i.far").css({'opacity':0});
+                $(".bookMarkBtn i.fas").css({'opacity':1});
             },
             error: function () {
                 console.error('북마크 작동 실패');

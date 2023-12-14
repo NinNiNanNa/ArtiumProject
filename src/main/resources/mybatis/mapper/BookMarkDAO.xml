@@ -14,7 +14,7 @@
 
 	<insert id="insertBM" parameterType="com.edu.springboot.common.BookMarkDTO">
 		INSERT INTO bookmark (bm_id, user_id, ex_seq)
-		VALUES (seq_board_num.nextval, #{user_id}, #{ex_seq})
+		VALUES (seq_board_num.nextval, #{param1}, #{param2})
 	</insert>
 	
 	<delete id="deleteBM">

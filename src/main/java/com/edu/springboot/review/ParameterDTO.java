@@ -6,6 +6,8 @@ import lombok.Setter;
 @Getter
 @Setter
 public class ParameterDTO {
+	private String num;
+	private String pageNum;
 	private String searchField;
 	private String searchKeyword;
 	private int start;

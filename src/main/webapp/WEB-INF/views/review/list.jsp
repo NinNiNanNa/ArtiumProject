@@ -41,6 +41,22 @@
     <link href="../vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
 
 </head>
+<script>
+	function checkLoginAndRedirect(destination) {
+		// 세션에서 userId 가져오기
+		var userId = "${sessionScope.userId}";
+		console.log(userId);
+		if (userId === undefined || userId === null || userId.trim() === "") {
+			// 로그인이 되어 있지 않은 경우
+			alert("로그인 후 작성하실 수 있습니다.");
+			window.location.href = "/login";
+		} 
+		else {
+			// 로그인이 된 경우 지정된 페이지로 이동
+			window.location.href = destination;
+		}
+	}
+</script>
 <body>
 <div id='wrap'>
 	
@@ -79,20 +95,22 @@
 							<!-- Content Row -->
 							<div class="row">
 								
+								<form method="get">
 								<div class="search_wrap clearfix">
 									<div class="searchField_wrap">
 										<select class="form-select" name="searchField">
-											<option value="">제목</option>
-											<option value="">닉네임</option>
+											<option value="rv_title">제목</option>
+											<option value="user_name">닉네임</option>
 										</select>
 									</div>
 									<div class="searchWord_wrap">
-										<input type="text" class="form-control" name="searchWord" placeholder="제목 또는 닉네임을 입력하세요.">
-										<button type="button" class="btn btn-dark searchBtn"><i class="fas fa-search"></i></button>
+										<input type="text" class="form-control" name="searchKeyword" placeholder="제목 또는 닉네임을 입력하세요.">
+										<button type="submit" class="btn btn-dark searchBtn"><i class="fas fa-search"></i></button>
 									</div>
 								</div>
+								</form>
 								<div class="writeBtn_wrap">
-									<a href="/reviewWrite">리뷰 등록</a>
+									<a href="javascript:void(0);" onclick="checkLoginAndRedirect('/reviewWrite')">리뷰 등록</a>
 								</div>
 							
 								<div class="col" style="margin-top: 30px;">
@@ -104,11 +122,19 @@
 											<div class="listInfo">
 												<div class="image_wrap">
 													<img src="./uploads/${row.rv_image }" alt="">
-													<div class="listBtn_wrap">
-														<a href="#" class="bookMarkBtn">
-															<i class="fas fa-bookmark"></i>
-														</a>
-													</div>
+													<c:choose>
+														<c:when test="${not empty userId }">
+															<div class="listBtn_wrap">
+																<a href="javascript:;" class="bookMarkBtn" data-exseq-id="${row.rv_id }">
+																	<i class="fas fa-bookmark"></i>
+																	<i class="far fa-bookmark"></i>
+																</a>
+															</div>
+														</c:when>
+														<c:otherwise>
+														
+														</c:otherwise>
+													</c:choose>
 												</div>
 												<div class="title_wrap">
 													<div>

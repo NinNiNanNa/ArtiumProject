@@ -21,6 +21,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpSession;
 import jakarta.servlet.http.Part;
 import utils.MyFunctions;
 import utils.PagingUtil;
@@ -84,6 +85,7 @@ public class ReviewController {
 	// 상페보기 페이지
 	@RequestMapping("/reviewView")
 	public String reviewView(Model model, ReviewDTO reviewDTO) {
+		dao.visitCount(reviewDTO.getRv_id());
 		reviewDTO = dao.view(reviewDTO);
 		reviewDTO.setRv_content(reviewDTO.getRv_content().replace("\r\n", "<br>"));
 		String imageFileNamesString = reviewDTO.getRv_image().replaceAll("[\\[\\] ]", "");
@@ -102,7 +104,7 @@ public class ReviewController {
 	
 	// 글쓰기 처리
 	@PostMapping("/reviewWrite")
-	public String reviewWritePost(Model model, HttpServletRequest req, ReviewDTO reviewDTO) {
+	public String reviewWritePost(Model model, HttpServletRequest req, ReviewDTO reviewDTO, HttpSession session) {
 		try {
 			//물리적 경로 얻어오기 
 			String uploadDir = ResourceUtils.getFile("classpath:static/uploads/").toPath().toString();
@@ -118,7 +120,6 @@ public class ReviewController {
 					continue;
 				//파일명 추출을 위해 헤더값을 얻어온다.
 		        String partHeader = part.getHeader("content-disposition");
-		        System.out.println("partHeader="+ partHeader);
 		        //파일명을 추출한 후 따옴표를 제거한다. 
 		        String[] phArr = partHeader.split("filename=");
 		        String originalFileName = phArr[1].trim().replace("\"", "");
@@ -140,18 +141,12 @@ public class ReviewController {
 			System.out.println("업로드 실패");
 			e.printStackTrace();
 		}
-		/* request 내장객체를 통해 폼값을 받아온다. DTO에 저장된 첨부파일의 값을 받아온다. */
-		String rv_title = req.getParameter("rv_title");
-		String rv_date = req.getParameter("rv_date");
-		String rv_stime = req.getParameter("rv_stime");
-		String rv_etime = req.getParameter("rv_etime");
-		String rv_congestion = req.getParameter("rv_congestion");
-		String rv_transportation = req.getParameter("rv_transportation");
-		String rv_revisit = req.getParameter("rv_revisit");
-		String rv_image = reviewDTO.getRv_image();
-		String rv_content = req.getParameter("rv_content");
+		// 세션에서 사용자 아이디 가져오기
+		String userId = (String) session.getAttribute("userId");
+		reviewDTO.setUser_id(userId);
+		
 		// 폼값을 개별적으로 전달한다.
-		int result = dao.write(rv_title, rv_date, rv_stime, rv_etime, rv_congestion, rv_transportation, rv_revisit, rv_image, rv_content);
+		int result = dao.write(reviewDTO);
 		System.out.println("글쓰기결과:"+ result);
 		// 글쓰기가 완료되면 목록으로 이동한다.
 		return "redirect:/reviewList";

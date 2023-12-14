@@ -42,11 +42,25 @@
 
 </head>
 <script>
+window.onload = function() {
+	// 세션에서 userId 가져오기
+    var userId = "${sessionScope.userId}";
+    console.log(userId);
+    if (userId === undefined || userId === null || userId.trim() === "") {
+        // 로그인이 되어 있지 않은 경우
+        alert("회원 전용 페이지입니다. 로그인이 필요합니다.");
+       	window.location.href = "/login";
+    }
+    else if(userId!="${reviewDTO.user_id}"){
+    	alert("작성자 전용 페이지입니다.");
+       	window.location.href = "/reviewList";
+    }
+}
+
 function validateForm(form) {
    if (form.rv_title.value == ""){
       alert("제목을 입력하세요.");
       form.rv_title.focus();
-      
       return false;
    }
    if (form.rv_date.value == ""){
@@ -79,7 +93,7 @@ function validateForm(form) {
       form.rv_revisit.focus();
       return false;
    }
-   if (form.rv_image.src == ""){
+   if (form.rvUpload.files.length === 0 && !form.prev_rv_image.value){
       alert("사진을 업로드하세요.");
       form.rvUpload.focus();
       return false;

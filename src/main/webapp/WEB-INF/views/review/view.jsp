@@ -71,15 +71,47 @@
 	    showSlides(0);
 	};
 	
-	
 	function deletePost(rv_id){
-	    var confirmed = confirm("정말로 삭제하겠습니까?"); 
-	    if (confirmed) {
-	        var form = document.reviewFrm;      
-	        form.method = "post";  
-	        form.action = "reviewDelete";
-	        form.submit();  
+		// 세션에서 userId 가져오기
+		var userId = "${sessionScope.userId}";
+		console.log(userId);
+		if (userId === undefined || userId === null || userId.trim() === "") {
+			// 로그인이 되어 있지 않은 경우
+			alert("로그인 후 사용할 수 있습니다.");
+			window.location.href = "/login";
+		}
+		else if(userId!="${reviewDTO.user_id}"){
+	    	alert("작성자 전용 기능입니다.");
+	       	window.location.href = "/reviewList";
 	    }
+		else {
+			var confirmed = confirm("정말로 삭제하겠습니까?"); 
+		    if (confirmed) {
+		        var form = document.reviewFrm;      
+		        form.method = "post";  
+		        form.action = "reviewDelete";
+		        form.submit();  
+		    }
+		}
+	}
+	
+	function checkLoginAndRedirect(destination) {
+		// 세션에서 userId 가져오기
+		var userId = "${sessionScope.userId}";
+		console.log(userId);
+		if (userId === undefined || userId === null || userId.trim() === "") {
+			// 로그인이 되어 있지 않은 경우
+			alert("로그인 후 사용할 수 있습니다.");
+			window.location.href = "/login";
+		}
+		else if(userId!="${reviewDTO.user_id}"){
+	    	alert("작성자 전용 기능입니다.");
+	       	window.location.href = "/reviewList";
+	    }
+		else {
+			// 로그인이 된 경우 지정된 페이지로 이동
+			window.location.href = destination;
+		}
 	}
 </script>
 <body>
@@ -181,8 +213,8 @@
                         </div>
 
 						<div class="viewBtn_wrap">
-							<a href="javascript:void(0);" onclick="location.href='./reviewEdit?rv_id=${ param.rv_id }';" class="btn btn-secondary">수정하기</a>
-							<a href="javascript:void(0);" onclick="deletePost(${ param.rv_id });" class="btn btn-light">삭제하기</a>
+							<a href="javascript:void(0);" onclick="checkLoginAndRedirect('/reviewEdit?rv_id=${ param.rv_id }')" class="btn btn-secondary">수정하기</a>
+							<a href="javascript:void(0);" onclick="deletePost(${ param.rv_id })" class="btn btn-light">삭제하기</a>
 							<a href="/reviewList" class="btn btn-dark">목록보기</a>
 						</div>
 

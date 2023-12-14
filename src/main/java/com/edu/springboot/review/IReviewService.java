@@ -19,17 +19,7 @@ public interface IReviewService {
 		public ReviewDTO view(ReviewDTO reviewDTO);
 		
 		// 리뷰 작성하기
-		public int write(
-			@Param("_rv_title") String rv_title,
-			@Param("_rv_date") String rv_date,
-			@Param("_rv_stime") String rv_stime,
-			@Param("_rv_etime") String rv_etime,
-			@Param("_rv_congestion") String rv_congestion,
-			@Param("_rv_transportation") String rv_transportation,
-			@Param("_rv_revisit") String rv_revisit,
-			@Param("_rv_image") String rv_image,
-			@Param("_rv_content") String rv_content
-		);
+		public int write(ReviewDTO reviewDTO);
 		
 		// 리뷰 수정하기
 		public int edit(ReviewDTO reviewDTO);

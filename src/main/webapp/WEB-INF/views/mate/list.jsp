@@ -139,7 +139,7 @@
 															<div>
 																<div class="userInfo">
 																	<a class="txtSkip" href="/mateView?mt_id=${row.mt_id}">${row.mt_title}</a>
-																	<span>사용자 닉네임</span>
+																	<span>${row.user_name }</span>
 																	<span>등록일 <i>${row.mt_postdate }</i></span>
 																	<span>조회수 <i>${row.mt_visitcount }</i></span>
 																	<span>북마크 <i>${row.mt_bmcount }</i></span>

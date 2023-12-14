@@ -12,7 +12,10 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
+
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
@@ -99,7 +102,7 @@ public class MateController {
         
         int totalCount = dao.getTotalCount(parameterDTO);
         int pageSize = 12;
-        int blockPage = 12;
+        int blockPage = 5;
         int pageNum = (req.getParameter("pageNum") == null || req.getParameter("pageNum").equals("")) ? 1
                 : Integer.parseInt(req.getParameter("pageNum"));
         int start = (pageNum - 1) * pageSize + 1;
@@ -115,6 +118,8 @@ public class MateController {
 
         ArrayList<MateDTO> lists = dao.listPage(parameterDTO);
         model.addAttribute("lists", lists);
+        
+        System.out.println("Tl: "+lists);
 
         String pagingImg = PagingUtil.pagingImg(totalCount, pageSize, blockPage, pageNum,
                 req.getContextPath() + "/mateList?");
@@ -129,8 +134,9 @@ public class MateController {
         dao.visitCount(mateDTO.getMt_id());
         mateDTO = dao.view(mateDTO);
         mateDTO.setMt_content(mateDTO.getMt_content().replace("\r\n", "<br>"));
+        
         model.addAttribute("mateDTO", mateDTO);
-        System.out.println("나옴?"+mateDTO);
+        System.out.println("나옴?"+ mateDTO);
         return "/mate/view";
     }
     
@@ -161,13 +167,12 @@ public class MateController {
 	public String mateDeletePost(HttpServletRequest req) {
 		int result = dao.delete(req.getParameter("mt_id"));
 		System.out.println("글삭제결과:"+ result);
-		//return "redirect:mate/list";       
-		return "/mate/list"; 
+		return "redirect:/mateList";       
 	}
 }
 
 
-
+ 
 
 
 

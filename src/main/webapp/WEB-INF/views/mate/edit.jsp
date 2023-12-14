@@ -119,12 +119,12 @@
                                     </div>
                                     <div class="col-lg-2 write_wrap">
                                         <select name="mt_gender" class="form-select" value="${mateDTO.mt_gender}">
-                                            <option value="성별무관">성별무관</option>
-                                            <option value="남성">남성</option>
-                                            <option value="여성">여성</option>
+                                        	<option value="연령무관" ${mateDTO.mt_gender == '성별무관' ? 'selected' : ''}>성별무관</option>
+                                            <option value="남성" ${mateDTO.mt_gender == '남성' ? 'selected' : ''}>남성</option>
+                                            <option value="여성" ${mateDTO.mt_gender == '여성' ? 'selected' : ''}>여성</option>
                                         </select>
                                     </div>
-                                </li>
+                                </li> 
                                 <li class="row">
                                     <div class="col-lg-2 title_wrap">
                                         <h2>메이트 나이</h2>
@@ -132,31 +132,30 @@
                                     <div class="col-lg-2 write_wrap">
                                         <select name="mt_age1" class="form-select">
                                         	<option value="연령무관" ${mateDTO.mt_age1 == '연령무관' ? 'selected' : ''}>연령무관</option>
-                                            <option value="20대 초반" ${mateDTO.mt_age1 == '연령무관' ? 'selected' : ''}>연령무관</option>
-                                            <option value="20대 중반" ${mateDTO.mt_age1 == '연령무관' ? 'selected' : ''}>연령무관</option>
-                                            <option value="20대 후반" ${mateDTO.mt_age1 == '연령무관' ? 'selected' : ''}>연령무관</option>
-                                            <option value="30대 초반" ${mateDTO.mt_age1 == '연령무관' ? 'selected' : ''}>연령무관</option>
-                                            <option value="30대 중반" ${mateDTO.mt_age1 == '연령무관' ? 'selected' : ''}>연령무관</option>
-                                            <option value="30대 후반" ${mateDTO.mt_age1 == '연령무관' ? 'selected' : ''}>연령무관</option>
-                                            <option value="20대 초반" ${mateDTO.mt_age1 == '연령무관' ? 'selected' : ''}>연령무관</option>
-                                            <option value="20대 중반" ${mateDTO.mt_age1 == '연령무관' ? 'selected' : ''}>연령무관</option>
-                                            <option value="20대 후반" ${mateDTO.mt_age1 == '연령무관' ? 'selected' : ''}>연령무관</option>
+                                            <option value="20대 초반" ${mateDTO.mt_age1 == '20대 초반' ? 'selected' : ''}>20대 초반</option>
+                                            <option value="20대 중반" ${mateDTO.mt_age1 == '20대 중반' ? 'selected' : ''}>20대 중반</option>
+                                            <option value="20대 후반" ${mateDTO.mt_age1 == '20대 후반' ? 'selected' : ''}>20대 후반</option>
+                                            <option value="30대 초반" ${mateDTO.mt_age1 == '30대 초반' ? 'selected' : ''}>30대 초반</option>
+                                            <option value="30대 중반" ${mateDTO.mt_age1 == '30대 중반' ? 'selected' : ''}>30대 중반</option>
+                                            <option value="30대 후반" ${mateDTO.mt_age1 == '30대 후반' ? 'selected' : ''}>30대 후반</option>
+                                            <option value="40대 초반" ${mateDTO.mt_age1 == '40대 초반' ? 'selected' : ''}>40대 초반</option>
+                                            <option value="40대 중반" ${mateDTO.mt_age1 == '40대 중반' ? 'selected' : ''}>40대 중반</option>
+                                            <option value="40대 후반" ${mateDTO.mt_age1 == '40대 후반' ? 'selected' : ''}>40대 후반</option>
                                         </select>
                                     </div>
                                         ~
                                     <div class="col-lg-2 write_wrap">
                                         <select name="mt_age2" class="form-select">
-                                        	<option value="연령무관" ${mateDTO.mt_age1 == '연령무관' ? 'selected' : ''}>연령무관</option>
-                                            <option value="연령무관">연령무관</option>
-                                            <option value="20대 초반">20대 초반</option>
-                                            <option value="20대 중반">20대 중반</option>
-                                            <option value="20대 후반">20대 후반</option>
-                                            <option value="30대 초반">30대 초반</option>
-                                            <option value="30대 중반">30대 중반</option>
-                                            <option value="30대 후반">30대 후반</option>
-                                            <option value="40대 초반">40대 초반</option>
-                                            <option value="40대 중반">40대 중반</option>
-                                            <option value="40대 후반">40대 후반</option>
+                                        	<option value="연령무관" ${mateDTO.mt_age2 == '연령무관' ? 'selected' : ''}>연령무관</option>
+                                            <option value="20대 초반" ${mateDTO.mt_age2 == '20대 초반' ? 'selected' : ''}>20대 초반</option>
+                                            <option value="20대 중반" ${mateDTO.mt_age2 == '20대 중반' ? 'selected' : ''}>20대 중반</option>
+                                            <option value="20대 후반" ${mateDTO.mt_age2 == '20대 후반' ? 'selected' : ''}>20대 후반</option>
+                                            <option value="30대 초반" ${mateDTO.mt_age2 == '30대 초반' ? 'selected' : ''}>30대 초반</option>
+                                            <option value="30대 중반" ${mateDTO.mt_age2 == '30대 중반' ? 'selected' : ''}>30대 중반</option>
+                                            <option value="30대 후반" ${mateDTO.mt_age2 == '30대 후반' ? 'selected' : ''}>30대 후반</option>
+                                            <option value="40대 초반" ${mateDTO.mt_age2 == '40대 초반' ? 'selected' : ''}>40대 초반</option>
+                                            <option value="40대 중반" ${mateDTO.mt_age2 == '40대 중반' ? 'selected' : ''}>40대 중반</option>
+                                            <option value="40대 후반" ${mateDTO.mt_age2 == '40대 후반' ? 'selected' : ''}>40대 후반</option>
                                         </select>
                                     </div>
                                 </li>

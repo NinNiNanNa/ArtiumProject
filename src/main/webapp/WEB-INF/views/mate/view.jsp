@@ -75,6 +75,7 @@ function deletePost(mt_id) {
     }
 }
 </script>
+</script>
 
 <!-- 수정하기 페이지 이동 -->
 <script>
@@ -126,7 +127,7 @@ function goToEditPage(mt_id) {
 										</li>
 										<li>
 											<div>
-												<span>메이트 나이</span> <i>${mateDTO.mt_age1}</i>~<i>${mateDTO.mt_age2}</i>
+												<span>메이트 나이</span> <i>${mateDTO.mt_age1}~${mateDTO.mt_age2}</i>
 											</div>
 										</li>
 									</ul>
@@ -135,24 +136,22 @@ function goToEditPage(mt_id) {
 									</div>
 									<div class="memInfo_wrap">
 										<div class="profileImg_wrap">
-											<img src="../img/${memberDTO.user_image}" alt="">
+											<img src="../img/${mateDTO.user_image}" alt="">
 										</div>
 										<div class="profileInfo_wrap">
-											<h4>${memberDTO.user_name}</h4>
+											<h4>${mateDTO.user_name}</h4>
 											<span>작성일<i>${mateDTO.mt_postdate}</i></span> <span>조회수<i>${mateDTO.mt_visitcount}</i></span>
 										</div>
 										<div class="bmBtn_wrap">
 											<a href="javascript:;" class="bmBtn">저장하기</a>
 										</div>
-									</div>
+									</div> 
 								</div>
 							</div>
 							</form>
 							<div class="viewBtn_wrap">
 								<a href="#" class="btn btn-light" onclick="deletePost(${mateDTO.mt_id});">삭제하기</a>
-								<a href="/mateEdit?mt_id=${mateDTO.mt_id}" class="btn btn-secondary">수정하기</a>
-								<!-- <a href="#" class="btn btn-secondary" onclick="goToEditPage(${mateDTO.mt_id});">수정하기</a> -->
-								<!-- <a href="/mateEdit" class="btn btn-secondary">수정하기</a>  -->
+								<a href="/mateEdit?mt_id=${mateDTO.mt_id}" class="btn btn-secondary">수정하기 
 								<a href="/mateList" class="btn btn-dark">모집등록</a>
 							</div>
 

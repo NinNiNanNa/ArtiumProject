@@ -130,36 +130,36 @@
 <!-- ///// 댓글 ////// -->
 		
 		<!-- 갤러리 댓글 총 갯수 -->
-		<select id="getGalleryComments" resultType="int" parameterType="com.edu.springboot.gallery.ParameterDTO">
+		<select id="getGalleryComment" resultType="int" parameterType="com.edu.springboot.gallery.GalleryDTO">
 		SELECT COUNT(*) FROM comments WHERE ga_id=#{ga_id}
 		</select>
 	
 		<!-- 갤러리 댓글 목록 조회 -->
-		<select id="listGalleryComments" 
+		<select id="listGalleryComment" 
 		resultType="com.edu.springboot.gallery.GalleryCommentDTO" 
-		parameterType="com.edu.springboot.gallery.ParameterDTO">
+		parameterType="com.edu.springboot.gallery.GalleryDTO">
 		SELECT *
 			FROM (
-			    SELECT c.cm_id, c.cm_content, c.cm_postdate, c.rv_id, c.mt_id, c.ga_id, c.user_id,
+			    SELECT c.cm_id, c.ga_id, c.user_id, c.cm_content, c.cm_postdate, 
 			           m.user_image, m.user_name,
 			           ROW_NUMBER() OVER (ORDER BY c.cm_postdate DESC) AS rNum
 			    FROM comments c
 			    JOIN members m ON c.user_id = m.user_id
-			    WHERE c.ga_id=#{ga_id}
+			    WHERE ga_id=#{ga_id}
 			)
 			WHERE rNum<![CDATA[>=]]>#{start} AND rNum<![CDATA[<=]]>#{end}
 		</select>
 		
-		 <!-- 갤러리 댓글 등록 -->
-    <insert id="writeGalleryComment" parameterType="com.edu.springboot.gallery.GalleryCommentDTO">
-        INSERT INTO comments (cm_id, cm_content, cm_postdate, rv_id, mt_id, ga_id, user_id)
-        VALUES (seq_board_num.nextval, #{cm_content}, sysdate, #{rv_id}, #{mt_id}, #{ga_id) #{user_id})
+		<!-- 갤러리 댓글 등록 -->
+   <insert id="writeGalleryComment" parameterType="com.edu.springboot.gallery.GalleryCommentDTO">
+        INSERT INTO comments (cm_id, ga_id, user_id, cm_content, cm_postdate)
+        VALUES (seq_board_num.nextval, #{ga_id}, #{user_id}, #{cm_content}, sysdate)
     </insert>
     
     <!-- 갤러리 댓글 수정 -->
     <update id="editGalleryComment" parameterType="com.edu.springboot.gallery.GalleryCommentDTO">
 		UPDATE comments SET
-			cm_content=#{cm_content}
+			ga_id=#{ga_id}, cm_content=#{cm_content}
 		WHERE cm_id=#{cm_id}
 		</update>
 	

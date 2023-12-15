@@ -39,6 +39,8 @@ public class GalleryDTO {
 	private String art_date5;
 	private String art_content5;
 	
+	private int status;
+	
 //	private String num;
 //	private String pageNum;
 	private String searchField;

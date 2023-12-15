@@ -94,7 +94,7 @@ document.addEventListener('DOMContentLoaded', function () {
         if (cmContent.value.length > 150) {
         	// 입력된 텍스트를 150자까지만 자르고 다시 #cmContent에 설정
           cmContent.value = cmContent.value.substring(0, 150);
-         // #textCnt에 (15 / 150)으로 표시
+         // #textCnts에 (15 / 150)으로 표시
          textCnts.innerHTML = "(150 / 150)";
         }
     });
@@ -102,6 +102,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
 //페이지 로드 시 댓글 가져와서 화면에 출력하는 함수
 function loadComments(pageNum) {
+	// ga_id값 null로 입력
 	var ga_id = ${ga_id};
 	console.log(ga_id + "ga_id값이다.");
 	
@@ -110,10 +111,10 @@ function loadComments(pageNum) {
 		  dataType : "json",
       url: '/galleryCommentList.api',  // 댓글 가져올 URL
       method: 'GET',
-      data: { pageNum: pageNum, ga_id: ga_id },  // 페이지 번호 서버에 전달
+      data: { pageNum: pageNum, ga_id: ga_id },  // 페이지 번호 서버에 전달 / ga_id값 null로 입력
       success: function (data) {
         // 가져온 댓글 데이터 사용하여 동적으로 댓글 생성
-          $('#galleryCommentList').empty(); // 기존 댓글 목록 비우기
+          $('#listGalleryComment').empty(); // 기존 댓글 목록 비우기
           // 가져온 댓글 데이터 사용하여 동적으로 댓글 생성
           for (var i = 0; i < data.lists.length; i++) {
               var comments = data.lists[i];
@@ -138,14 +139,14 @@ function loadComments(pageNum) {
         '<span>'+comments.cm_postdate+'</span>' +
         '</div>' +
         '<div class="content_wrap">' +
-        '<p>'+comments.srv_content+'</p>' +
+        '<p>'+comments.cm_content+'</p>' +
         '</div>' +
         '</div>' +
         buttons +
         '</div>' +
         '</li>';
         
-              $('#galleryCommentList').append(commentItem);
+              $('#listGalleryComment').append(commentItem);
           }
           $('.cmtotalCount').html(data.totalCount);
           $('.paging_wrap').html(data.pagingImg);
@@ -156,6 +157,222 @@ function loadComments(pageNum) {
       }
   });
 }
+
+//페이지 링크에 대한 클릭 이벤트 추가
+$(document).on('click', '.paging_wrap a', function (e) {
+    e.preventDefault(); // 기본 동작 방지 (링크 클릭 시 페이지 이동 방지)
+
+    // 클릭한 페이지 번호를 가져오기
+    var pageNum = getPageNumFromUrl($(this).attr('href'));
+
+    // 가져온 페이지 번호를 이용하여 댓글 목록 업데이트
+    loadComments(pageNum);
+});
+
+// 페이지 번호를 추출하는 함수
+function getPageNumFromUrl(url) {
+    var match = url.match(/pageNum=(\d+)/);
+    return match ? parseInt(match[1], 10) : 1;
+}
+
+// 로그인 후 댓글 작성 가능
+function postComment() {
+	
+	var userId = "${sessionScope.userId}";
+	var cmContent = document.getElementById('cmContent').value;
+
+	if (userId === undefined || userId === null || userId.trim() === "") {
+		alert("로그인이 필요한 서비스입니다.");
+	} else {
+		if (!cmContent) {
+            alert("댓글을 작성해주세요.");
+            return;
+        }
+		
+		var galleryCommentDTO = {
+            ga_id: "${galleryDTO.ga_id}",
+            user_id: userId,
+            cm_content: cmContent
+        };
+		console.log(galleryCommentDTO);
+		
+		// 댓글 작성
+		$.ajax({
+		    type: "POST",
+		    contentType: "application/json;",
+		    url: "/galleryCommentwWrite.api",
+		    data: JSON.stringify(galleryCommentDTO), // galleryCommentDTO를 JSON 문자열로 변환하여 전송
+		    success: function(response) {
+		        // 서버로부터의 응답을 처리
+		        console.log(response);
+
+		        if (response.result === 1) {	// 리뷰 작성 성공
+		            alert("댓글 작성에 성공하였습니다.");
+		         	// 성공적인 댓글 제출 후 댓글을 업데이트하기 위해 loadComments() 함수 호출
+                    loadComments();
+                 	// 폼 초기화
+                    document.getElementById('cmContent').value = "";
+		        } else {	// 리뷰 작성 실패
+		            alert("댓글 작성에 실패하였습니다.");
+		        }
+		    },
+		    error: function(error) {
+		        // 에러 처리
+		        console.log(error);
+		    }
+		});
+	}
+}
+
+// 댓글 수정하기
+$(document).on('click', 'a.cmEditBtn', function(e) {
+    e.preventDefault();
+    
+ 	// data-edit-id 속성 값 가져오기
+    var editId = $(this).data('edit-id');
+ 		console.log("수정폼에들어옴?: "+editId);
+ 	
+    // 수정할 댓글의 내용 가져옴
+    var cmEditContent = $(this).closest('.commentBox').find('.content_wrap p').text();
+
+    // 동적으로 수정 폼 생성
+    var editForm = $('<li id="editCommentForm" data-edit-id="'+editId+'">' +
+        '<div class="row commentBox">' +
+        '<div class="col-lg-2 comImg_wrap">' +
+        '<img src="../img/${userImg }" alt="">' +
+        '</div>' +
+        '<div class="col-lg-9 comWrite_wrap">' +
+        '<div class="user_wrap">' +
+        '<span>${userName }</span>' +
+        '</div>' +
+        '<div class="content_wrap">' +
+        '<div class="row starAndtextcnt">' +
+        '<div class="col-lg-6 star_wrap">' +
+        '</div>' +
+        '<div id="textEditCnt" class="col-lg-6">(0/150)</div>' +
+        '</div>' +
+        '<textarea name="cm_content" id="cmEditContent" cols="30" rows="1" placeholder="댓글을 남겨주세요.">' + cmEditContent + '</textarea>' +
+        '</div>' +
+        '</div>' +
+        '<div class="col-lg-1 commentBtn_wrap">' +
+        '<button type="button" id="cmUpdateBtn" class="btn btn-dark" data-edit-id="'+editId+'">수정</button>' +
+        '</div>' +
+        '</div>' +
+        '</li>');
+
+ 		// 수정 폼을 이전에 있던 댓글 밑에 추가
+    $(this).closest('.commentBox').after(editForm);
+    // 기존 댓글은 숨기기
+    $(this).closest('.commentBox').hide();
+ 	
+    // 수정 폼 내의 textarea에 입력된 텍스트의 길이를 초기 설정
+    $('#textEditCnt').html('(' + cmEditContent.length + ' / 150)');
+    
+ 		// 수정 폼 내에서 텍스트 입력 시 글자 수 카운트 및 제한
+    $(document).on('keyup', '#cmEditContent', function() {
+        // 입력된 텍스트의 길이를 가져와서 #textEditCnt에 표시
+        var editedContentLength = $(this).val().length;
+        $('#textEditCnt').html('(' + editedContentLength + ' / 150)');
+
+        // 만약 입력된 텍스트의 길이가 150을 초과하면
+        if (editedContentLength > 150) {
+            // 입력된 텍스트를 150자까지만 자르고 다시 #cmEditContent에 설정
+            $(this).val($(this).val().substring(0, 60));
+            // #textEditCnt에 (150 / 150)으로 표시
+            $('#textEditCnt').html('(150 / 150)');
+        }
+    });
+});
+
+//수정한 내용을 업데이트할 시 이벤트 처리
+$(document).on('click', 'button#cmUpdateBtn', function (e) {
+    e.preventDefault();
+
+    // 수정할 댓글의 내용 가져옴
+    var editedId = $(this).data('edit-id');
+    var editedContent = $('#editCommentForm textarea').val();
+    
+    /* var galleryCommentDTO = {
+            ga_id: "${galleryDTO.ga_id}",
+        };
+		console.log(galleryCommentDTO); */
+    
+		console.log("수정값들어오냐?!: "+editedId);
+		console.log("수정값들어오냐?!: "+editedContent);    
+    
+    // 수정한 내용을 서버에 전송
+    $.ajax({
+        type: 'POST',
+        contentType: "application/json",
+        url: '/galleryCommentEdit.api',
+        data: JSON.stringify({
+        		ga_id: "${galleryDTO.ga_id}", // ga_id값 null로 입력해줌
+            cm_id: editedId,
+            cm_content: editedContent
+        }),
+        success: function (response) {
+            if (response.result === 1) {
+                // 서버에서 수정이 성공하면 화면에 수정된 내용을 갱신
+                var commentBox = $('.commentBox'+editedId);
+                
+                commentBox.find('.content_wrap p').text(editedContent);
+
+                // 수정 폼을 제거하고, 기존 댓글을 다시 보이게 함
+                $('#editCommentForm').remove();
+                commentBox.show();
+                // 수정이 실패한 경우에 대한 처리
+                alert('댓글 수정이 완료되었습니다.');
+            } else {
+                // 수정이 실패한 경우에 대한 처리
+                alert('댓글 수정에 실패했습니다.');
+            }
+        },
+        error: function () {
+            // 통신 오류 등에 대한 처리
+            alert('댓글 수정 중 오류가 발생했습니다.');
+        }
+    });
+});
+
+// 갤러리 댓글 삭제
+function deleteComment(cmId) {
+    $.ajax({
+        type: "POST",
+        url: "/galleryCommentDelete.api",
+        data: { cm_id: cmId },
+        success: function(response) {
+            if (response.result === 1) {	// 댓글 삭제 성공
+                alert("댓글이 삭제되었습니다.");
+                // 삭제 후 댓글 목록을 업데이트하는 함수 호출
+                loadComments();
+            } else {	// 댓글 삭제 실패
+                alert("댓글 삭제에 실패하였습니다.");
+            }
+        },
+        error: function(error) {
+            // 에러 처리
+            console.log(error);
+        }
+    });
+}
+
+//삭제 버튼 클릭 시 이벤트 처리
+$(document).on('click', 'a.cmDeleteBtn', function(e) {
+    e.preventDefault();
+
+    var cmId = $(this).data('comment-id');
+    
+ 	// 확인 창 띄우기
+    var isConfirmed = confirm('댓글을 삭제하시겠습니까?');
+ 	
+ 	// 확인이 눌렸을 경우에만 삭제 요청
+    if (isConfirmed) {
+        // 서버로 삭제 요청을 보냄
+        deleteComment(cmId);
+    }
+    
+});
+
 
 </script>
 
@@ -287,7 +504,7 @@ function loadComments(pageNum) {
 																	</c:choose>
 																			<div class="content_wrap">
 																				<div id="textCnts" class="col-lg-6" style="width:100%; text-align: right;">(0/150)</div>
-																				<textarea name="cm_comment" id="cmContent" cols="30" rows="2" placeholder="댓글을 남겨주세요."></textarea>
+																				<textarea name="cm_content" id="cmContent" cols="30" rows="2" placeholder="댓글을 남겨주세요."></textarea>
 																			</div>
 																		</div>
 																		<div class="col-lg-1 commentBtn_wrap">
@@ -297,29 +514,11 @@ function loadComments(pageNum) {
 																</li>
 																</form>
 																<li>
-																	<div id="onGalleryCommentList">
+																	<div id="listGalleryComment">
 																		<!-- 갤러리 댓글 목록 출력 부분 -->
 																	</div>
-																</li> 
-																<%-- <li>
-																	<div class="row commentBox">
-																		<div class="col-lg-2 comImg_wrap">
-																			<img src="../img/${galleryCommentDTO.user_image }" alt="">
-																		</div>
-																		<div class="col-lg-10 comText_wrap">
-																			<div class="user_wrap">
-																				<span>${galleryCommentDTO.user_name }</span>
-																			</div>
-																			<div class="content_wrap">
-																			<span>${ galleryCommentDTO.cm_comment }</span>
-																			</div>
-																		</div>
-																		<div class="btn_wrap">
-																			<a href="">수정</a>
-																			<a href="">삭제</a>
-																		</div>
-																	</div>
-																</li> --%>
+																</li>
+																
 															</ul>
                             </div>
                             <div class="paging_wrap">

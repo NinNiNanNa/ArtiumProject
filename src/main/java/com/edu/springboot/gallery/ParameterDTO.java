@@ -13,5 +13,6 @@ public class ParameterDTO {
 	private int start;
 	private int end;
 	
+	private int status;
 	private String ga_id;
 }

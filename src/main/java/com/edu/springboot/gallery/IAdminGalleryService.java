@@ -1,14 +1,11 @@
 package com.edu.springboot.gallery;
 
 import java.util.ArrayList;
-import java.util.List;
 
 import org.apache.ibatis.annotations.Mapper;
-import org.apache.ibatis.annotations.Param;
-
 
 @Mapper
-public interface IGalleryService {
+public interface IAdminGalleryService {
 
 	// Paging처리를 위한 게시물의 갯수 카운트
 	public int getTotalCount(GalleryDTO galleryDTO);
@@ -56,6 +53,5 @@ public interface IGalleryService {
     
     // 갤러리 댓글 삭제
 	public int deleteGalleryComment(String cm_id);
-
-
+		
 }

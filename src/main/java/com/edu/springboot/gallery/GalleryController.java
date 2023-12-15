@@ -57,9 +57,8 @@ public class GalleryController {
 		// 페이징을 위한 설정값
 		int pageSize = 12;	// 한 페이지당 게시물 수
 		int blockPage = 5;	// 한 블럭당 페이지번호 수
-		
 		int pageNum = (req.getParameter("pageNum")==null || req.getParameter("pageNum").equals(""))
-				? 1 : Integer.parseInt(req.getParameter("pageNum"));
+						? 1 : Integer.parseInt(req.getParameter("pageNum"));
 		
 		// 현재 페이지에 출력한 게시물의 구간 계산
 		int start = (pageNum-1) * pageSize +1;
@@ -299,19 +298,19 @@ public class GalleryController {
 	
 /************************************************************************************************************/
 
-	// 갤러리 댓글 목록 조회
+// 갤러리 댓글 목록 조회
 	@RequestMapping("/galleryCommentList.api")
 	@ResponseBody
-	public Map<String, Object> onGalleryCommentList(HttpServletRequest req, ParameterDTO parameterDTO) {
+	public Map<String, Object> listGalleryComment(HttpServletRequest req, GalleryDTO galleryDTO) {
 //		HttpSession session = req.getSession();
 //		String gaid = (String)session.getAttribute("ga_id");
 		String gaid = req.getParameter("ga_id");
-		parameterDTO.setGa_id(gaid);
+		galleryDTO.setGa_id(gaid);
 		System.out.println("이유가 뭐야: "+ gaid);
 		
 		// 게시물의 갯수를 카운트(검색어가 있는 경우 DTO객체에 자동으로 저장)
-		int totalCount = dao.getGalleryComments(parameterDTO);
-		System.out.println("왜 안되는거야: "+ parameterDTO);
+		int totalCount = dao.getGalleryComment(galleryDTO);
+		System.out.println("왜 안되는거야: "+ totalCount);
 		
 		// 페이징을 위한 설정값(하드코딩)
 		int pageSize = 10;		// 한 페이지당 게시물 수
@@ -326,10 +325,12 @@ public class GalleryController {
 		int end = pageNum * pageSize;
 		
 		// 계산된 값 DTO에 저장
-		parameterDTO.setStart(start);
-		parameterDTO.setEnd(end);
+		galleryDTO.setStart(start);
+		galleryDTO.setEnd(end);
 		
-		ArrayList<GalleryCommentDTO> lists = dao.listGalleryComments(parameterDTO);
+		ArrayList<GalleryCommentDTO> lists = dao.listGalleryComment(galleryDTO);
+		
+		System.out.println(lists);
 		
 		String pagingImg = PagingUtil.pagingImg(totalCount, pageSize, blockPage, pageNum, req.getContextPath()+"/galleryView?ga_id="+gaid+"&");
 		
@@ -345,23 +346,62 @@ public class GalleryController {
 		
 		return maps;
 	}
+	
+	// 갤러리 댓글 작성
+	@PostMapping("/galleryCommentwWrite.api")
+	@ResponseBody
+	public Map<String, Object> restGalleryCommentWrite(@RequestBody GalleryCommentDTO galleryCommentDTO, HttpSession session) {
+		Map<String, Object> resultMap = new HashMap<>();
+		
+		String userId = (String) session.getAttribute("userId");
+		galleryCommentDTO.setUser_id(userId);
+		
+		System.out.println("DTO="+ galleryCommentDTO);
+		
+		int result = dao.writeGalleryComment(galleryCommentDTO);
+		resultMap.put("result", result);
+		
+		System.out.println(resultMap);
+		
+		return resultMap;
+	}
+	
+	// 갤러리 댓글 수정
+	@PostMapping("/galleryCommentEdit.api")
+	@ResponseBody
+	public Map<String, Object> restGalleryCommentEdit(@RequestBody GalleryCommentDTO galleryCommentDTO, HttpSession session) {
+		Map<String, Object> resultMap = new HashMap<>();
+		
+		String userId = (String) session.getAttribute("userId");
+		galleryCommentDTO.setUser_id(userId);
+		
+		System.out.println("DTO="+ galleryCommentDTO);
+		
+		int result = dao.editGalleryComment(galleryCommentDTO);
+		resultMap.put("result", result);
+		
+		System.out.println(resultMap);
+		
+		return resultMap;
+	}
+	
+	// 갤러리 댓글 삭제
+	@PostMapping("/galleryCommentDelete.api")
+	@ResponseBody
+	public Map<String, Object> restGalleryCommentDelete(HttpServletRequest req) {
+	    Map<String, Object> maps = new HashMap<>();
+	    
+	    int result = dao.deleteGalleryComment(req.getParameter("cm_id"));
+	    maps.put("result", result);
+//	    System.out.println("한줄평삭제: "+ maps);
+	    
+	    return maps;
+	}
 
 
 	
 /************************************************************************************************************/
-	     
-	
-	/* 관리자 */
 
-	@GetMapping("/admin/gaComments")
-	public String gaComments() {
-		return "/admin/gaComments";
-	}
-	@GetMapping("/admin/gaList")
-	public String gaList() {
-		return "/admin/gaList";
-	}
-	
 	
 
 }

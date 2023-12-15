@@ -105,19 +105,20 @@
 										<a class="nav-link tabColor" data-bs-toggle="pill" href="#future">모집완료</a>
 									</li>
 								</ul>
-
+								<form method="get" id="searchForm">
 								<div class="search_wrap clearfix">
 									<div class="searchField_wrap">
 										<select class="form-select" name="searchField">
-											<option value="">제목</option>
-											<option value="">닉네임</option>
+											<option value="mt_title">제목</option>
+											<option value="user_name">닉네임</option>
 										</select>
 									</div>
 									<div class="searchWord_wrap">
-										<input type="text" class="form-control" name="searchWord" placeholder="제목 또는 닉네임을 입력하세요.">
-										<button type="button" class="btn btn-dark searchBtn"><i class="fas fa-search"></i></button>
+										<input type="text" class="form-control" name="searchKeyword" placeholder="제목 또는 닉네임을 입력하세요.">
+										<button type="submit" class="btn btn-dark searchBtn"><i class="fas fa-search"></i></button>
 									</div>
 								</div>
+								</form>
 								<div class="writeBtn_wrap">
 									<!-- <a href="/mateWrite">모집 등록</a> -->
 									<a href="javascript:void(0);" onclick="checkLoginAndRedirect('/mateWrite')">모집 등록</a>

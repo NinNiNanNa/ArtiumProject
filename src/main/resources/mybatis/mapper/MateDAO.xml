@@ -11,29 +11,34 @@
 		반환하는것이 default이므로 정수값을 반환하기 위해 resultType을 int로 지정해야한다. -->
 	<select id="getTotalCount" resultType="int"
 		parameterType="com.edu.springboot.mate.ParameterDTO">
-		SELECT COUNT(*) from mate
+		SELECT COUNT(*) from(
+		SELECT mt.*, m.*FROM mate mt JOIN members m ON mt.user_id = m.user_id
 		<!-- 검색어가 null, 빈값이 아닐때만 where 절을 동적으로 추가한다. -->
 		<if test="searchKeyword!=null and !searchKeyword.equals('')">
 			WHERE ${searchField} LIKE '%'||#{searchKeyword}||'%'
 		</if>
+		)
 	</select>
 	<!-- 리스트 출력 -->
 	<select id="listPage"
 		resultType="com.edu.springboot.mate.MateDTO"
 		parameterType="com.edu.springboot.mate.ParameterDTO">
 		SELECT * FROM ( SELECT mt.MT_ID, mt.MT_TITLE, mt.USER_ID,
-		mt.MT_STATUS, mt.MT_VIEWDATE, mt.MT_GENDER, mt.MT_AGE1, mt.MT_AGE2,
+		mt.MT_STATUS, mt.MT_VIEWDATE, mt.MT_GENDER, mt.MT_AGE1, mt.MT_AGE2, mt.MT_VISITCOUNT,
 		mt.MT_CONTENT, mt.MT_POSTDATE, m.USER_IMAGE, m.USER_NAME, ROW_NUMBER()
-		OVER (ORDER BY mt.MT_POSTDATE DESC) AS rNum FROM mate mt JOIN members
-		m ON mt.user_id = m.user_id
+		OVER (ORDER BY mt.MT_POSTDATE DESC) AS rNum FROM mate mt JOIN 
+		members m ON mt.user_id = m.user_id
 		<if test="searchKeyword!=null and !searchKeyword.equals('')">
 			WHERE ${searchField} LIKE '%'||#{searchKeyword}||'%'
 		</if>
 		) WHERE rNum
-<![CDATA[ >= ]]>
+		<![CDATA[ >= ]]>
 		#{start} AND rNum
-<![CDATA[ <= ]]>
+		<![CDATA[ <= ]]>
 		#{end}
+	
+	
+	
 		<!-- SELECT * FROM ( SELECT Tb.*, rownum rNum FROM ( SELECT * FROM mate 
 			<if test="searchKeyword!=null and !searchKeyword.equals('')"> WHERE ${searchField} 
 			LIKE '%'||#{searchKeyword}||'%' </if> ORDER BY mt_id DESC ) Tb ) WHERE rNum<![CDATA[>=]]>#{start} 
@@ -51,7 +56,7 @@
 	<select id="view" resultType="com.edu.springboot.mate.MateDTO"
 		parameterType="com.edu.springboot.mate.MateDTO">
 		SELECT mt.MT_ID, mt.MT_TITLE, mt.USER_ID, mt.MT_STATUS, mt.MT_VIEWDATE,
-		mt.MT_GENDER, mt.MT_AGE1, mt.MT_AGE2, mt.MT_CONTENT, mt.MT_POSTDATE,
+		mt.MT_GENDER, mt.MT_AGE1, mt.MT_AGE2, mt.MT_CONTENT, mt.MT_POSTDATE, mt.MT_VISITCOUNT,
 		m.USER_IMAGE, m.USER_NAME FROM mate mt JOIN members m ON mt.user_id =
 		m.user_id WHERE mt.MT_ID = #{mt_id}
 	</select>
@@ -70,6 +75,7 @@
 	</update>
 	<!-- 삭제하기 --> 
 	<delete id="delete">DELETE FROM mate WHERE mt_id=#{mt_id}</delete>
+	
 	<!-- <select id="view" resultType="com.edu.springboot.jdbc.MateDTO" parameterType="com.edu.springboot.jdbc.MateDTO"> 
 		SELECT * FROM mate WHERE idx=#{idx} </select> <insert id="write"> INSERT 
 		INTO mate (idx, name, title, content) VALUES (seq_board_num.nextval, #{_name}, 
@@ -80,4 +86,28 @@
 		SELECT * FROM mate WHERE idx=#{idx} </select> <update id="edit" parameterType="com.edu.springboot.jdbc.BoardDTO"> 
 		UPDATE mate SET name=#{name}, title=#{title}, content=#{content} WHERE idx=#{idx} 
 		</update> <delete id="delete"> DELETE FROM mate WHERE idx=#{param1} </delete> -->
+		
+		
+	<!-- 한줄평 총 갯수 -->
+	<select id="getMtCommentCount" resultType="int" parameterType="com.edu.springboot.mate.ParameterDTO">
+		SELECT COUNT(*) FROM simple_review WHERE ex_seq=#{ex_seq}
+	</select>
+	
+	<!-- 한줄평 목록 -->
+	<select id="listMtComment"
+		resultType="com.edu.springboot.mate.MtCommentDTO"
+		parameterType="com.edu.springboot.mate.ParameterDTO">
+		SELECT *
+			FROM (
+			    SELECT mtc.mtcom_id, mtc.mt_id, mtc.user_id, mtc.mtcom_content, mtc.mtcom_postdate,
+			           m.user_image, m.user_name,
+			           ROW_NUMBER() OVER (ORDER BY mtc.mtcom_postdate DESC) AS rNum
+			    FROM mt_comment mtc
+			    JOIN members m ON mtc.user_id = m.user_id
+			    WHERE mt_id=#{mt_id}
+			)
+			WHERE rNum<![CDATA[>=]]>#{start} AND rNum<![CDATA[<=]]>#{end}
+	</select>	
+		
+	
 </mapper>

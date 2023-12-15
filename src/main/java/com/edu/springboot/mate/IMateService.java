@@ -5,9 +5,7 @@ import java.util.ArrayList;
 
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
-
-import com.edu.springboot.exhibition.SimpleReviewDTO;
-
+import com.edu.springboot.mate.MtCommentDTO;
  
 @Mapper
 public interface IMateService {
@@ -45,24 +43,24 @@ public interface IMateService {
 	// 삭제하기
 	public int delete(String mt_id);
 
-//	// 한줄평 목록 Paging처리를 위해 게시물의 갯수 카운트
-//	public int getMtCommentCount(ParameterDTO parameterDTO);
-//
-//	// 한줄평 목록
-//	public ArrayList<MtCommentDTO> listMtComment(ParameterDTO parameterDTO);
-//
-//	// 한줄평 내용
-//	public MtCommentDTO viewMtComment(MtCommentDTO mtCommentDTO);
-//
-//	// 한줄평 작성
-//	public int writeMtComment(MtCommentDTO mtCommentDTO);
-//	
-//	// 한줄평 수정
-//	public int editMtComment(MtCommentDTO mtCommentDTO);
-//		
-//	// 한줄평 삭제
-//	public int deleteMtComment(String mtcom_id);
-//	
+	// 한줄평 목록 Paging처리를 위해 게시물의 갯수 카운트
+	public int getMtCommentCount(ParameterDTO parameterDTO);
+
+	// 한줄평 목록
+	public ArrayList<MtCommentDTO> listMtComment(ParameterDTO parameterDTO);
+
+	// 한줄평 내용
+	public MtCommentDTO viewMtComment(MtCommentDTO mtCommentDTO);
+
+	// 한줄평 작성
+	public int writeMtComment(MtCommentDTO mtCommentDTO);
+	
+	// 한줄평 수정
+	public int editMtComment(MtCommentDTO mtCommentDTO);
+		
+	// 한줄평 삭제
+	public int deleteMtComment(String mtcom_id);
+
 	
 	
 	/*

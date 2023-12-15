@@ -45,42 +45,147 @@
 <link href="../vendor/fontawesome-free/css/all.min.css" rel="stylesheet"
 	type="text/css">
 
-
-<!-- 삭제하기 -->
+<!-- 로그인 세션 -->
 <script>
+var userId = "${sessionScope.userId}"; // 세션에서 현재 로그인한 사용자의 아이디를 가져옴
+if (userId) {
+    // 로그인한 사용자의 아이디를 사용할 수 있습니다.
+    console.log("현재 로그인한 사용자 아이디: " + userId);
+} else {
+    // 로그인하지 않은 경우의 처리
+    console.log("로그인되지 않은 상태");
+}
+</script>
+
+
+<!-- 작성자만 수정, 삭제  -->
+<script>
+//삭제하기
 function deletePost(mt_id) {
+    var userId = "${sessionScope.userId}"; // 세션에서 현재 사용자 ID 가져오기
+
+    if (!userId) {
+        // 사용자가 로그인하지 않았을 경우
+        alert("로그인 후 사용할 수 있습니다.");
+        window.location.href = "/login";
+        return;
+    }
+
+    // 현재 사용자가 작성자인지 확인
+    if (userId !== "${mateDTO.user_id}") {
+        alert("작성자 전용 기능입니다.");
+        window.location.href = "/mateList";
+        return;
+    }
+
     var confirmed = confirm("정말로 삭제하겠습니까?");
     if (confirmed) {
-        var form = document.forms['writeFrm']; 
+        var form = document.forms['writeFrm'];
         if (form) {
             var hiddenInput = document.createElement("input");
             hiddenInput.type = "hidden";
             hiddenInput.name = "mt_id";
             hiddenInput.value = mt_id;
             form.appendChild(hiddenInput);
-            
+
             form.method = "post";
             form.action = "delete";
             form.submit();
-            
-         	// 삭제 후 mateList 페이지로 이동
-            //window.location.href = "/mateList";
-        } 
-        else {
+        } else {
             console.error("Form with name 'writeFrm' not found.");
         }
-    } 
-    else {
-        console.log("삭제를 취소했습니다.")
+    } else {
+        console.log("삭제를 취소했습니다.");
     }
 }
-</script>
+
+function checkLoginAndRedirect(destination) {
+	// 세션에서 userId 가져오기
+	var userId = "${sessionScope.userId}";
+	console.log(userId);
+	if (userId === undefined || userId === null || userId.trim() === "") {
+		// 로그인이 되어 있지 않은 경우
+		alert("로그인 후 사용할 수 있습니다.");
+		window.location.href = "/login";
+	}
+	else if(userId!="${mateDTO.user_id}"){
+    	alert("작성자 전용 기능입니다.");
+       	window.location.href = "/mateList";
+    }
+	else {
+		// 로그인이 된 경우 지정된 페이지로 이동
+		window.location.href = destination;
+	}
+}
 </script>
 
-<!-- 수정하기 페이지 이동 -->
+
+
+
+
+<!-- 댓글 리스트 불러오기 -->
 <script>
-function goToEditPage(mt_id) {
-    window.location.href = "/edit.jsp?mt_id=" + mt_id;
+//페이지 로드 시 댓글을 가져와서 화면에 출력하는 함수
+function loadComments(pageNum) {
+    $.ajax({  
+		contentType: "text/html;charset:utf-8", 
+		dataType: "json",
+        url: '/mtCommentList',  // 댓글을 가져올 URL
+        method: 'GET',
+        data: { pageNum: pageNum },  // 페이지 번호를 서버에 전달
+        success: function (data) {
+        	// 가져온 댓글 데이터를 사용하여 동적으로 댓글을 생성
+            $('#commentList').empty(); // 기존 댓글 목록 비우기
+            // 가져온 댓글 데이터를 사용하여 동적으로 댓글을 생성
+            for (var i = 0; i < data.lists.length; i++) {
+                var comment = data.lists[i];
+                
+                var buttons = '';
+                var userId = "${sessionScope.userId}"; // 세션에서 현재 로그인한 사용자의 아이디를 가져옴
+                if (userId && userId === comment.user_id) {
+                	buttons = '<div class="btn_wrap">' +
+                        '<a href="" class="mtcomEditBtn" data-edit-id="'+comment.mtcom_id+'">수정</a>' +
+                        '<a href="" class="mtcomDeleteBtn" data-comment-id="'+comment.mtcom_id+'">삭제</a>' +
+                        '</div>';
+                }
+                
+                var commentItem = '<li id="mtcomList'+comment.mtcom_id+'">' +
+                	'<input type="hidden" id="mtcomId" name="mtcom_id" value="'+comment.mtcom_id+'" />' +
+                	'<div class="row commentBox commentBox'+comment.mtcom_id+'">' +
+					'<div class="col-lg-2 comImg_wrap">' +
+					'<img src="../img/'+comment.user_image+'" alt="">' +
+					'</div>' +
+					'<div class="col-lg-10 comText_wrap">' +
+					'<div class="user_wrap">' +
+					'<span>'+comment.user_name+'</span>' +
+					'<span>'+comment.mtcom_postdate+'</span>' +
+					'</div>' +
+					'<div class="content_wrap">' +
+					'<p>'+comment.mtcom_content+'</p>' +
+					'</div>' +
+					'</div>' +
+					buttons +
+					'</div>' +
+					'</li>';
+					
+                $('#commentList').append(commentItem);
+            }
+            $('.srtotalCount').html(data.totalCount);
+            $('.paging_wrap').html(data.pagingImg);
+            
+        },
+        error: function () {
+            console.error('댓글 불러오기 실패');
+        }
+    });
+}
+</script>
+
+<!-- 페이지 번호를 추출하는 함수 -->
+<script>
+function getPageNumFromUrl(url) {
+    var match = url.match(/pageNum=(\d+)/);
+    return match ? parseInt(match[1], 10) : 1;
 }
 </script>
 </head>
@@ -151,10 +256,10 @@ function goToEditPage(mt_id) {
 							</form>
 							<div class="viewBtn_wrap">
 								<a href="#" class="btn btn-light" onclick="deletePost(${mateDTO.mt_id});">삭제하기</a>
-								<a href="/mateEdit?mt_id=${mateDTO.mt_id}" class="btn btn-secondary">수정하기 
+								<%-- <a href="/mateEdit?mt_id=${mateDTO.mt_id}" class="btn btn-secondary">수정하기  --%>
+								<a href="javascript:void(0);" onclick="checkLoginAndRedirect('/mateEdit?mt_id=${ param.mt_id }')" class="btn btn-secondary">수정하기</a>
 								<a href="/mateList" class="btn btn-dark">모집등록</a>
 							</div>
-
 						</div>
 					</div>
 				</div>
@@ -176,11 +281,11 @@ function goToEditPage(mt_id) {
 										<li>
 											<div class="row commentBox">
 												<div class="col-lg-2 comImg_wrap">
-													<img src="../img/profile.png" alt="">
+													<img src="../img/${mateDTO.user_image}" alt="">
 												</div>
 												<div class="col-lg-9 comWrite_wrap">
 													<div class="user_wrap">
-														<span>닉네임</span>
+														<span>${mateDTO.user_name}</span>
 													</div>
 													<div class="content_wrap">
 														<textarea name="" id="" cols="30" rows="2"
@@ -192,6 +297,9 @@ function goToEditPage(mt_id) {
 												</div>
 											</div>
 										</li>
+										<div id="mtCommentList">
+										<!-- 한줄평 목록 출력 부분 -->
+										</div>
 										<li>
 											<div class="row commentBox">
 												<div class="col-lg-2 comImg_wrap">
@@ -205,6 +313,7 @@ function goToEditPage(mt_id) {
 														댓글 내용댓글 내용댓글 내용댓글 내용댓글 내용댓글 내용댓글 내용댓글 내용<br> 댓글 내용댓글
 														내용댓글 내용댓글 내용댓글 내용댓글 내용<br>
 													</div>
+													
 												</div>
 												<div class="btn_wrap">
 													<a href="">수정</a> <a href="">삭제</a>

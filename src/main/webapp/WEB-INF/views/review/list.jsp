@@ -56,6 +56,14 @@
 			window.location.href = destination;
 		}
 	}
+	
+	function loadFallbackImage(imgElement) {
+	    if (imgElement) {
+	        // 업로드 폴더에 이미지파일이 없어서 이미지 로딩이 실패하면 경로를 변경하여 다시 시도
+	        imgElement.src = "./img/" + imgElement.src.split('/').pop();
+	    }
+	}
+	
 </script>
 <body>
 <div id='wrap'>
@@ -89,12 +97,9 @@
 			<div class="wrap1440">
 				<div class="gap1440">
 					<div class="container1440">
-
 						<div class='content'>
-
 							<!-- Content Row -->
 							<div class="row">
-								
 								<form method="get">
 								<div class="search_wrap clearfix">
 									<div class="searchField_wrap">
@@ -121,7 +126,7 @@
 										<li class="col-lg-3">
 											<div class="listInfo">
 												<div class="image_wrap">
-													<img src="./uploads/${row.rv_image }" alt="">
+													<img src="./uploads/${row.rv_image }" onerror="loadFallbackImage(this)">
 													<c:choose>
 														<c:when test="${not empty userId }">
 															<div class="listBtn_wrap">
@@ -155,13 +160,12 @@
 										</li>
 									</c:forEach>
 									</ul>
-									
+									<div class="paging_wrap">
+										${ pagingImg }
+									</div>
 								</div>
-
 							</div>
-
 						</div>
-
 					</div>
 				</div>
 			</div>

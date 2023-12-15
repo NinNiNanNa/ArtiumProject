@@ -12,4 +12,5 @@ public class ParameterDTO {
 	private String searchKeyword;
 	private int start;
 	private int end;
+	private String rv_id;
 }

@@ -18,7 +18,7 @@ public class ReviewDTO {
 	private java.sql.Date rv_postdate;
 	private int rv_visitcount;
 	private int rv_bmcount;
-	
+
 	private String user_name;
 	private String user_image;
 }

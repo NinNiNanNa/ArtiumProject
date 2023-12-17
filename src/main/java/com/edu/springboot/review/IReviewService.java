@@ -32,6 +32,7 @@ public interface IReviewService {
 	// 북마크수 올리기
 	public int bmCount(String rv_id);
 
+	
 	// 댓글 목록 Paging처리를 위해 게시물의 갯수 카운트
 	public int getReviewCommentCount(ParameterDTO parameterDTO);
 	// 댓글 목록

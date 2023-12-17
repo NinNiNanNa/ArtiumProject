@@ -11,7 +11,7 @@ public class ReviewCommentDTO {
 	private String user_id;
 	private String rvc_content;
 	private Date rvc_postdate;
-	
+
 	private String user_name;
 	private String user_image;
 }

@@ -9,7 +9,7 @@
 
 	<select id="getTotalCount" resultType="int" parameterType="com.edu.springboot.review.ParameterDTO">
 		SELECT COUNT (*) FROM (
-			SELECT r.*, m.*FROM review r JOIN members m ON r.user_id = m.user_id
+			SELECT r.*, m.* FROM review r JOIN members m ON r.user_id = m.user_id
 			<if test="searchKeyword!=null and !searchKeyword.equals('')">
 				WHERE ${searchField} LIKE '%'||#{searchKeyword}||'%'
 			</if>

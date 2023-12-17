@@ -42,14 +42,14 @@
 
 </head>
 <script>
-
+	
 	function loadFallbackImage(imgElement) {
 	    if (imgElement) {
 	        // 업로드 폴더에 이미지파일이 없어서 이미지 로딩이 실패하면 경로를 변경하여 다시 시도
 	        imgElement.src = "./img/" + imgElement.src.split('/').pop();
 	    }
 	}
-
+	
 	var slideIndex = 0;
 	function plusSlides(n) {
 	    showSlides(slideIndex += n);
@@ -128,7 +128,7 @@
 
 	//댓글 글자 길이 카운트 및 엔터 키 이벤트
 	document.addEventListener('DOMContentLoaded', function () {
-	    var srvContent = document.getElementById('srvContent');
+	    var rvcContent = document.getElementById('rvcContent');
 	    var textCnt = document.getElementById('textCnt');
 
 	    srvContent.addEventListener('keydown', function (e) {
@@ -159,50 +159,45 @@
 	    $.ajax({  
 			contentType : "text/html;charset:utf-8", 
 			dataType : "json",
-	        url: '/exhibitionReviewList.api',  // 댓글을 가져올 URL
+	        url: '/reviewCommentList.api',  // 댓글을 가져올 URL
 	        method: 'GET',
 	        data: { pageNum: pageNum },  // 페이지 번호를 서버에 전달
 	        success: function (data) {
 	        	// 가져온 댓글 데이터를 사용하여 동적으로 댓글을 생성
-	            $('#simpleReviewList').empty(); // 기존 댓글 목록 비우기
+	            $('#reviewCommentList').empty(); // 기존 댓글 목록 비우기
 	            // 가져온 댓글 데이터를 사용하여 동적으로 댓글을 생성
 	            for (var i = 0; i < data.lists.length; i++) {
 	                var review = data.lists[i];
-	                var starRating = '';
-	                for (var j = 0; j < review.srv_star; j++) {
-	                    starRating += '<span class="star">⭐</span>';
-	                }
 	                
 	                var buttons = '';
 	                var userId = "${sessionScope.userId}"; // 세션에서 현재 로그인한 사용자의 아이디를 가져옴
 	                if (userId && userId === review.user_id) {
 	                	buttons = '<div class="btn_wrap">' +
-	                        '<a href="" class="srvEditBtn" data-edit-id="'+review.srv_id+'">수정</a>' +
-	                        '<a href="" class="srvDeleteBtn" data-comment-id="'+review.srv_id+'">삭제</a>' +
+	                        '<a href="" class="rvcEditBtn" data-edit-id="'+review.rvc_id+'">수정</a>' +
+	                        '<a href="" class="rvcDeleteBtn" data-comment-id="'+review.rvc_id+'">삭제</a>' +
 	                        '</div>';
 	                }
 	                
-	                var commentItem = '<li id="srvList'+review.srv_id+'">' +
-	                	'<input type="hidden" id="srvId" name="srv_id" value="'+review.srv_id+'" />' +
-	                	'<div class="row commentBox commentBox'+review.srv_id+'">' +
+	                var commentItem = '<li id="rvcList'+review.rvc_id+'">' +
+	                	'<input type="hidden" id="rvcId" name="rvc_id" value="'+review.rvc_id+'" />' +
+	                	'<div class="row commentBox commentBox'+review.rvc_id+'">' +
 						'<div class="col-lg-2 comImg_wrap">' +
 						'<img src="../uploads/'+review.user_image+'" onerror="loadFallbackImage(this)">' +
 						'</div>' +
 						'<div class="col-lg-10 comText_wrap">' +
 						'<div class="user_wrap">' +
 						'<span>'+review.user_name+'</span>' +
-						'<span>'+review.srv_postdate+'</span>' +
+						'<span>'+review.rvc_postdate+'</span>' +
 						'</div>' +
 						'<div class="content_wrap">' +
-						starRating +
-						'<p>'+review.srv_content+'</p>' +
+						'<p>'+review.rvc_content+'</p>' +
 						'</div>' +
 						'</div>' +
 						buttons +
 						'</div>' +
 						'</li>';
 						
-	                $('#simpleReviewList').append(commentItem);
+	                $('#reviewCommentList').append(commentItem);
 	            }
 	            $('.rctotalCount').html(data.totalCount);
 	            $('.paging_wrap').html(data.pagingImg);
@@ -233,28 +228,19 @@
 
 	function writeComment() {
 		var userId = "${sessionScope.userId}";
-		var selectedStar = document.querySelector('input[name="srv_star"]:checked');
 		var srvContent = document.getElementById('srvContent').value;
 		
 		if (userId === undefined || userId === null || userId.trim() === "") {
 			alert("로그인이 필요한 서비스입니다.");
 		} else {
-			if ( !selectedStar ) {
-				alert("별점을 선택해주세요.");
-	            return;
-			} 
-
 			if (!srvContent) {
 	            alert("댓글을 작성해주세요.");
 	            return;
 	        }
 			
-			var srvStar = parseInt(selectedStar.value);
-			
 			var simpleReviewDTO = {
 	            ex_seq: "${exhibitionDTO.ex_seq}",
 	            user_id: userId,
-	            srv_star: srvStar,
 	            srv_content: srvContent
 	        };
 			
@@ -273,7 +259,6 @@
 	                    loadComments();
 	                 	// 폼 초기화
 	                    document.getElementById('srvContent').value = "";
-	                    document.querySelector('input[name="srv_star"]:checked').checked = false;
 			        } else {	// 리뷰 작성 실패
 			            alert("리뷰 작성에 실패하였습니다.");
 			        }
@@ -334,7 +319,6 @@
 	 	console.log("수정폼에들어옴?: "+editId);
 	 	
 	    // 수정할 댓글의 내용, 별점을 가져옴
-	    var srvEditStar = $(this).closest('.commentBox').find('.star').length;
 	    var srvEditContent = $(this).closest('.commentBox').find('.content_wrap p').text();
 
 	    // 동적으로 수정 폼 생성
@@ -348,18 +332,7 @@
 	        '<span>${userName }</span>' +
 	        '</div>' +
 	        '<div class="content_wrap">' +
-	        '<div class="row starAndtextcnt">' +
-	        '<div class="col-lg-6 star_wrap">' +
-	        '<fieldset>' +
-	        '<input type="radio" name="srv_star" value="5" id="rateEdit1"><label for="rateEdit1">⭐</label>' +
-	        '<input type="radio" name="srv_star" value="4" id="rateEdit2"><label for="rateEdit2">⭐</label>' +
-	        '<input type="radio" name="srv_star" value="3" id="rateEdit3"><label for="rateEdit3">⭐</label>' +
-	        '<input type="radio" name="srv_star" value="2" id="rateEdit4"><label for="rateEdit4">⭐</label>' +
-	        '<input type="radio" name="srv_star" value="1" id="rateEdit5"><label for="rateEdit5">⭐</label>' +
-	        '</fieldset>' +
-	        '</div>' +
 	        '<div id="textEditCnt" class="col-lg-6">(0/60)</div>' +
-	        '</div>' +
 	        '<textarea name="srv_content" id="srvEditContent" cols="30" rows="1" placeholder="댓글을 남겨주세요.">' + srvEditContent + '</textarea>' +
 	        '</div>' +
 	        '</div>' +
@@ -374,9 +347,6 @@
 	    // 기존 댓글은 숨기기
 	    $(this).closest('.commentBox').hide();
 	    
-	 	// 별점 체크
-	    editForm.find('input[name="srv_star"]').eq(5 - srvEditStar).prop('checked', true);
-	 	
 	    // 수정 폼 내의 textarea에 입력된 텍스트의 길이를 초기 설정
 	    $('#textEditCnt').html('(' + srvEditContent.length + ' / 60)');
 	    
@@ -402,11 +372,9 @@
 
 	    // 수정할 댓글의 내용, 별점을 가져옴
 	    var editedId = $(this).data('edit-id');
-	    var editedStar = $('input[name="srv_star"]:checked').val();
 	    var editedContent = $('#editCommentForm textarea').val();
 	    
 		console.log("수정값들어오냐?!: "+editedId);    
-		//console.log("수정값들어오냐?!: "+editedStar);    
 		//console.log("수정값들어오냐?!: "+editedContent);    
 	    
 	    // 수정한 내용을 서버에 전송
@@ -416,19 +384,12 @@
 	        url: '/exhibitionReviewEdit.api',
 	        data: JSON.stringify({
 	            srv_id: editedId,
-	            srv_star: editedStar,
 	            srv_content: editedContent
 	        }),
 	        success: function (response) {
 	            if (response.result === 1) {
 	                // 서버에서 수정이 성공하면 화면에 수정된 내용을 갱신
 	                var commentBox = $('.commentBox'+editedId);
-	                commentBox.find('.star').remove();
-	                var starHtml = '';
-	                for (var i = 0; i < editedStar; i++) {
-	                	starHtml += '<span class="star">⭐</span>';
-	                }
-	                commentBox.find('.content_wrap').prepend(starHtml);
 	                commentBox.find('.content_wrap p').text(editedContent);
 
 	                // 수정 폼을 제거하고, 기존 댓글을 다시 보이게 함

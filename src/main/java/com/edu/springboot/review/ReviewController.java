@@ -237,7 +237,7 @@ public class ReviewController {
 		String rvId = (String) session.getAttribute("rv_id");
 		parameterDTO.setRv_id(rvId);
 		System.out.println(rvId);
-		
+	
 		// 댓글 갯수를 카운트(검색어가 있는 경우 DTO객체에 자동으로 저장된다.)
 		int totalCount = dao.getReviewCommentCount(parameterDTO);
 		// 페이징을 위한 설정값(하드코딩)

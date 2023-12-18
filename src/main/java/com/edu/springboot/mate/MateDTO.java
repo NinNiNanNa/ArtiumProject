@@ -20,6 +20,12 @@ public class MateDTO {
 	private String mt_age2;
 	private String mt_content;
 	
+	//
+	private String searchField;
+	private String searchKeyword;
+	private int start;
+	private int end;
+	
 	private String user_id;
 	private String user_name;
 	private String user_image;

@@ -43,23 +43,25 @@ public interface IMateService {
 	// 삭제하기
 	public int delete(String mt_id);
 
+	
+	
 	// 한줄평 목록 Paging처리를 위해 게시물의 갯수 카운트
-	public int getMtCommentCount(ParameterDTO parameterDTO);
+	public int getMateComment(MateDTO mateDTO);
 
 	// 한줄평 목록
-	public ArrayList<MtCommentDTO> listMtComment(ParameterDTO parameterDTO);
+	public ArrayList<MtCommentDTO> listMateComment(MateDTO mateDTO);
 
 	// 한줄평 내용
-	public MtCommentDTO viewMtComment(MtCommentDTO mtCommentDTO);
+	public MtCommentDTO viewMateMt_Comment(MtCommentDTO mtCommentDTO);
 
-	// 한줄평 작성
-	public int writeMtComment(MtCommentDTO mtCommentDTO);
+	// 메이트 댓글 작성
+	public int writeMateComment(MtCommentDTO mtCommentDTO);
 	
 	// 한줄평 수정
-	public int editMtComment(MtCommentDTO mtCommentDTO);
+	public int editMateComment(MtCommentDTO mtCommentDTO);
 		
 	// 한줄평 삭제
-	public int deleteMtComment(String mtcom_id);
+	public int deleteMateComment(String mtcom_id);
 
 	
 	

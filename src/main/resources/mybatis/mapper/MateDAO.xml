@@ -31,6 +31,7 @@
 		<if test="searchKeyword!=null and !searchKeyword.equals('')">
 			WHERE ${searchField} LIKE '%'||#{searchKeyword}||'%'
 		</if>
+		
 		) WHERE rNum
 		<![CDATA[ >= ]]>
 		#{start} AND rNum
@@ -88,15 +89,16 @@
 		</update> <delete id="delete"> DELETE FROM mate WHERE idx=#{param1} </delete> -->
 		
 		
+	
 	<!-- 한줄평 총 갯수 -->
-	<select id="getMtCommentCount" resultType="int" parameterType="com.edu.springboot.mate.ParameterDTO">
-		SELECT COUNT(*) FROM simple_review WHERE ex_seq=#{ex_seq}
+	<select id="getMateComment" resultType="int" parameterType="com.edu.springboot.mate.MateDTO">
+		SELECT COUNT(*) FROM mt_comment WHERE mt_id=#{mt_id}
 	</select>
 	
 	<!-- 한줄평 목록 -->
-	<select id="listMtComment"
+	<select id="listMateComment"
 		resultType="com.edu.springboot.mate.MtCommentDTO"
-		parameterType="com.edu.springboot.mate.ParameterDTO">
+		parameterType="com.edu.springboot.mate.MateDTO">
 		SELECT *
 			FROM (
 			    SELECT mtc.mtcom_id, mtc.mt_id, mtc.user_id, mtc.mtcom_content, mtc.mtcom_postdate,
@@ -108,6 +110,24 @@
 			)
 			WHERE rNum<![CDATA[>=]]>#{start} AND rNum<![CDATA[<=]]>#{end}
 	</select>	
-		
+	
+	
+	<!-- 메이트 댓글 등록 -->
+   <insert id="writeMateComment" parameterType="com.edu.springboot.mate.MtCommentDTO">
+        INSERT INTO mt_comment (mtcom_id, mt_id, user_id, mtcom_content, mtcom_postdate)
+        VALUES (seq_board_num.nextval, #{mt_id}, #{user_id}, #{mtcom_content}, sysdate)
+    </insert>	
+    
+    <!-- 메이트 댓글 수정 -->
+    <update id="editMateComment" parameterType="com.edu.springboot.mate.MtCommentDTO">
+		UPDATE mt_comment SET
+			mt_id=#{mt_id}, mtcom_content=#{mtcom_content}
+		WHERE mtcom_id=#{mtcom_id}
+	</update>
+	
+	 <!-- 갤러리 댓글 삭제 -->
+    <delete id="deleteMateComment">
+		DELETE FROM mt_comment WHERE mtcom_id=#{param1}
+	</delete>
 	
 </mapper>

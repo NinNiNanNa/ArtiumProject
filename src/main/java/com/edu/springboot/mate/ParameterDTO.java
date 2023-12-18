@@ -16,8 +16,9 @@ public class ParameterDTO {
 	// 전시상태를 구분
 	private int status;
 	private String mt_id;
+	
+	
 } 
-
 
 
 

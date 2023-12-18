@@ -6,7 +6,7 @@ import lombok.Data;
 
 @Data
 public class MtCommentDTO {
-	private String mtcom_id;
+	private int mtcom_id;
 	private String mt_id;
 	private String user_id;
 	private String mtcom_content;

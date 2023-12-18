@@ -519,76 +519,67 @@
         </section>
 
         <section id="section3">
-			<div class="wrap1440">
-				<div class="gap1440">
-					<div class="container1440">
-
-						<!-- Content Row -->
-						<div class="row">
-							<div class="col">
-								<div class="tab-content">
-									<div id="review_comment" class="tab-pane fade">
-										<div class="comment_wrap">
-				                            <div class="comment_title">
-				                                <h1><i class="rctotalCount"></i>개의 댓글을 확인해보세요!</h1>
-				                            </div>
-				                            <div class="comment_content">
-												<ul class="comList_wrap">
-													<li>
-														<form method="post" action="reviewCommentWrite.api" id="reviewCommentForm">
-															<div class="row commentBox">
-																<c:choose>
-																	<c:when test="${not empty userId }">
-																		<div class="col-lg-2 comImg_wrap">
-																			<img src="../uploads/${userImg }" onerror="loadFallbackImage(this)">
-																		</div>
-																		<div class="col-lg-9 comWrite_wrap">
-																			<div class="user_wrap">
-																				<div class="user_wrap">
-																					<span>${userName }</span>
-																				</div>
-																			</div>
-																		</div>
-																	</c:when>
-																	<c:otherwise>
-																		<div class="col-lg-2 comImg_wrap">
-																			<img src="../uploads/profile.png" onerror="loadFallbackImage(this)">
-																		</div>
-																		<div class="col-lg-9 comWrite_wrap">
-																			<div class="user_wrap">
-																				<div class="user_wrap">
-																					<span>비회원 <i style="color: red;"> ※ 로그인이 필요합니다</i></span>
-																				</div>
-																			</div>
-																		</div>
-																	</c:otherwise>
-																</c:choose>
+            <div class="wrap1440">
+                <div class="gap1440">
+                    <div class="container1440">
+						<div class="comment_wrap">
+							<div class="comment_title">
+								<h1><i class="cmtotalCount">5</i>개의 댓글을 확인해보세요!</h1>
+                            </div>
+                            <div class="comment_content">
+								<ul class="comList_wrap">
+									<li>
+										<form method="post" action="reviewCommentWrite.api"  id="reviewCommentviewForm">
+										<div class="row commentBox" >
+											<c:choose>
+												<c:when test="${not empty userId }">
+													<div class="col-lg-2 comImg_wrap">
+														<img src="../img/${userImg }" alt="">
+													</div>
+													<div class="col-lg-9 comWrite_wrap">
+														<div class="user_wrap">
+															<span>${ userName }</span>
+														</div>
+													</div>
+												</c:when>
+												<c:otherwise>
+													<div class="col-lg-2 comImg_wrap">
+														<img src="../img/profile.png" alt="">
+													</div>
+													<div class="col-lg-9 comWrite_wrap">
+														<div class="user_wrap">
+															<div class="user_wrap">
+																<span>비회원 <i style="color: red;"> ※ 로그인이 필요합니다</i></span>
 															</div>
-															<div class="col-lg-1 commentBtn_wrap">
-																<button type="button" id="rvcSendBtn" class="btn btn-dark" onclick="writeComment()">등록</button>
-															</div>
-														</form>
-													</li>
-												</ul>
-												<div id="reviewCommentList">
-													<!-- 한줄평 목록 출력 부분 -->
-												</div>
+														</div>
+													</div>
+												</c:otherwise>
+											</c:choose>
+											<div class="content_wrap">
+												<div id="textCnts" class="col-lg-6" style="width:100%; text-align: right;">(0/150)</div>
+												<textarea name="cm_content" id="cmContent" cols="30" rows="2" placeholder="댓글을 남겨주세요."></textarea>
 											</div>
-			                            </div>
-			                            <div class="paging_wrap">
-			                            	<!-- 한줄평 페이지네이션 출력 부분 -->
 										</div>
-			                        </div>
-								</div>
-							</div>
-							<div class="listBtnBox">
-								<a href="/reviewList" class="listBtn">목록보기</a>
-							</div>
-						</div>
-					</div>
-				</div>
-			</div>
-		</section>
+										<div class="col-lg-1 commentBtn_wrap">
+											<button type="button" class="btn btn-dark" id="cmCntBtn" onclick="postComment()">등록</button>
+										</div>
+										</form>
+									</li>
+									<li>
+										<div id="listReviewComment">
+											<!-- 갤러리 댓글 목록 출력 부분 -->
+										</div>
+									</li>
+								</ul>
+                            </div>
+                            <div class="paging_wrap">
+                            	<!-- 갤러리 댓글 페이지네이션 출력 부분 -->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
 
     </main>
 	

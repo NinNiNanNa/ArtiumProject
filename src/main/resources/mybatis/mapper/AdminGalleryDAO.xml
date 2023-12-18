@@ -5,7 +5,7 @@
 	PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 	
-	<mapper namespace="com.edu.springboot.gallery.IGalleryService">
+	<mapper namespace="com.edu.springboot.gallery.IAdminGalleryService">
 	
 		<select id="getTotalCount" resultType="int" parameterType="com.edu.springboot.gallery.GalleryDTO">
 			SELECT COUNT(*) FROM gallery

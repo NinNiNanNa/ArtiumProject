@@ -2,33 +2,22 @@ package com.edu.springboot.gallery;
 
 import java.io.File;
 import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
 import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
 import java.util.Map;
-import java.util.Set;
+//import java.util.regex.Matcher;
+//import java.util.regex.Pattern;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.util.ResourceUtils;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.multipart.MultipartFile;
 
 import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import jakarta.servlet.http.Part;
 import utils.MyFunctions;
@@ -41,15 +30,14 @@ public class GalleryController {
 	// DAO호출을 위한 빈 자동주입. 이 인터페이스를 통해 Mapper 호출
 	@Autowired
 	IGalleryService dao;
-
 	
 	// 갤러리 목록
 	@RequestMapping("/galleryList")
-	public String galleryList(Model model, HttpServletRequest req, GalleryDTO galleryDTO, HttpSession session) {
+	private String galleryList(Model model, HttpServletRequest req, GalleryDTO galleryDTO) {
 		
 		// 세션에서 사용자 아이디 가져오기
-		String userId = (String) session.getAttribute("userId");
-		galleryDTO.setUser_id(userId);
+//		String userId = (String) session.getAttribute("userId");
+//		galleryDTO.setUser_id(userId);
 
 		// 게시물의 갯수를 카운트(검색어가 있는 경우 DTO객체에 자동으로 저장
 		int totalCount = dao.getTotalCount(galleryDTO);
@@ -77,6 +65,7 @@ public class GalleryController {
 		
 		// 데이터베이스에서 인출한 게시물의 목록을 Model객체에 저장
 		ArrayList<GalleryDTO> galleryList = dao.listPage(galleryDTO);
+		
 		model.addAttribute("galleryList", galleryList);
 		
 //		System.out.println("뀨: "+galleryList);
@@ -89,6 +78,8 @@ public class GalleryController {
 
 		return "/gallery/list";
 	}
+
+			
 
 	// 글쓰기 페이지 로딩
 	@GetMapping("/galleryWrite")
@@ -306,11 +297,11 @@ public class GalleryController {
 //		String gaid = (String)session.getAttribute("ga_id");
 		String gaid = req.getParameter("ga_id");
 		galleryDTO.setGa_id(gaid);
-		System.out.println("이유가 뭐야: "+ gaid);
+//		System.out.println("이유가 뭐야: "+ gaid);
 		
 		// 게시물의 갯수를 카운트(검색어가 있는 경우 DTO객체에 자동으로 저장)
 		int totalCount = dao.getGalleryComment(galleryDTO);
-		System.out.println("왜 안되는거야: "+ totalCount);
+//		System.out.println("왜 안되는거야: "+ totalCount);
 		
 		// 페이징을 위한 설정값(하드코딩)
 		int pageSize = 10;		// 한 페이지당 게시물 수
@@ -342,7 +333,7 @@ public class GalleryController {
 		maps.put("lists", lists);
 		maps.put("pagingImg", pagingImg);
 		
-		System.out.println("댓글 목록 나오나요?: "+maps);
+//		System.out.println("댓글 목록 나오나요?: "+maps);
 		
 		return maps;
 	}

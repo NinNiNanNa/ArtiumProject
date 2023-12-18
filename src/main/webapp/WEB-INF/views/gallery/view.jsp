@@ -415,7 +415,7 @@ $(document).on('click', 'a.cmDeleteBtn', function(e) {
                     </form>
                         <div class="view_content">
                             <div>
-																<span class="status">#현대미술</span>
+																<span class="status">${galleryDTO.ga_type }</span>
                                 <h2>${ galleryDTO.ga_title }</h2>
                                 <ul>
                                     <li>

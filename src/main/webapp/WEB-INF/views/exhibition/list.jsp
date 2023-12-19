@@ -43,7 +43,6 @@
 <script>
 $(document).ready(function() {
     var currentUrl = window.location.href;
-    var userId = "${sessionScope.userId}";
 
     function handleExhibitionButtonClick(status) {
         $(".nav-link").removeClass("active");
@@ -58,36 +57,114 @@ $(document).ready(function() {
         handleExhibitionButtonClick("past");
     }
     
-    
-    $(".bookMarkBtn").click(function(){
-    	var exSeq = $(this).data('exseq-id');
-    	$.ajax({  
-    		contentType : "text/html;charset:utf-8", 
-    		dataType : "json",
-            url: '/bookmark.api',
-            method: 'GET',
-            data: { 
-            	user_id: userId,
-            	ex_seq: exSeq
-            	},
+});
+
+window.onload = function () {
+    // 페이지 로드 시 북마크 표시하기
+    loadBookmark();
+}
+
+function loadBookmark() {
+    var userId = "${sessionScope.userId}";
+    // 북마크 표시하기
+    $.ajax({
+        contentType: "application/json;charset=utf-8",
+        dataType: "json",
+        url: '/bookmarkList.api',
+        method: 'GET',
+        data: {
+            user_id: userId,
+            post_type: "ex"
+        },
+        success: function (data) {
+            $.each(data.bmlists, function (index, item) {
+                var bookmarkedButton = $(".bookMarkBtn[data-exseq-id='" + item.post_id + "']");
+                if (bookmarkedButton.length > 0) {
+                    // 북마크가 되어 있는 경우
+                    bookmarkedButton.attr('data-bm-id', item.bm_id);
+                    bookmarkedButton.find("i.far").css({ 'opacity': 0 });
+                    bookmarkedButton.find("i.fas").css({ 'opacity': 1 });
+                }
+            });
+        },
+        error: function () {
+            console.error('북마크 작동 실패');
+        }
+    });
+}
+
+$(document).on('click', '.bookMarkBtn', function (e) {
+    // 북마크가 이미 되어 있는지 여부 확인
+    var isBookmarked = $(this).find("i.fas").css('opacity') === '0';
+    var clickedButton = this;
+
+    if (isBookmarked) {
+        // 북마크가 되어 있지 않은 경우 -> 추가 요청
+        var userId = "${sessionScope.userId}";
+        var exSeq = $(clickedButton).data('exseq-id');
+        $.ajax({
+            contentType: "application/json;charset=utf-8",
+            dataType: "json",
+            url: '/bookmarkAdd.api',
+            method: 'POST',
+            data: JSON.stringify({
+                user_id: userId,
+                post_id: exSeq,
+                post_type: "ex"
+            }),
             success: function (data) {
-                console.log("완료");
-                console.log("(성공)아이디가져옴: "+userId);
-                console.log("(성공)일련번호가져옴: "+exSeq);
-                $(".bookMarkBtn i.far").css({'opacity':0});
-                $(".bookMarkBtn i.fas").css({'opacity':1});
+                console.log(data);
+                console.log("(성공)아이디가져옴: " + userId);
+                console.log("(성공)일련번호가져옴: " + exSeq);
+                if (data.result === 1) {
+                    loadBookmark();
+
+                    // 추가 요청이 성공한 경우에만 삭제 요청을 보냄
+                    var bmId = data.bm_id;
+                    sendRemoveRequest(clickedButton, bmId);
+                } else {
+                    // 추가 실패 시
+                    console.error('북마크 추가 실패');
+                }
             },
             error: function () {
                 console.error('북마크 작동 실패');
-                console.log("(실패)아이디가져옴: "+userId);
-                console.log("(실패)일련번호가져옴: "+exSeq);
+                console.log("(실패)아이디가져옴: " + userId);
+                console.log("(실패)일련번호가져옴: " + exSeq);
             }
         });
-    });
-    
+
+    } else {
+        // 북마크가 되어 있는 경우 -> 삭제 요청
+        var bmId = $(clickedButton).data('bm-id');
+        sendRemoveRequest(clickedButton, bmId);
+    }
 });
 
-
+function sendRemoveRequest(clickedButton, bmId) {
+    $.ajax({
+        contentType: "application/json;charset=utf-8",
+        dataType: "json",
+        url: '/bookmarkRemove.api',
+        method: 'POST',
+        data: JSON.stringify({
+            bm_id: bmId // 클릭한 버튼의 bm_id 전송
+        }),
+        success: function (data) {
+            if (data.result === 1) {
+                // 삭제 성공 시
+                $(clickedButton).find("i.far").css({ 'opacity': 1 });
+                $(clickedButton).find("i.fas").css({ 'opacity': 0 });
+            } else {
+                // 삭제 실패 시
+                console.error('북마크 삭제 실패');
+            }
+        },
+        error: function () {
+            console.error('북마크 작동 실패');
+        }
+    });
+}
 </script>
 </head>
 <body>
@@ -169,8 +246,8 @@ $(document).ready(function() {
 														<c:when test="${not empty userId }">
 															<div class="listBtn_wrap">
 																<a href="javascript:;" class="bookMarkBtn" data-exseq-id="${row.ex_seq }">
-																	<i class="fas fa-bookmark"></i>
-																	<i class="far fa-bookmark"></i>
+																	<i class="fas fa-bookmark" style="opacity: 0;"></i>
+																	<i class="far fa-bookmark" style="opacity: 1;"></i>
 																</a>
 															</div>
 														</c:when>

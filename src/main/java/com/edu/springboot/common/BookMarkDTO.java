@@ -4,10 +4,8 @@ import lombok.Data;
 
 @Data
 public class BookMarkDTO {
-	private int bm_id;
-	private String user_id;
-	private String ex_seq;
-	private int rv_id;
-	private int mt_id;
-	private int ga_id;
+	private String bm_id;			// 북마크 일련번호
+	private String user_id;		// 북마크한 유저 아이디
+	private String post_id;		// 북마크한 게시글일련번호
+	private String post_type;	// 게시글 유형
 }

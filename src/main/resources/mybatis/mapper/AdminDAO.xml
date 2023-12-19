@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!-- Mapper파일을 구성하기 위한 Doctype 설정 -->
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.edu.springboot.member.IAdminService">
+
+<!-- 회원목록 출력하기 : select 쿼리를 통해 인출한 레코드를 DTO에 저장한 후
+	List컬렉션에 add() 하여 컨트롤러로 반환한다. -->
+	<select id="select"
+		parameterType="com.edu.springboot.member.MemberDTO"
+		resultType="com.edu.springboot.member.MemberDTO">
+		select * from members order by user_regidate desc
+	</select>
+	
+	<!-- 회원 검색 -->
+	<select id="search"
+		resultType="com.edu.springboot.member.MemberDTO">
+		select * from members where ${searchOption} like '%'||#{keyword}||'%' order by user_regidate desc 
+	</select>
+	
+	<!-- 회원 삭제 -->
+	<delete id="delete"
+		parameterType="com.edu.springboot.member.MemberDTO">
+		delete from members where user_id=#{user_id}
+	</delete>
+	
+	<!-- 관리자 목록 -->
+	<select id="adminselect"
+		parameterType="com.edu.springboot.member.AdminDTO"
+		resultType="com.edu.springboot.member.AdminDTO">
+		select * from admin order by admin_regidate desc
+	</select>
+	
+	<!-- 관리자 검색 -->
+	<select id="adminsearch"
+		resultType="com.edu.springboot.member.AdminDTO">
+		select * from admin where ${searchOption} like '%'||#{keyword}||'%' order by admin_regidate desc 
+	</select>
+	
+	<!-- 관리자 삭제 -->
+	<delete id="admindelete"
+		parameterType="com.edu.springboot.member.AdminDTO">
+		delete from admin where admin_id=#{admin_id}
+	</delete>
+	
+	
+</mapper>

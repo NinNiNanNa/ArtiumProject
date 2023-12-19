@@ -89,6 +89,7 @@ public class AdminExhibitionController {
 	}
 	
 	
+	
 	// 한줄평 목록
 	@RequestMapping("/admin/exhibitionComments")
 	public String simpleReviewList(HttpServletRequest req, ParameterDTO parameterDTO, Model model) {
@@ -125,13 +126,16 @@ public class AdminExhibitionController {
 	}
 	
 	// 한줄평 삭제
-	@PostMapping("/adminExhibitionReviewDelete")
-	public String restSimpleReviewDelete(HttpServletRequest req) {
-		System.out.println("삭제 나오나?"+req.getParameter("srv_id"));
-	    int result = dao.deleteSimpleReview(req.getParameter("srv_id"));
-	    System.out.println("한줄평삭제: "+ result);
+	@PostMapping("/adminExhibitionReviewDelete.api")
+	@ResponseBody
+	public Map<String, Object> restSimpleReviewDelete(HttpServletRequest req) {
+	    Map<String, Object> maps = new HashMap<>();
 	    
-	    return "redirect:/admin/exhibitionComments";
+	    int result = dao.deleteSimpleReview(req.getParameter("srv_id"));
+	    maps.put("result", result);
+	    System.out.println("한줄평삭제: "+ maps);
+	    
+	    return maps;
 	}
 
 }

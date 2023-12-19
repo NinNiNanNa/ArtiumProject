@@ -41,15 +41,6 @@
 		WHERE rNum<![CDATA[>=]]>#{start} AND rNum<![CDATA[<=]]>#{end}
 	</select>
 	
-	<select id="view" resultType="com.edu.springboot.exhibition.ExhibitionDTO"
-		parameterType="com.edu.springboot.exhibition.ExhibitionDTO">
-		SELECT * FROM exhibition WHERE ex_seq=#{ex_seq}
-	</select>
-	
-	<update id="visitCount" parameterType="com.edu.springboot.exhibition.ExhibitionDTO">
-		UPDATE exhibition SET ex_visitcount=ex_visitcount+1 WHERE ex_seq=#{ex_seq}
-	</update>
-	
 	<!-- ************************************************************************************************************** -->
 	
 	<!-- 한줄평 총 갯수 -->
@@ -57,6 +48,7 @@
 		SELECT COUNT(*) FROM simple_review
 	</select>
 	
+	<!-- 한줄평 리스트 -->
 	<select id="listSimpleReview"
 		resultType="com.edu.springboot.exhibition.SimpleReviewDTO"
 		parameterType="com.edu.springboot.exhibition.ParameterDTO">
@@ -67,7 +59,7 @@
 		    FROM simple_review sr
 		    JOIN members m ON sr.user_id = m.user_id
 		    <if test="searchKeyword!=null and !searchKeyword.equals('')">
-					WHERE ${searchField} LIKE '%'||#{searchKeyword}||'%'
+				WHERE ${searchField} LIKE '%'||#{searchKeyword}||'%'
 			</if>
 		)
 		WHERE rNum<![CDATA[>=]]>#{start} AND rNum<![CDATA[<=]]>#{end}

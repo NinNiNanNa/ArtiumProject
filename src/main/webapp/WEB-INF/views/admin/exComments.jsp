@@ -28,17 +28,50 @@
 
     <!-- 부트스트랩5 CDN -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    
+    <!-- jQuery 라이브러리 로드 -->
+	<script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
 
 </head>
 <script>
-let deletePost = function(){
-	let frm = document.srvIdFrm;
-	if(confirm("정말 삭제할까요?")){
-		frm.action = "adminExhibitionReviewDelete";
-		frm.method = "post";
-		frm.submit();
-	}
+//댓글 삭제 함수
+function deleteComment(srvId) {
+  $.ajax({
+      type: "POST",
+      url: "/adminExhibitionReviewDelete.api",
+      data: { srv_id: srvId },
+      success: function(response) {
+          if (response.result === 1) {	// 댓글 삭제 성공
+			alert("댓글이 삭제되었습니다.");
+          	// 페이지를 새로고침
+            location.reload();
+          } else {	// 댓글 삭제 실패
+              alert("댓글 삭제에 실패하였습니다.");
+          }
+      },
+      error: function(error) {
+          // 에러 처리
+          console.log(error);
+      }
+  });
 }
+
+//삭제 버튼 클릭 시 이벤트 처리
+$(document).on('click', '.srvDeleteBtn', function(e) {
+	e.preventDefault();
+
+	var srvId = $(this).data('comment-id');
+  
+	// 확인 창 띄우기
+  	var isConfirmed = confirm('댓글을 삭제하시겠습니까?');
+
+	// 확인이 눌렸을 경우에만 삭제 요청
+  	if (isConfirmed) {
+	   // 서버로 삭제 요청을 보냄
+	   deleteComment(srvId);
+  	}
+    
+});
 </script>
 <body id="page-top">
 
@@ -85,6 +118,7 @@ let deletePost = function(){
                                             <col width="80px"/>
                                             <col width="150px"/>
                                             <col width="*"/>
+                                            <col width="200px"/>
                                             <col width="150px"/>
                                             <col width="150px"/>
                                         </colgroup>
@@ -93,6 +127,7 @@ let deletePost = function(){
                                                 <th>번호</th>
                                                 <th>닉네임</th>
                                                 <th>내용</th>
+                                                <th>게시글 일련번호</th>
                                                 <th>작성일</th>
                                                 <th>기능</th>
                                             </tr>
@@ -100,19 +135,17 @@ let deletePost = function(){
                                         <tbody>
                                         <c:forEach items="${srvLists }" var="row" varStatus="loop">
                                             <tr>
-		                                        <form name="srvIdFrm">
-													<input type="hid-den" name="srv_id" value="${row.srv_id }" />
-												</form>
                                                 <td>${ maps.totalCount - (((maps.pageNum-1) * maps.pageSize) + loop.index)}</td>
                                                 <td>${row.user_name }</td>
                                                 <td class="txtSkip">${row.srv_content }</td>
+                                                <td>${row.ex_seq }</td>
                                                 <td>${row.srv_postdate }</td>
-                                                <td><button type="button" class="btn btn-danger" onclick="deletePost(${ row.srv_id });">삭제</button></td>
+                                                <td><button type="button" class="btn btn-danger srvDeleteBtn" data-comment-id="${row.srv_id }">삭제</button></td>
                                             </tr>
                                         </c:forEach>
                                         </tbody>
                                     </table>
-									<div class="paging_wrap" style="margin-top: 30px">
+									<div class="paging_wrap" style="margin-top: 20px">
 										${ pagingImg }
 									</div>
 

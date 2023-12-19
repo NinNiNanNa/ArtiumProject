@@ -38,7 +38,16 @@
 .search_wrap .searchWord_wrap { display: inline-block; position: relative; }
 .search_wrap .searchWord_wrap .searchBtn { position: absolute; top: 0; right: 0; border-radius: 0 5px 5px 0; }
 </style>
-
+<script>
+function deletePost(rv_id){
+	var confirmed = confirm("정말로 삭제하겠습니까?"); 
+	if (confirmed) {
+	    form.method = "post";  
+	    form.action = "rvDelete";
+	    form.submit();  
+	}
+}
+</script>
 <body id="page-top">
 
     <!-- Page Wrapper -->
@@ -83,7 +92,14 @@
 										<li class="col-lg-3">
 											<div class="listInfo">
 												<div class="image_wrap">
-													<img src="../uploads/${row.rv_image }" onerror="loadFallbackImage(this)">
+													<img src="../uploads/${row.rv_image }" onerror="loadFallbackImage(this)">\
+													<ul class="listBtn_wrap">
+		                                                <li>
+		                                                    <a href="javascript:void(0);" onclick="deletePost(${ row.rv_id })" class="deleteBtn btn">
+		                                                        <i class="fas fa-trash-alt"></i>
+		                                                    </a>
+		                                                </li>
+		                                            </ul>
 													<c:choose>
 														<c:when test="${not empty userId }">
 															<div class="listBtn_wrap">
@@ -100,7 +116,7 @@
 												</div>
 												<div class="title_wrap">
 													<div>
-														<a class="txtSkip" href="/reviewView?rv_id=${row.rv_id }">${row.rv_title }</a>
+														<a class="txtSkip" href="/rvView?rv_id=${row.rv_id }">${row.rv_title }</a>
 														<h6>${row.user_name }</h6>
 														<h5>${row.rv_postdate }</h5>
 														<ul class="info_wrap">

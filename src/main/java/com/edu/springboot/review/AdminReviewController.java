@@ -9,6 +9,7 @@ import java.util.regex.Pattern;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import jakarta.servlet.http.HttpServletRequest;
@@ -64,10 +65,17 @@ public class AdminReviewController {
 		
 
 		// 게시판 하단에 출력한 페이지번호를 String으로 반환받은 후 Model객체에 저장한다.
-		String pagingImg = PagingUtil.pagingImg(totalCount, pageSize, blockPage, pageNum, req.getContextPath()+"/admin/reviewList?");
+		String pagingImg = PagingUtil.pagingImg(totalCount, pageSize, blockPage, pageNum, req.getContextPath()+"/admin/rvList?");
 		model.addAttribute("pagingImg", pagingImg);
 		
 		return "/admin/rvList";
+	}
+	
+	@PostMapping("/rvDelete")
+	public String reviewDeletePost(HttpServletRequest req) {
+		int result = dao.delete(req.getParameter("rv_id"));
+		System.out.println("글삭제결과:"+ result);
+		return "redirect:/rvList";       
 	}
 	
 }

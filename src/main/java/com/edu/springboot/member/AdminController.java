@@ -86,12 +86,4 @@ public class AdminController {
 	public String mtList() {
 		return "/admin/mtList";
 	}
-	@GetMapping("/admin/rvComments")
-	public String rvComments() {
-		return "/admin/rvComments";
-	}
-	@GetMapping("/admin/rvList")
-	public String rvList() {
-		return "/admin/rvList";
-	}
 }

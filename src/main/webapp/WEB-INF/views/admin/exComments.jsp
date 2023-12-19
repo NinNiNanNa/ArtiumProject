@@ -106,7 +106,7 @@ $(document).on('click', '.srvDeleteBtn', function(e) {
                                         <div class="searchWord_wrap">
                                             <input type="text" class="form-control bg-light border-0 small" name="searchKeyword"  placeholder="닉네임 또는 내용을 입력해주세요." aria-label="Search" aria-describedby="basic-addon2">
                                             <div class="searchBtn">
-                                                <button class="btn btn-dark" type="button">
+                                                <button class="btn btn-dark" type="submit">
                                                     <i class="fas fa-search fa-sm"></i>
                                                 </button>
                                             </div>

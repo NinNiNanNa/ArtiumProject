@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!-- 마이바티스 Doctype 설정 -->
+<!DOCTYPE mapper
+	PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.edu.springboot.review.IAdminReviewService">
+
+	<select id="getTotalCount" resultType="int" parameterType="com.edu.springboot.review.ParameterDTO">
+		SELECT COUNT (*) FROM (
+			SELECT r.*, m.* FROM review r JOIN members m ON r.user_id = m.user_id
+			<if test="searchKeyword!=null and !searchKeyword.equals('')">
+				WHERE ${searchField} LIKE '%'||#{searchKeyword}||'%'
+			</if>
+		) 
+	</select>
+
+	<select id="listPage" resultType="com.edu.springboot.review.ReviewDTO" parameterType="com.edu.springboot.review.ParameterDTO">
+		SELECT * FROM (
+			SELECT Tb.*, rownum rNum FROM (
+				SELECT r.*, m.user_name, m.user_image FROM review r JOIN members m ON r.user_id = m.user_id
+				<if test="searchKeyword!=null and !searchKeyword.equals('')">
+					WHERE ${searchField} LIKE '%'||#{searchKeyword}||'%'
+				</if>
+				ORDER BY rv_id DESC
+			) Tb
+		)
+		WHERE rNum<![CDATA[>=]]>#{start} AND rNum<![CDATA[<=]]>#{end}
+	</select>
+	<!-- 
+	<select id="view" resultType="com.edu.springboot.review.ReviewDTO" parameterType="com.edu.springboot.review.ReviewDTO">
+		SELECT * FROM (
+			SELECT r.*, m.user_name, m.user_image FROM review r JOIN members m ON r.user_id = m.user_id
+		)
+		WHERE rv_id=#{rv_id}
+	</select>
+	<update id="visitCount" parameterType="com.edu.springboot.review.ReviewDTO">
+		UPDATE review SET rv_visitcount = rv_visitcount + 1 WHERE rv_id=#{rv_id}
+	</update>
+	 	  
+	@Param 어노테이션으로 변경된 파라미터를 인파라미터로 설정한다.
+	<insert id="write">
+		INSERT INTO review(rv_id, rv_title, rv_date, rv_stime, rv_etime, rv_congestion, rv_transportation, rv_revisit, rv_image, rv_content, user_id)
+		VALUES(seq_board_num.nextval, #{rv_title}, #{rv_date}, #{rv_stime}, #{rv_etime}, #{rv_congestion}, #{rv_transportation}, #{rv_revisit}, #{rv_image}, #{rv_content}, #{user_id})
+	</insert>
+	
+	<update id="edit" parameterType="com.edu.springboot.review.ReviewDTO">
+       	UPDATE review SET
+			rv_title=#{rv_title}, 
+			rv_date=#{rv_date}, 
+			rv_stime=#{rv_stime}, 
+			rv_etime=#{rv_etime}, 
+			rv_congestion=#{rv_congestion}, 
+			rv_transportation=#{rv_transportation}, 
+			rv_revisit=#{rv_revisit}, 
+			rv_image=#{rv_image}, 
+			rv_content=#{rv_content}
+       	WHERE rv_id=#{rv_id}
+    </update>
+    
+    <delete id="delete">
+    	DELETE FROM review WHERE rv_id=#{param1}
+    </delete>
+
+	
+	댓글 총 갯수
+	<select id="getReviewCommentCount" resultType="int" parameterType="com.edu.springboot.review.ParameterDTO">
+		SELECT COUNT(*) FROM review_comment WHERE rv_id=#{rv_id}
+	</select>
+	
+	댓글 목록
+	<select id="listReviewComment" resultType="com.edu.springboot.review.ReviewCommentDTO"
+		parameterType="com.edu.springboot.review.ParameterDTO">
+		SELECT *
+			FROM (
+			    SELECT rc.rvc_id, rc.rv_id, rc.user_id, rc.rvc_content, rc.rvc_postdate, m.user_image, m.user_name, ROW_NUMBER() 
+			    OVER (ORDER BY rc.rvc_postdate DESC) AS rNum
+			    FROM review_comment rc
+			    JOIN members m ON rc.user_id = m.user_id
+			    WHERE rv_id=#{rv_id}
+			)
+			WHERE rNum<![CDATA[>=]]>#{start} AND rNum<![CDATA[<=]]>#{end}
+	</select>
+	
+	댓글 작성
+	<insert id="writeReviewComment" parameterType="com.edu.springboot.review.ReviewCommentDTO">
+	    INSERT INTO review_comment (rvc_id, rv_id, user_id, rvc_content, rvc_postdate)
+	    VALUES (seq_board_num.nextval, #{rv_id}, #{user_id}, #{rvc_content}, sysdate)
+	</insert>
+	
+	댓글 수정
+	<update id="editReviewComment" parameterType="com.edu.springboot.review.ReviewCommentDTO">
+		UPDATE review_comment SET
+		rvc_content=#{rvc_content}
+		WHERE rvc_id=#{rvc_id}
+	</update>
+	
+	댓글 삭제
+	<delete id="deleteReviewComment">
+		DELETE FROM review_comment WHERE rvc_id=#{param1}
+	</delete>
+	 -->
+</mapper>

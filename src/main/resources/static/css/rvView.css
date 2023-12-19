@@ -16,6 +16,24 @@
 #section3 { padding: 50px 0; }
 
 
+/* modal */
+.modal{ --bs-modal-footer-border-width:none; color: #000; }
+.modal-body {padding-bottom: 0px; }
+.modal-body a { width:100%; margin-bottom:10px; }
+.modal-body table tr { border-bottom: 1px solid #E9E9E9; }
+.modal-body table th { padding-left: 10px; font-weight:normal; }
+.modal-body table td { text-align:right;}
+.modal-body select { margin-left: 20px; margin-top:10px; margin-bottom:10px; }
+.modal-body hr { border: solid 1px black; opacity:1; }
+.modal-footer { padding-top: 0px; justify-content:normal }
+.modal-footer table tr { text-align:center; border-bottom: 1px solid #E9E9E9; }
+.modal-footer input { vertical-align:middle; }
+
+.modal-footer .buttons { display: block; width: 100%; text-align: center; margin-bottom: 10px; padding: 15px 0; font-size: 18px; font-weight: bold; line-height: 24px; border-radius: 8px; transition: all .3s; }
+.modal-footer .exhibitionBtn { background-color: #FEE500; color: #391B1B; }
+.modal-footer .exhibitionBtn:hover { background-color: #fecf00; }
+
+
 /* 반응형 - start /////////////////////////////////////////////////////////////////////////////////////////////////////// */
 
 @media all and (max-width:1199px){

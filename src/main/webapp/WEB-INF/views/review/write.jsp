@@ -136,7 +136,7 @@ function validateForm(form) {
                                         <h2>전시회정보</h2>
                                     </div>
                                     <div class="col-lg-10 write_wrap">
-                                        <button type="button" class="btn btn-dark">전시회 선택하기</button>
+                                        <button type="button" class="btn btn-dark" data-bs-toggle="modal" data-bs-target="#modalExhibition">전시회 선택하기</button>
                                     </div>
                                 </li>
                                 <li class="row">
@@ -300,6 +300,38 @@ function validateForm(form) {
 	<span class='goTop'>
 		<a href='#wrap' class='smoothBtn goTopBtn'><i class='fas fa-angle-up'><span class='blind'>goTop</span></i></a>
 	</span>
+	
+	<!-- Modal 버튼 -->
+	<div class="modal fade" id="modalExhibition" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1">
+		<div class="modal-dialog modal-dialog-centered">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h1 class="model-title fs-5">전시회 목록</h1>
+					<button class="btn-close" data-bs-dismiss="modal"></button>
+				</div>
+				<div class="modal-body">
+					<h1 style="font-size:18px; font-weight:bold;">제목/장소</h1>
+					<div class="container-fluid">
+						<div class="row">
+							
+						</div>
+					</div>
+					<hr>
+				</div>
+				<div class="modal-footer">
+					<div class="container-fluid">
+						<div class="row">
+							<div style="width:100%; float:left;">
+								<div class="modal-footer" style="justify-content:center;">
+									<a href="javascript:void(0);" class="buttons exhibitionBtn">전시회 선택 완료</a>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
 	
 	<!-- 커스텀 JS -->
 	<script src='../js/fixed.js'></script>

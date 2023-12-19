@@ -129,84 +129,88 @@
 	//댓글 글자 길이 카운트 및 엔터 키 이벤트
 	document.addEventListener('DOMContentLoaded', function () {
 	    var rvcContent = document.getElementById('rvcContent');
-	    var textCnt = document.getElementById('textCnt');
+	    var textCnts = document.getElementById('textCnts');
 
-	    srvContent.addEventListener('keydown', function (e) {
+	    rvcContent.addEventListener('keydown', function (e) {
 	        // 엔터 키가 눌렸을 때
 	        if (e.keyCode === 13) {
 	        	// 기본 동작인 줄바꿈 막음
 	        	e.preventDefault();
 	            // 댓글 작성 함수 호출
-	            writeComment();
+	            postComment();
 	        }
 	    });
-	    srvContent.addEventListener('keyup', function () {
-	        // 입력된 텍스트의 길이를 가져와서 #textCnt에 표시
-	        textCnt.innerHTML = "(" + srvContent.value.length + " / 60)";
+	    rvcContent.addEventListener('keyup', function () {
+	        // 입력된 텍스트의 길이를 #textCnts에 표시
+	        textCnts.innerHTML = "(" + rvcContent.value.length + " / 150)";
 
-	        // 만약 입력된 텍스트의 길이가 60을 초과하면
-	        if (srvContent.value.length > 60) {
-	            // 입력된 텍스트를 60자까지만 자르고 다시 #srvContent에 설정
-	            srvContent.value = srvContent.value.substring(0, 60);
-	            // #textCnt에 "(60 / 60)"으로 표시
-	            textCnt.innerHTML = "(60 / 60)";
+	        // 만약 입력된 텍스트의 길이가 150을 초과하면
+	        if (rvcContent.value.length > 150) {
+	        	// 입력된 텍스트를 150자까지만 자르고 다시 #rvcContent에 설정
+	          rvcContent.value = rvcContent.value.substring(0, 150);
+	         // #textCnts에 (15 / 150)으로 표시
+	         textCnts.innerHTML = "(150 / 150)";
 	        }
 	    });
 	});
 
-	//페이지 로드 시 댓글을 가져와서 화면에 출력하는 함수
+	//페이지 로드 시 댓글 가져와서 화면에 출력하는 함수
 	function loadComments(pageNum) {
-	    $.ajax({  
-			contentType : "text/html;charset:utf-8", 
-			dataType : "json",
-	        url: '/reviewCommentList.api',  // 댓글을 가져올 URL
-	        method: 'GET',
-	        data: { pageNum: pageNum },  // 페이지 번호를 서버에 전달
-	        success: function (data) {
-	        	// 가져온 댓글 데이터를 사용하여 동적으로 댓글을 생성
-	            $('#reviewCommentList').empty(); // 기존 댓글 목록 비우기
-	            // 가져온 댓글 데이터를 사용하여 동적으로 댓글을 생성
-	            for (var i = 0; i < data.lists.length; i++) {
-	                var review = data.lists[i];
-	                
-	                var buttons = '';
-	                var userId = "${sessionScope.userId}"; // 세션에서 현재 로그인한 사용자의 아이디를 가져옴
-	                if (userId && userId === review.user_id) {
-	                	buttons = '<div class="btn_wrap">' +
-	                        '<a href="" class="rvcEditBtn" data-edit-id="'+review.rvc_id+'">수정</a>' +
-	                        '<a href="" class="rvcDeleteBtn" data-comment-id="'+review.rvc_id+'">삭제</a>' +
-	                        '</div>';
-	                }
-	                
-	                var commentItem = '<li id="rvcList'+review.rvc_id+'">' +
-	                	'<input type="hidden" id="rvcId" name="rvc_id" value="'+review.rvc_id+'" />' +
-	                	'<div class="row commentBox commentBox'+review.rvc_id+'">' +
-						'<div class="col-lg-2 comImg_wrap">' +
-						'<img src="../uploads/'+review.user_image+'" onerror="loadFallbackImage(this)">' +
-						'</div>' +
-						'<div class="col-lg-10 comText_wrap">' +
-						'<div class="user_wrap">' +
-						'<span>'+review.user_name+'</span>' +
-						'<span>'+review.rvc_postdate+'</span>' +
-						'</div>' +
-						'<div class="content_wrap">' +
-						'<p>'+review.rvc_content+'</p>' +
-						'</div>' +
-						'</div>' +
-						buttons +
-						'</div>' +
-						'</li>';
-						
-	                $('#reviewCommentList').append(commentItem);
-	            }
-	            $('.rctotalCount').html(data.totalCount);
-	            $('.paging_wrap').html(data.pagingImg);
-	            
-	        },
-	        error: function () {
-	            console.error('댓글 불러오기 실패');
-	        }
-	    });
+		// rv_id값 null로 입력
+		var rv_id = ${param.rv_id};
+		console.log(rv_id + "rv_id값이다.");
+		
+	  $.ajax({  
+			  contentType : "text/html;charset:utf-8", 
+			  dataType : "json",
+	      url: '/reviewCommentList.api',  // 댓글 가져올 URL
+	      method: 'GET',
+	      data: { pageNum: pageNum, rv_id: rv_id },  // 페이지 번호 서버에 전달 / rv_id값 null로 입력
+	      success: function (data) {
+	        // 가져온 댓글 데이터 사용하여 동적으로 댓글 생성
+	          $('#listReviewComment').empty(); // 기존 댓글 목록 비우기
+	          // 가져온 댓글 데이터 사용하여 동적으로 댓글 생성
+	          for (var i = 0; i < data.lists.length; i++) {
+	              var comments = data.lists[i];
+	              var buttons = '';
+	              var userId = "${sessionScope.userId}"; // 세션에서 현재 로그인한 사용자 아이디 가져옴
+	              if (userId && userId === comments.user_id) {
+	                buttons = '<div class="btn_wrap">' +
+	                      '<a href="" class="rvcEditBtn" data-edit-id="'+comments.rvc_id+'">수정</a>' +
+	                      '<a href="" class="rvcDeleteBtn" data-comment-id="'+comments.rvc_id+'">삭제</a>' +
+	                      '</div>';
+	              }
+	              
+	              var commentItem = '<li id="rvcList'+comments.rvc_id+'">' +
+	                '<input type="hidden" id="rvcId" name="rvc_id" value="'+comments.rvc_id+'" />' +
+	                '<div class="row commentBox commentBox'+comments.rvc_id+'">' +
+	        '<div class="col-lg-2 comImg_wrap">' +
+	        '<img src="../img/'+comments.user_image+'" alt="">' +
+	        /* '<img src="../uploads/'+comments.user_image+'==null ? '+profile.png+' : '+comments.user_image+'" onerror="loadFallbackImage(this)">' + */
+	        '</div>' +
+	        '<div class="col-lg-10 comText_wrap">' +
+	        '<div class="user_wrap">' +
+	        '<span>'+comments.user_name+'</span>' +
+	        '<span>'+comments.rvc_postdate+'</span>' +
+	        '</div>' +
+	        '<div class="content_wrap">' +
+	        '<p>'+comments.rvc_content+'</p>' +
+	        '</div>' +
+	        '</div>' +
+	        buttons +
+	        '</div>' +
+	        '</li>';
+	        
+	              $('#listReviewComment').append(commentItem);
+	          }
+	          $('.rvctotalCount').html(data.totalCount);
+	          $('.paging_wrap').html(data.pagingImg);
+	          
+	      },
+	      error: function () {
+	          console.error('댓글 불러오기 실패');
+	      }
+	  });
 	}
 
 	//페이지 링크에 대한 클릭 이벤트 추가
@@ -226,41 +230,47 @@
 	    return match ? parseInt(match[1], 10) : 1;
 	}
 
-	function writeComment() {
-		var userId = "${sessionScope.userId}";
-		var srvContent = document.getElementById('srvContent').value;
+	// 로그인 후 댓글 작성 가능
+	function postComment() {
 		
+		var userId = "${sessionScope.userId}";
+		var rvcContent = document.getElementById('rvcContent').value;
+
 		if (userId === undefined || userId === null || userId.trim() === "") {
 			alert("로그인이 필요한 서비스입니다.");
+			window.location.href = "/login";
 		} else {
-			if (!srvContent) {
+			if (!rvcContent) {
 	            alert("댓글을 작성해주세요.");
+	            reviewCommentviewForm.rvcContent.focus();
 	            return;
 	        }
 			
-			var simpleReviewDTO = {
-	            ex_seq: "${exhibitionDTO.ex_seq}",
+			var reviewCommentDTO = {
+	            rv_id: "${reviewDTO.rv_id}",
 	            user_id: userId,
-	            srv_content: srvContent
+	            rvc_content: rvcContent
 	        };
+			console.log(reviewCommentDTO);
 			
+			// 댓글 작성
 			$.ajax({
 			    type: "POST",
-			    contentType: "application/json",
-			    url: "/exhibitionReviewWrite.api",
-			    data: JSON.stringify(simpleReviewDTO), // SimpleReviewDTO를 JSON 문자열로 변환하여 전송
+			    contentType: "application/json;",
+			    url: "/reviewCommentWrite.api",
+			    data: JSON.stringify(reviewCommentDTO), // reviewCommentDTO를 JSON 문자열로 변환하여 전송
 			    success: function(response) {
 			        // 서버로부터의 응답을 처리
 			        console.log(response);
 
 			        if (response.result === 1) {	// 리뷰 작성 성공
-			            alert("리뷰 작성이 성공하였습니다.");
+			            alert("댓글 작성에 성공하였습니다.");
 			         	// 성공적인 댓글 제출 후 댓글을 업데이트하기 위해 loadComments() 함수 호출
 	                    loadComments();
 	                 	// 폼 초기화
-	                    document.getElementById('srvContent').value = "";
+	                    document.getElementById('rvcContent').value = "";
 			        } else {	// 리뷰 작성 실패
-			            alert("리뷰 작성에 실패하였습니다.");
+			            alert("댓글 작성에 실패하였습니다.");
 			        }
 			    },
 			    error: function(error) {
@@ -271,55 +281,16 @@
 		}
 	}
 
-	//댓글 삭제 함수
-	function deleteComment(srvId) {
-	    $.ajax({
-	        type: "POST",
-	        url: "/exhibitionReviewDelete.api",
-	        data: { srv_id: srvId },
-	        success: function(response) {
-	            if (response.result === 1) {	// 댓글 삭제 성공
-	                alert("댓글이 삭제되었습니다.");
-	                // 삭제 후 댓글 목록을 업데이트하는 함수 호출
-	                loadComments();
-	            } else {	// 댓글 삭제 실패
-	                alert("댓글 삭제에 실패하였습니다.");
-	            }
-	        },
-	        error: function(error) {
-	            // 에러 처리
-	            console.log(error);
-	        }
-	    });
-	}
-
-	//삭제 버튼 클릭 시 이벤트 처리
-	$(document).on('click', 'a.srvDeleteBtn', function(e) {
-	    e.preventDefault();
-
-	    var srvId = $(this).data('comment-id');
-	    
-	 	// 확인 창 띄우기
-	    var isConfirmed = confirm('댓글을 삭제하시겠습니까?');
-	 	
-	 	// 확인이 눌렸을 경우에만 삭제 요청
-	    if (isConfirmed) {
-	        // 서버로 삭제 요청을 보냄
-	        deleteComment(srvId);
-	    }
-	    
-	});
-
-	//댓글 수정 버튼 클릭 시 이벤트 처리
-	$(document).on('click', 'a.srvEditBtn', function(e) {
+	// 댓글 수정하기
+	$(document).on('click', 'a.rvcEditBtn', function(e) {
 	    e.preventDefault();
 	    
 	 	// data-edit-id 속성 값 가져오기
 	    var editId = $(this).data('edit-id');
-	 	console.log("수정폼에들어옴?: "+editId);
+	 		console.log("수정폼에들어옴?: "+editId);
 	 	
-	    // 수정할 댓글의 내용, 별점을 가져옴
-	    var srvEditContent = $(this).closest('.commentBox').find('.content_wrap p').text();
+	    // 수정할 댓글의 내용 가져옴
+	    var rvcEditContent = $(this).closest('.commentBox').find('.content_wrap p').text();
 
 	    // 동적으로 수정 폼 생성
 	    var editForm = $('<li id="editCommentForm" data-edit-id="'+editId+'">' +
@@ -332,64 +303,75 @@
 	        '<span>${userName }</span>' +
 	        '</div>' +
 	        '<div class="content_wrap">' +
-	        '<div id="textEditCnt" class="col-lg-6">(0/60)</div>' +
-	        '<textarea name="srv_content" id="srvEditContent" cols="30" rows="1" placeholder="댓글을 남겨주세요.">' + srvEditContent + '</textarea>' +
+	        '<div class="row starAndtextcnt">' +
+	        '<div class="col-lg-6 star_wrap">' +
+	        '</div>' +
+	        '<div id="textEditCnt" class="col-lg-6">(0/150)</div>' +
+	        '</div>' +
+	        '<textarea name="rvc_content" id="rvcEditContent" cols="30" rows="1" placeholder="댓글을 남겨주세요.">' + rvcEditContent + '</textarea>' +
 	        '</div>' +
 	        '</div>' +
 	        '<div class="col-lg-1 commentBtn_wrap">' +
-	        '<button type="button" id="srvUpdateBtn" class="btn btn-dark" data-edit-id="'+editId+'">수정</button>' +
+	        '<button type="button" id="rvcUpdateBtn" class="btn btn-dark" data-edit-id="'+editId+'">수정</button>' +
 	        '</div>' +
 	        '</div>' +
 	        '</li>');
 
-	 	// 수정 폼을 이전에 있던 댓글 밑에 추가
+	 		// 수정 폼을 이전에 있던 댓글 밑에 추가
 	    $(this).closest('.commentBox').after(editForm);
 	    // 기존 댓글은 숨기기
 	    $(this).closest('.commentBox').hide();
-	    
+	 	
 	    // 수정 폼 내의 textarea에 입력된 텍스트의 길이를 초기 설정
-	    $('#textEditCnt').html('(' + srvEditContent.length + ' / 60)');
+	    $('#textEditCnt').html('(' + rvcEditContent.length + ' / 150)');
 	    
-	 	// 수정 폼 내에서 텍스트 입력 시 글자 수 카운트 및 제한
-	    $(document).on('keyup', '#srvEditContent', function() {
+	 		// 수정 폼 내에서 텍스트 입력 시 글자 수 카운트 및 제한
+	    $(document).on('keyup', '#rvcEditContent', function() {
 	        // 입력된 텍스트의 길이를 가져와서 #textEditCnt에 표시
 	        var editedContentLength = $(this).val().length;
-	        $('#textEditCnt').html('(' + editedContentLength + ' / 60)');
+	        $('#textEditCnt').html('(' + editedContentLength + ' / 150)');
 
-	        // 만약 입력된 텍스트의 길이가 60을 초과하면
-	        if (editedContentLength > 60) {
-	            // 입력된 텍스트를 60자까지만 자르고 다시 #srvEditContent에 설정
+	        // 만약 입력된 텍스트의 길이가 150을 초과하면
+	        if (editedContentLength > 150) {
+	            // 입력된 텍스트를 150자까지만 자르고 다시 #rvcEditContent에 설정
 	            $(this).val($(this).val().substring(0, 60));
-	            // #textEditCnt에 "(60 / 60)"으로 표시
-	            $('#textEditCnt').html('(60 / 60)');
+	            // #textEditCnt에 (150 / 150)으로 표시
+	            $('#textEditCnt').html('(150 / 150)');
 	        }
 	    });
 	});
 
 	//수정한 내용을 업데이트할 시 이벤트 처리
-	$(document).on('click', 'button#srvUpdateBtn', function (e) {
+	$(document).on('click', 'button#rvcUpdateBtn', function (e) {
 	    e.preventDefault();
 
-	    // 수정할 댓글의 내용, 별점을 가져옴
+	    // 수정할 댓글의 내용 가져옴
 	    var editedId = $(this).data('edit-id');
 	    var editedContent = $('#editCommentForm textarea').val();
 	    
-		console.log("수정값들어오냐?!: "+editedId);    
-		//console.log("수정값들어오냐?!: "+editedContent);    
+	    /* var reviewCommentDTO = {
+	            rv_id: "${reviewDTO.rv_id}",
+	        };
+			console.log(reviewCommentDTO); */
+	    
+			console.log("수정값들어오냐?!: "+editedId);
+			console.log("수정값들어오냐?!: "+editedContent);    
 	    
 	    // 수정한 내용을 서버에 전송
 	    $.ajax({
 	        type: 'POST',
 	        contentType: "application/json",
-	        url: '/exhibitionReviewEdit.api',
+	        url: '/reviewCommentEdit.api',
 	        data: JSON.stringify({
-	            srv_id: editedId,
-	            srv_content: editedContent
+	        		rv_id: "${reviewDTO.rv_id}", // rv_id값 null로 입력해줌
+	            rvc_id: editedId,
+	            rvc_content: editedContent
 	        }),
 	        success: function (response) {
 	            if (response.result === 1) {
 	                // 서버에서 수정이 성공하면 화면에 수정된 내용을 갱신
 	                var commentBox = $('.commentBox'+editedId);
+	                
 	                commentBox.find('.content_wrap p').text(editedContent);
 
 	                // 수정 폼을 제거하고, 기존 댓글을 다시 보이게 함
@@ -407,6 +389,45 @@
 	            alert('댓글 수정 중 오류가 발생했습니다.');
 	        }
 	    });
+	});
+
+	// 리뷰 댓글 삭제
+	function deleteComment(rvcId) {
+	    $.ajax({
+	        type: "POST",
+	        url: "/reviewCommentDelete.api",
+	        data: { rvc_id: rvcId },
+	        success: function(response) {
+	            if (response.result === 1) {	// 댓글 삭제 성공
+	                alert("댓글이 삭제되었습니다.");
+	                // 삭제 후 댓글 목록을 업데이트하는 함수 호출
+	                loadComments();
+	            } else {	// 댓글 삭제 실패
+	                alert("댓글 삭제에 실패하였습니다.");
+	            }
+	        },
+	        error: function(error) {
+	            // 에러 처리
+	            console.log(error);
+	        }
+	    });
+	}
+
+	//삭제 버튼 클릭 시 이벤트 처리
+	$(document).on('click', 'a.rvcDeleteBtn', function(e) {
+	    e.preventDefault();
+
+	    var rvcId = $(this).data('comment-id');
+	    
+	 	// 확인 창 띄우기
+	    var isConfirmed = confirm('댓글을 삭제하시겠습니까?');
+	 	
+	 	// 확인이 눌렸을 경우에만 삭제 요청
+	    if (isConfirmed) {
+	        // 서버로 삭제 요청을 보냄
+	        deleteComment(rvcId);
+	    }
+	    
 	});
 </script>
 <body>
@@ -524,7 +545,7 @@
                     <div class="container1440">
 						<div class="comment_wrap">
 							<div class="comment_title">
-								<h1><i class="cmtotalCount">5</i>개의 댓글을 확인해보세요!</h1>
+								<h1><i class="rvctotalCount">5</i>개의 댓글을 확인해보세요!</h1>
                             </div>
                             <div class="comment_content">
 								<ul class="comList_wrap">
@@ -534,11 +555,16 @@
 											<c:choose>
 												<c:when test="${not empty userId }">
 													<div class="col-lg-2 comImg_wrap">
-														<img src="../img/${userImg }" alt="">
+														<%-- <img src="../img/${userImg }" alt=""> --%>
+														<img src="../uploads/${userImg==null ? 'profile.png' : userImg }" onerror="loadFallbackImage(this)">
 													</div>
 													<div class="col-lg-9 comWrite_wrap">
 														<div class="user_wrap">
 															<span>${ userName }</span>
+														</div>
+														<div class="content_wrap">
+															<div id="textCnts" class="col-lg-6" style="width:100%; text-align: right;">(0/150)</div>
+															<textarea name="rvc_content" id="rvcContent" cols="30" rows="2" placeholder="댓글을 남겨주세요."></textarea>
 														</div>
 													</div>
 												</c:when>
@@ -552,28 +578,28 @@
 																<span>비회원 <i style="color: red;"> ※ 로그인이 필요합니다</i></span>
 															</div>
 														</div>
+														<div class="content_wrap">
+															<div id="textCnts" class="col-lg-6" style="width:100%; text-align: right;">(0/150)</div>
+															<textarea name="rvc_content" id="rvcContent" cols="30" rows="2" placeholder="댓글을 남겨주세요."></textarea>
+														</div>
 													</div>
 												</c:otherwise>
 											</c:choose>
-											<div class="content_wrap">
-												<div id="textCnts" class="col-lg-6" style="width:100%; text-align: right;">(0/150)</div>
-												<textarea name="cm_content" id="cmContent" cols="30" rows="2" placeholder="댓글을 남겨주세요."></textarea>
+											<div class="col-lg-1 commentBtn_wrap">
+												<button type="button" class="btn btn-dark" id="rvcCntBtn" onclick="postComment()">등록</button>
 											</div>
-										</div>
-										<div class="col-lg-1 commentBtn_wrap">
-											<button type="button" class="btn btn-dark" id="cmCntBtn" onclick="postComment()">등록</button>
 										</div>
 										</form>
 									</li>
 									<li>
 										<div id="listReviewComment">
-											<!-- 갤러리 댓글 목록 출력 부분 -->
+											<!-- 리뷰 댓글 목록 출력 부분 -->
 										</div>
 									</li>
 								</ul>
                             </div>
                             <div class="paging_wrap">
-                            	<!-- 갤러리 댓글 페이지네이션 출력 부분 -->
+                            	<!-- 리뷰 댓글 페이지네이션 출력 부분 -->
                             </div>
                         </div>
                     </div>

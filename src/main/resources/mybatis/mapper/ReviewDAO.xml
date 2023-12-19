@@ -74,8 +74,8 @@
 		parameterType="com.edu.springboot.review.ParameterDTO">
 		SELECT *
 			FROM (
-			    SELECT rc.rvc_id, rc.ex_seq, rv.user_id, rv.rvc_content, rv.rvc_postdate, m.user_image, m.user_name, ROW_NUMBER() 
-			    OVER (ORDER BY rv.rvc_postdate DESC) AS rNum
+			    SELECT rc.rvc_id, rc.rv_id, rc.user_id, rc.rvc_content, rc.rvc_postdate, m.user_image, m.user_name, ROW_NUMBER() 
+			    OVER (ORDER BY rc.rvc_postdate DESC) AS rNum
 			    FROM review_comment rc
 			    JOIN members m ON rc.user_id = m.user_id
 			    WHERE rv_id=#{rv_id}

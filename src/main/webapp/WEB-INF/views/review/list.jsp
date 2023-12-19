@@ -105,11 +105,11 @@
 									<div class="searchField_wrap">
 										<select class="form-select" name="searchField">
 											<option value="rv_title">제목</option>
-											<option value="user_name">닉네임</option>
+											<option value="user_name">작성자</option>
 										</select>
 									</div>
 									<div class="searchWord_wrap">
-										<input type="text" class="form-control" name="searchKeyword" placeholder="제목 또는 닉네임을 입력하세요.">
+										<input type="text" class="form-control" name="searchKeyword" placeholder="제목 또는 작성자를 입력하세요.">
 										<button type="submit" class="btn btn-dark searchBtn"><i class="fas fa-search"></i></button>
 									</div>
 								</div>

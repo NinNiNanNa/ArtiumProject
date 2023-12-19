@@ -232,11 +232,11 @@ public class ReviewController {
 	// 댓글 목록
 	@RequestMapping("/reviewCommentList.api")
 	@ResponseBody
-	public Map<String, Object> reviewCommentList(HttpServletRequest req, ParameterDTO parameterDTO) {
+	public Map<String, Object> listReviewComment(HttpServletRequest req, ParameterDTO parameterDTO) {
 		HttpSession session = req.getSession();
-		String rvId = (String) session.getAttribute("rv_id");
+		String rvId = (String) req.getParameter("rv_id");
 		parameterDTO.setRv_id(rvId);
-		System.out.println(rvId);
+		System.out.println("확인용"+rvId);
 	
 		// 댓글 갯수를 카운트(검색어가 있는 경우 DTO객체에 자동으로 저장된다.)
 		int totalCount = dao.getReviewCommentCount(parameterDTO);

@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ taglib uri="jakarta.tags.core" prefix="c" %>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -29,7 +30,16 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
 
 </head>
-
+<script>
+let deletePost = function(){
+	let frm = document.srvIdFrm;
+	if(confirm("정말 삭제할까요?")){
+		frm.action = "adminExhibitionReviewDelete";
+		frm.method = "post";
+		frm.submit();
+	}
+}
+</script>
 <body id="page-top">
 
     <!-- Page Wrapper -->
@@ -53,15 +63,15 @@
                             <div class="table_wrap">
                                 <div class="table_gap">
 
-                                    <form>
+                                    <form method="get">
                                         <div class="searchFeild_wrap">
-                                            <select class="form-control" name="">
-                                                <option value="">닉네임</option>
-                                                <option value="">내용</option>
+                                            <select class="form-control" name="searchField">
+                                                <option value="user_name">닉네임</option>
+                                                <option value="srv_content">내용</option>
                                             </select>
                                         </div>
                                         <div class="searchWord_wrap">
-                                            <input type="text" class="form-control bg-light border-0 small" placeholder="Search for..." aria-label="Search" aria-describedby="basic-addon2">
+                                            <input type="text" class="form-control bg-light border-0 small" name="searchKeyword"  placeholder="닉네임 또는 내용을 입력해주세요." aria-label="Search" aria-describedby="basic-addon2">
                                             <div class="searchBtn">
                                                 <button class="btn btn-dark" type="button">
                                                     <i class="fas fa-search fa-sm"></i>
@@ -88,22 +98,23 @@
                                             </tr>
                                         </thead>
                                         <tbody>
+                                        <c:forEach items="${srvLists }" var="row" varStatus="loop">
                                             <tr>
-                                                <td>1</td>
-                                                <td>닌니난나</td>
-                                                <td class="txtSkip">어디까지 작성할 수 있을까?어디까지 작성할 수 있을까?어디까지 작성할 수 있을까?어디까지 작성할 수 있을까</td>
-                                                <td>2023-11-23</td>
-                                                <td><button type="button" class="btn btn-danger">삭제</button></td>
+		                                        <form name="srvIdFrm">
+													<input type="hid-den" name="srv_id" value="${row.srv_id }" />
+												</form>
+                                                <td>${ maps.totalCount - (((maps.pageNum-1) * maps.pageSize) + loop.index)}</td>
+                                                <td>${row.user_name }</td>
+                                                <td class="txtSkip">${row.srv_content }</td>
+                                                <td>${row.srv_postdate }</td>
+                                                <td><button type="button" class="btn btn-danger" onclick="deletePost(${ row.srv_id });">삭제</button></td>
                                             </tr>
-                                            <tr>
-                                                <td>2</td>
-                                                <td>닌니난나</td>
-                                                <td class="txtSkip">어디까지 작성할 수 있을까?어디까지 작성할 수 있을까?어디까지 작성할 수 있을까?어디까지 작성할 수 있을까</td>
-                                                <td>2023-11-23</td>
-                                                <td><button type="button" class="btn btn-danger">삭제</button></td>
-                                            </tr>
+                                        </c:forEach>
                                         </tbody>
                                     </table>
+									<div class="paging_wrap" style="margin-top: 30px">
+										${ pagingImg }
+									</div>
 
                                 </div>
                             </div>

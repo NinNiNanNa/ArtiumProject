@@ -26,12 +26,6 @@ public interface IAdminExhibitionService {
 	public int getSimpleReviewCount(ParameterDTO parameterDTO);
 	// 한줄평 목록
 	public ArrayList<SimpleReviewDTO> listSimpleReview(ParameterDTO parameterDTO);
-	// 한줄평 내용
-	public SimpleReviewDTO viewSimpleReview(SimpleReviewDTO simpleReviewDTO);
-	// 한줄평 작성
-	public int writeSimpleReview(SimpleReviewDTO simpleReviewDTO);
-	// 한줄평 수정
-	public int editSimpleReview(SimpleReviewDTO simpleReviewDTO);
 	// 한줄평 삭제
 	public int deleteSimpleReview(String srv_id);
 }

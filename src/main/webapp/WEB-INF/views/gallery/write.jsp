@@ -44,17 +44,71 @@
 
 <!-- 등록/취소버튼에 대한 클릭 이벤트 -->
 <script>
+
+function validateForm(form) {
+	/* if (form.ga_type.value == ""){
+    alert("작품유형을 선택해주세요.");
+    form.ga_type.focus();
+    return false;
+  } */
+	if (form.ga_title.value == ""){
+    alert("제목을 입력해주세요.");
+    form.ga_title.focus();
+    return false;
+  }
+	if (form.ga_sdate.value == ""){
+     alert("전시 시작일을 선택해주세요.");
+     form.ga_sdate.focus();
+     return false;
+  }
+	if (form.ga_edate.value == ""){
+    alert("전시 마감일을 선택해주세요.");
+    form.ga_edate.focus();
+    return false;
+	}
+	if (form.ga_content.value == ""){
+     alert("내용을 입력해주세요.");
+     form.ga_content.focus();
+     return false;
+  }
+	
+	// 적어도 3개의 이미지가 업로드되었는지 확인
+  var numUploadedImages = 0;
+   for (var i = 1; i <= 5; i++) {
+       var imageInput = form["art_image" + i];
+       if (imageInput.files.length > 0) {
+           numUploadedImages++;
+       }
+   }
+
+   if (numUploadedImages < 5) {
+       alert("5개의 작품 이미지를 모두 업로드해주세요.");
+       return false;
+   }
+}
+
+window.onload = function() {
+	var userId = "${sessionScope.userId}";
+	console.log(userId);
+	if (userId === undefined || userId === null || userId.trim() === "") {
+     // 로그인이 되어 있지 않은 경우
+     alert("작가회원 전용 페이지입니다. 작가 회원 로그인이 필요합니다.");
+   	 window.location.href = "/login";
+  }
+}
+
 $(document).ready(function(){
 	// 등록버튼 클릭 시 폼 제출
 	$("#registBtn").click(function(){
 		$("form").submit();
 	});
-
+	registBtn
 	// 취소버튼 클릭시 이전 페이지로 이동
 	$(".cancelBtn").click(function(){
 		history.back();
 	});
 });
+
 </script>
 
 <body>
@@ -75,7 +129,7 @@ $(document).ready(function(){
                 <div class="gap1440">
                     <div class="container1440">
 
-                        <form name="writeFrm" action="/galleryWrite" method="post" enctype="multipart/form-data" id="artworkUploadForm">
+                        <form name="writeFrm" action="/galleryWrite" method="post" enctype="multipart/form-data" id="artworkUploadForm"  onsubmit="return validateForm(this);">
 	                        <div class="writeForm_wrap">
 	                            <ul>
 	                                <li class="row">
@@ -83,12 +137,12 @@ $(document).ready(function(){
 	                                        <h2>전시 유형</h2>
 	                                    </div>
 	                                    <div class="col-lg-2 write_wrap">
-	                                        <select name="${galleryDTO.ga_type }" class="form-select">
-	                                            <option value="${galleryDTO.ga_type }">현대미술</option>
-	                                            <option value="${galleryDTO.ga_type }">순수미술</option>
-	                                            <option value="${galleryDTO.ga_type }">추상화</option>
-	                                            <option value="${galleryDTO.ga_type }">인물전</option>
-	                                            <option value="${galleryDTO.ga_type }">개인전</option>
+	                                        <select name="ga_type" class="form-select">
+	                                            <option value="현대미술">현대미술</option>
+	                                            <option value="순수미술">순수미술</option>
+	                                            <option value="추상화">추상화</option>
+	                                            <option value="인물전">인물전</option>
+	                                            <option value="개인전">개인전</option>
 	                                        </select>
 	                                    </div>
 	                                </li>
@@ -102,7 +156,7 @@ $(document).ready(function(){
 	                                </li>
 	                                <li class="row">
 	                                    <div class="col-lg-2 title_wrap">
-	                                        <h2>작가 이름</h2>
+	                                        <h2>${galleryDTO.user_name }</h2>
 	                                    </div>
 	                                    <div class="col-lg-10 write_wrap">
 	                                        <input type="text" name="user_id" class="form-control" placeholder="작가 이름을 입력하세요.">

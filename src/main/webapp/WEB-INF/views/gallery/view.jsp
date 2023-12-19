@@ -43,28 +43,57 @@
 <script>
 <!-- 로그인 세션 -->
 function checkLoginAndRedirect(destination) {
-    // 세션에서 userId 가져오기
-    var userId = "${sessionScope.userId}";
-    console.log(userId);
-    if (userId === undefined || userId === null || userId.trim() === "") {
-        // 로그인이 되어 있지 않은 경우
-        alert("작가회원 로그인 후  작성하실 수 있습니다.");
-       	window.location.href = "/login";
-    } 
-    else {
-        // 로그인이 된 경우 지정된 페이지로 이동
-        window.location.href = destination;
-    }
+	// 세션에서 userId 가져오기
+	var userId = "${sessionScope.userId}";
+	console.log(userId);
+	if (userId === undefined || userId === null || userId.trim() === "") {
+     // 로그인이 되어 있지 않은 경우
+     alert("작가회원 로그인 후 수정하실 수 있습니다.");
+     window.location.href = "/login";
+  }
+   else if(userId!="${galleryDTO.user_id}"){
+   	alert("작성자 전용 기능입니다.");
+      	window.location.href = "/galleryList";
+   }
+	else {
+		// 로그인이 된 경우 지정된 페이지로 이동
+		window.location.href = destination;
+	}
 }
+
 <!-- 게시글 삭제하기 -->
-let deletePost = function(){
+function deletePost(ga_id){
+	// 세션에서 userId 가져오기
+	var userId = "${sessionScope.userId}";
+	console.log(userId);
+	if (userId === undefined || userId === null || userId.trim() === "") {
+		// 로그인이 되어 있지 않은 경우
+		alert("로그인 후 사용할 수 있습니다.");
+		window.location.href = "/login";
+	}
+	else if(userId!="${galleryDTO.user_id}"){
+    	alert("작성자 전용 기능입니다.");
+       	window.location.href = "/galleryList";
+    }
+	else {
+		/* var confirmed = confirm("정말로 삭제하겠습니까?");  */
+		let frm = document.forms['writeFrm'];
+		if(confirm("정말 삭제할까요?")){
+			frm.action = "galleryList";
+			frm.method = "post";
+			frm.submit();
+		}
+	}
+}
+
+/* let deletePost = function(){
 	let frm = document.forms['writeFrm'];
 	if(confirm("정말 삭제할까요?")){
 		frm.action = "galleryList";
 		frm.method = "post";
 		frm.submit();
 	}
-}
+} */
 
 <!-- 댓글 작성 및 등록을 처리하는 스크립트 -->
 window.onload = function(){
@@ -455,8 +484,8 @@ $(document).on('click', 'a.cmDeleteBtn', function(e) {
                         </div>
 
 											<div class="viewBtn_wrap">
-												<a href="#" class="btn btn-light" onclick="deletePost(${ galleryDTO.ga_id });">삭제하기</a>
-												<a href="/galleryEdit?ga_id=${ galleryDTO.ga_id }" class="btn btn-secondary" onclick="checkLoginAndRedirect('/galleryWrite')">수정하기</a><!-- /galleryEdit?ga_id=${ galleryDTO.ga_id } -->
+												<a href="javascript:void(0);" class="btn btn-light" onclick="deletePost(${ galleryDTO.ga_id });">삭제하기</a>
+												<a href="javascript:void(0);" class="btn btn-secondary" onclick="checkLoginAndRedirect('/galleryEdit?ga_id=${ galleryDTO.ga_id }')">수정하기</a><!-- /galleryEdit?ga_id=${ galleryDTO.ga_id } -->
 												<a href="/galleryList" class="btn btn-dark" >목록보기</a>
 											</div>
 

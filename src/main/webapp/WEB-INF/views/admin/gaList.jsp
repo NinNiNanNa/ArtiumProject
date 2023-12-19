@@ -36,6 +36,18 @@
 .galleryRow { justify-content: space-between; }
 </style>
 
+<script>
+<!-- 게시글 삭제하기 -->
+let deletePost = function(){
+	let frm = document.forms['writeFrm'];
+	if(confirm("정말 삭제할까요?")){
+		frm.action = "gaList";
+		frm.method = "post";
+		frm.submit();
+	}
+}
+</script>
+
 </head>
 
 <body id="page-top">
@@ -54,11 +66,14 @@
                 </div>
 
                 <!-- Content Row -->
-                <div class="row">
+                <div class="row ">
+                		<form name="writeFrm"  action="/gaList" method="post">
+                    	<input type="hidden" name="ga_id" value="${galleryDTO.ga_id }" />
+                    </form>
 
-                    <div class="col">
-                        <div class="row galleryRow" style="margin: 0;">
-                         <ul class="nav nav-pills mb-4" style="justify-content: left; font-size: 17px; " role="tablist">
+                  <div class="col">
+                      <div class="row galleryRow">
+                         <ul class="col-lg-6 nav nav-pills mb-4" style="justify-content: left; font-size: 17px; " role="tablist">
 												<li class="nav-item">
 													<a class="nav-link active tabColor" data-bs-toggle="pill" href="#a">#현대미술</a>
 												</li>
@@ -76,21 +91,24 @@
 												</li>
 											</ul>
                      	<form method="get" class="col-lg-6" style="padding: 0;">
-											<div class="search_wrap clearfix">
-												<div class="searchField_wrap">
-													<select class="form-control" name="searchField">
-														<option value="ga_title">제목</option>
-														<option value="user_name">닉네임</option>
-													</select>
+												<div class="search_wrap clearfix">
+													<div class="searchField_wrap">
+														<select class="form-control" name="searchField">
+															<option value="ga_title">제목</option>
+															<option value="user_name">닉네임</option>
+														</select>
+													</div>
+													<div class="searchWord_wrap" style="position: relative;">
+														<input type="text" class="form-control" name="searchKeyword" placeholder="제목 또는 닉네임을 입력하세요.">
+														<button type="submit" class="btn btn-dark searchBtn"><i class="fas fa-search"></i></button>
+													</div>
 												</div>
-												<div class="searchWord_wrap" style="position: relative;">
-													<input type="text" class="form-control" name="searchKeyword" placeholder="제목 또는 닉네임을 입력하세요.">
-													<button type="submit" class="btn btn-dark searchBtn"><i class="fas fa-search"></i></button>
-												</div>
-											</div>
-										</form>
+											</form>
+											
+										<div class="col">
+											<div class="tab-content">
                         <ul class="list_wrap row">
-                        <c:forEach items="${galleryList }" var="gallery" varStatus="loop">
+                        <c:forEach items="${gaList }" var="gallery" varStatus="loop">
                             <li class="col-lg-3">
                                 <div class="listInfo">
                                     <div class="image_wrap">
@@ -103,7 +121,7 @@
                                                 </select>
                                             </li>
                                             <li>
-                                                <a href="#" class="deleteBtn btn">
+                                                <a href="#" class="deleteBtn btn" onclick="deletePost(${ galleryDTO.ga_id });">
                                                     <i class="fas fa-trash-alt"></i>
                                                 </a>
                                             </li>
@@ -129,12 +147,14 @@
                             </c:forEach>
                         </ul>
                         <div class="paging_wrap">
-											${ pagingImg }
-										</div>
+													${ pagingImg }
+												</div>
+											</div>
                     </div>
 
+									</div>
                 </div>
-
+              </div>
             </div>
             <!-- /.container-fluid -->
 

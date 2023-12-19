@@ -54,15 +54,15 @@ document.addEventListener('DOMContentLoaded', function () {
 //페이지 로드 시 댓글 가져와서 화면에 출력하는 함수
 function loadComments(pageNum) {
 	// ga_id값 null로 입력
-	var ga_id = ${ga_id};
-	console.log(ga_id + "ga_id값이다.");
+	var cm_id = ${param.cm_id};
+	console.log(cm_id + "cm_id값이다.");
 	
   $.ajax({  
 		  contentType : "text/html;charset:utf-8", 
 		  dataType : "json",
-      url: '/galleryCommentList.api',  // 댓글 가져올 URL
+      url: '/admin/gaComments',  // 댓글 가져올 URL
       method: 'GET',
-      data: { pageNum: pageNum, ga_id: ga_id },  // 페이지 번호 서버에 전달 / ga_id값 null로 입력
+      data: { pageNum: pageNum, cm_id: cm_id },  // 페이지 번호 서버에 전달 / ga_id값 null로 입력
       success: function (data) {
         // 가져온 댓글 데이터 사용하여 동적으로 댓글 생성
           $('#listGalleryComment').empty(); // 기존 댓글 목록 비우기
@@ -125,6 +125,44 @@ function getPageNumFromUrl(url) {
     var match = url.match(/pageNum=(\d+)/);
     return match ? parseInt(match[1], 10) : 1;
 }
+//갤러리 댓글 삭제
+function deleteComment(cmId) {
+    $.ajax({
+        type: "POST",
+        url: "/admin/gaCommentsDelete",
+        data: { cm_id: cmId },
+        success: function(response) {
+            if (response.result === 1) {	// 댓글 삭제 성공
+                alert("댓글이 삭제되었습니다.");
+                // 삭제 후 댓글 목록을 업데이트하는 함수 호출
+                loadComments();
+            } else {	// 댓글 삭제 실패
+                alert("댓글 삭제에 실패하였습니다.");
+            }
+        },
+        error: function(error) {
+            // 에러 처리
+            console.log(error);
+        }
+    });
+}
+
+//삭제 버튼 클릭 시 이벤트 처리
+$(document).on('click', 'a.cmDeleteBtn', function(e) {
+    e.preventDefault();
+
+    var cmId = $(this).data('comment-id');
+    
+ 	// 확인 창 띄우기
+    var isConfirmed = confirm('댓글을 삭제하시겠습니까?');
+ 	
+ 	// 확인이 눌렸을 경우에만 삭제 요청
+    if (isConfirmed) {
+        // 서버로 삭제 요청을 보냄
+        deleteComment(cmId);
+    }
+    
+});
 </script>
 </head>
 
@@ -145,9 +183,13 @@ function getPageNumFromUrl(url) {
 
                     <!-- Content Row -->
                     <div class="row">
-
+                    
+                    	<form name="writeFrm"  action="/admin/gaComments" method="post">
+	                    	<input type="hidden" name="cm_id" value="${galleryDTO.cm_id }" />
+	                    </form>
+	                    
                         <div class="col">
-                            
+                             
                             <div class="table_wrap">
                                 <div class="table_gap">
 
@@ -185,7 +227,7 @@ function getPageNumFromUrl(url) {
                                                 <th>기능</th>
                                             </tr>
                                         </thead>
-                                        <tbody>
+                                        <%-- <tbody>
                                         	<c:forEach items="${galleryComment }" var="gaComment" varStatus="loop">
                                             <tr>
                                                 <td>${gaComment.cm_id }</td>
@@ -202,7 +244,7 @@ function getPageNumFromUrl(url) {
                                                 <td><button type="button" class="btn btn-danger">삭제</button></td>
                                             </tr> -->
                                         	</c:forEach>
-                                        </tbody>
+                                        </tbody> --%>
                                     </table>
 
                                 </div>

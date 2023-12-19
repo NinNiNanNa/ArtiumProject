@@ -56,6 +56,7 @@
          window.location.href = destination;
      }
  }
+
 </script>
 
 </head>
@@ -96,24 +97,30 @@
 
 							<!-- Content Row -->
 							<div class="row">
-								
+								<!-- 셀렉트 걸고 포문 걸어서 돌려야된다... 어떻게하지..ㅠㅠ -->
 								<ul class="nav nav-pills mb-4" style="justify-content: left; font-size: 17px; " role="tablist">
 									<li class="nav-item">
-										<a class="nav-link active tabColor" data-bs-toggle="pill" href="#a">#현대미술</a>
+										<a id="modernArt" class="nav-link active tabColor" href="?ga_type=현대미술">#현대미술</a>
 									</li>
 									<li class="nav-item">
-										<a class="nav-link tabColor" data-bs-toggle="pill" href="#b">#순수미술</a>
+										<a id="fineArtBtn" class="nav-link tabColor" href="?ga_type=순수미술">#순수미술</a>
 									</li>
 									<li class="nav-item">
-										<a class="nav-link tabColor" data-bs-toggle="pill" href="#c">#인물화</a>
+										<a id="portraitPaintingBtn" class="nav-link tabColor" href="?ga_type=인물화">#인물화</a>
 									</li>
 									<li class="nav-item">
-										<a class="nav-link tabColor" data-bs-toggle="pill" href="#d">#추상화</a>
+										<a id="abstractBtn" class="nav-link tabColor" href="?ga_type=추상화">#추상화</a>
 									</li>
 									<li class="nav-item">
-										<a class="nav-link tabColor" data-bs-toggle="pill" href="#e">#개인전</a>
+										<a id="soloExhibitionBtn" class="nav-link tabColor" href="?ga_type=개인전">#개인전</a>
 									</li>
 								</ul>
+								
+									<!-- 	<a  href="?ga_type=현대미술">#현대미술</a>
+										<a  href="?ga_type=순수미술">#순수미술</a>
+										<a  href="?ga_type=인물화">#인물화</a>
+										<a  href="?ga_type=추상화">#추상화</a>
+										<a  href="?ga_type=개인전">#개인전</a> -->
 
 								<form method="get">
 								<div class="search_wrap clearfix">
@@ -137,14 +144,14 @@
 								<div class="col">
 
 									<div class="tab-content" style="padding-top:30px;">
-										<div id="${galleryDTO.ga_type }" class="tab-pane active">
+										<div id="#현대미술" class="tab-pane active">
 
 											<ul class="list_wrap row">
 												<c:forEach items="${ galleryList }" var="gallery" varStatus="loop">
 												<li class="col-lg-3">
 													<div class="listInfo">
 														<div class="image_wrap">
-															<img src="./uploads/${gallery.art_image1 }" alt="">
+															<img src="./uploads/${gallery.art_image1 }" alt="art_image" />
 															<div class="listBtn_wrap">
 																<a href="#" class="bookMarkBtn">
 																	<i class="fas fa-bookmark"></i>
@@ -172,14 +179,14 @@
 											</ul>
 										</div>
 
-										<div id="b" class="tab-pane fade">
+										<div id="#순수미술" class="tab-pane">
 
 											<ul class="list_wrap row">
 											<c:forEach items="${ galleryList }" var="gallery" varStatus="loop">
 												<li class="col-lg-3">
 													<div class="listInfo">
 														<div class="image_wrap">
-															<img src="../img/imgex2.jpg" alt="">
+															<img src="../uploads/${gallery.art_image1 }" alt="art_image">
 															<div class="listBtn_wrap">
 																<a href="#" class="bookMarkBtn">
 																	<i class="fas fa-bookmark"></i>
@@ -208,14 +215,14 @@
 
 										</div>
 
-										<div id="c" class="tab-pane fade">
+										<div id="?ga_type=인물화" class="tab-pane fade">
 
 											<ul class="list_wrap row">
 											<c:forEach items="${ galleryList }" var="gallery" varStatus="loop">
 												<li class="col-lg-3">
 													<div class="listInfo">
 														<div class="image_wrap">
-															<img src="../img/imgex3.jpg" alt="">
+															<img src="../uploads/${gallery.art_image1 }" alt="art_image">
 															<div class="listBtn_wrap">
 																<a href="#" class="bookMarkBtn">
 																	<i class="fas fa-bookmark"></i>
@@ -251,7 +258,7 @@
 												<li class="col-lg-3">
 													<div class="listInfo">
 														<div class="image_wrap">
-															<img src="../img/imgex4.png" alt="">
+															<img src="../uploads/${gallery.art_image1 }" alt="art_image">
 															<div class="listBtn_wrap">
 																<a href="#" class="bookMarkBtn">
 																	<i class="fas fa-bookmark"></i>
@@ -287,7 +294,7 @@
 												<li class="col-lg-3">
 													<div class="listInfo">
 														<div class="image_wrap">
-															<img src="../img/imgex5.jpg" alt="">
+															<img src="../uploads/${gallery.art_image1 }" alt="art_image">
 															<div class="listBtn_wrap">
 																<a href="#" class="bookMarkBtn">
 																	<i class="fas fa-bookmark"></i>
@@ -318,7 +325,7 @@
 									</div>
 								</div>
 							</div> <!-- row -->
-							<div align="center">
+							<div class="paging_wrap">
 								<p>${ pagingImg }</p>
 							</div>
 							

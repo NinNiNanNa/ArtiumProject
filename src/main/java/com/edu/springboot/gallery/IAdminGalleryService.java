@@ -14,7 +14,7 @@ public interface IAdminGalleryService {
 	public ArrayList<GalleryDTO> listPage(GalleryDTO galleryDTO);
     
 	// 작성하기(받은 폼값은 이름을 변경한 후 매퍼로 전달)
-	public int write(GalleryDTO galleryDTO);
+//	public int write(GalleryDTO galleryDTO);
 	
 	// 내용보기
 	public GalleryDTO view(GalleryDTO galleryDTO);
@@ -23,7 +23,7 @@ public interface IAdminGalleryService {
 	public GalleryDTO onlineGallery(GalleryDTO galleryDTO);
 	
 	// 수정하기
-	public int edit(GalleryDTO galleryDTO);
+//	public int edit(GalleryDTO galleryDTO);
 	
 	// 삭제하기
 	public int delete(String ga_id);
@@ -46,10 +46,10 @@ public interface IAdminGalleryService {
     public GalleryCommentDTO viewGalleryComments(GalleryCommentDTO galleryCommentDTO);
     
     // 갤러리 댓글 작성
-	public int writeGalleryComment(GalleryCommentDTO galleryCommentDTO);
+//	public int writeGalleryComment(GalleryCommentDTO galleryCommentDTO);
     
     // 갤러리 댓글 수정
-	public int editGalleryComment(GalleryCommentDTO galleryCommentDTO);
+//	public int editGalleryComment(GalleryCommentDTO galleryCommentDTO);
     
     // 갤러리 댓글 삭제
 	public int deleteGalleryComment(String cm_id);

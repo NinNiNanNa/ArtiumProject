@@ -8,7 +8,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import jakarta.servlet.http.HttpServletRequest;
@@ -50,19 +52,38 @@ public class AdminGalleryController {
 		model.addAttribute("maps", maps);
 		
 		// 데이터베이스에서 인출한 게시물의 목록을 Model객체에 저장
-		ArrayList<GalleryDTO> galleryList = dao.listPage(galleryDTO);
+		ArrayList<GalleryDTO> gaList = dao.listPage(galleryDTO);
 		
-		model.addAttribute("galleryList", galleryList);
+		model.addAttribute("gaList", gaList);
 		
 //				System.out.println("뀨: "+galleryList);
 		
 		// 게시판 하단에 출력한 페이지번호를 String으로 반환받은 후 Model객체에 저장
-		String pagingImg = PagingUtil.pagingImg(totalCount, pageSize, blockPage, pageNum, req.getContextPath()+"/galleryList?");
+		String pagingImg = PagingUtil.pagingImg(totalCount, pageSize, blockPage, pageNum, req.getContextPath()+"/gaList?");
 		model.addAttribute("pagingImg", pagingImg);
 		
 //				System.out.println(galleryDTO);
 		return "/admin/gaList";
 	}
+	
+	// 삭제하기
+	@PostMapping("/admin/gaList")
+	public String galleryAdminDelete(HttpServletRequest req, Model model) {
+		int result = dao.delete(req.getParameter("ga_id"));
+		System.out.println("글삭제결과: "+ result);
+
+		return "redirect:/admin/gaList";
+	}
+	
+//	@PostMapping(value="/admin/gaList/delete", method=RequestMethod.POST)
+//	public String galleryAdminDelete(HttpServletRequest req, Model model) {
+//		int result = dao.delete(req.getParameter("ga_id"));
+//		System.out.println("글삭제결과: "+ result);
+//
+//		return "redirect:/admin/gaList";
+//	}
+		
+/************************************************************************************************************************************/	
 	
 	// 작가갤러리 댓글 목록
 	@RequestMapping("/admin/gaComments")
@@ -72,11 +93,11 @@ public class AdminGalleryController {
 //			String gaid = (String)session.getAttribute("ga_id");
 		String gaid = req.getParameter("ga_id");
 		galleryDTO.setGa_id(gaid);
-//		System.out.println("이유가 뭐야: "+ gaid);
+		System.out.println("이유가 뭐야: "+ gaid);
 		
 		// 게시물의 갯수를 카운트(검색어가 있는 경우 DTO객체에 자동으로 저장)
 		int totalCount = dao.getGalleryComment(galleryDTO);
-//			System.out.println("왜 안되는거야: "+ totalCount);
+		System.out.println("왜 안되는거야: "+ totalCount);
 		
 		// 페이징을 위한 설정값(하드코딩)
 		int pageSize = 10;		// 한 페이지당 게시물 수
@@ -108,9 +129,23 @@ public class AdminGalleryController {
 		maps.put("lists", lists);
 		maps.put("pagingImg", pagingImg);
 		
-//			System.out.println("댓글 목록 나오나요?: "+maps);
+		System.out.println("댓글 목록 나오나요?: "+maps);
 		
 		return maps;
 	}
+	
+	// 갤러리 댓글 삭제
+//	@PostMapping("/admin/gaCommentsDelete")
+//	@ResponseBody
+//	public Map<String, Object> restGalleryCommentDelete(HttpServletRequest req) {
+//	    Map<String, Object> maps = new HashMap<>();
+	    
+//	    int result = dao.deleteGalleryComment(req.getParameter("cm_id"));
+//	    maps.put("result", result);
+//		    System.out.println("한줄평삭제: "+ maps);
+	    
+//	    return maps;
+//	}
+
 	
 }

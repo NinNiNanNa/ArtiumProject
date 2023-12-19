@@ -32,7 +32,7 @@
     <script type="text/javascript">
     
 	    function removeCheck(user_id) {
-	    	 if (confirm("정말 삭제하시겠습니까??") == true){    //확인
+	    	 if (confirm("정말 삭제하시겠습니까?") == true){    //확인
 	    		 deleteMember(user_id);
 	    	 }else{   //취소
 	    	     return false;
@@ -46,7 +46,7 @@
 	            data:{"user_id" : user_id},
 	            success: function(data){
 	            	location.reload();
-	                alert("삭제 완료 ");
+	                alert("삭제 완료되었습니다.");
 	            }
 	        });
 	    }

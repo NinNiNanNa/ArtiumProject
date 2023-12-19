@@ -5,20 +5,6 @@
   
 <mapper namespace="com.edu.springboot.member.IMemberService">
 
-	<!-- 회원목록 출력하기 : select 쿼리를 통해 인출한 레코드를 DTO에 저장한 후
-	List컬렉션에 add() 하여 컨트롤러로 반환한다. -->
-	<select id="select"
-		parameterType="com.edu.springboot.member.MemberDTO"
-		resultType="com.edu.springboot.member.MemberDTO">
-		select * from members order by user_regidate desc
-	</select>
-	
-	<!-- 검색하기 -->
-	<select id="search"
-		resultType="com.edu.springboot.member.MemberDTO">
-		select * from members where ${searchOption} like '%'||#{keyword}||'%' order by user_regidate desc 
-	</select>
-	
 	<!-- 회원등록 : 파라미터 타입으로 명시한 DTO객체의 멤버변수명을 통해
 			SQL문의 인파라미터를 설정할 수 있다. EL과 동일하게 DTO 내부의
 			getter()를 호출하여 값을 얻어오게 된다. -->
@@ -59,13 +45,6 @@
 		update members set user_image = #{user_image}, user_pass = #{user_pass}, user_name = #{user_name}, user_gender = #{user_gender}, user_email = #{user_email} where user_id = #{user_id}
 	</update>
 		
-	
-	<!-- 회원 삭제 -->
-	<delete id="delete"
-		parameterType="com.edu.springboot.member.MemberDTO">
-		delete from members where user_id=#{user_id}
-	</delete>
-	
 	<!-- 로그인 -->
 	<select id="loginCheck"
 		parameterType="com.edu.springboot.member.MemberDTO">

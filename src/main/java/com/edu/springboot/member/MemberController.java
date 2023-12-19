@@ -21,7 +21,7 @@ import jakarta.servlet.http.HttpSession;
 
 
 @Controller
-public class MainController {
+public class MemberController {
 	
 	@Autowired
 	IMemberService dao;
@@ -115,12 +115,6 @@ public class MainController {
         return code;
     }
 	
-	//회원삭제
-	@RequestMapping(value="/admin/accountUser/delete", method=RequestMethod.POST)
-	public String adminDeleteMember(MemberDTO memberDTO) {
-		dao.delete(memberDTO);
-		return "/admin/accountUser";
-	}
 	
 	//회원정보 수정
 	@RequestMapping(value="/mypage", method=RequestMethod.POST)
@@ -205,61 +199,5 @@ public class MainController {
 	
 	
 
-	@GetMapping("/admin")
-	public String adminLogin() {
-		return "/admin/adminLogin";
-	}
-	@GetMapping("/adminMain")
-	public String adminMain() {
-		return "/admin/adminMain";
-	}
-	@GetMapping("/admin/accountAdmin")
-	public String accountAdmin() {
-		return "/admin/accountAdmin";
-	}
-	@GetMapping("/admin/accountAuthor")
-	public String accountAuthor() {
-		return "/admin/accountAuthor";
-	}
-	
-	//회원목록
-	@RequestMapping("/admin/accountUser")
-	public String accountUser(Model model) {
-		model.addAttribute("memberList", dao.select());
-		return "/admin/accountUser";
-	}
-	
-	@RequestMapping(value="/admin/accountUser", method=RequestMethod.POST)
-	public String search(MemberDTO memberDTO, Model model) throws Exception {
-		model.addAttribute("memberList", dao.search(memberDTO));
-		return "/admin/accountUser";
-	}
-	
-	@GetMapping("/admin/exComments")
-	public String exComments() {
-		return "/admin/exComments";
-	}
-	@GetMapping("/admin/exList")
-	public String exList() {
-		return "/admin/exList";
-	}
-	@GetMapping("/admin/mtComments")
-	public String mtComments() {
-		return "/admin/mtComments";
-	}
-	@GetMapping("/admin/mtList")
-	public String mtList() {
-		return "/admin/mtList";
-	}
-	@GetMapping("/admin/rvComments")
-	public String rvComments() {
-		return "/admin/rvComments";
-	}
-	@GetMapping("/admin/rvList")
-	public String rvList() {
-		return "/admin/rvList";
-	}
-	
-	
 
 }

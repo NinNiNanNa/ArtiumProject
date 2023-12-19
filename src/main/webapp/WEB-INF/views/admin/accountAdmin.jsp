@@ -27,7 +27,31 @@
 
     <!-- 부트스트랩5 CDN -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
-
+	
+	<script type="text/javascript">
+	
+	function submit(){
+		alert("저장되었습니다.")
+    	var form = document.getElementById('frm');
+    	removeList();
+    	form.action = "/admin/accountAdmin";
+    	form.method = "post";
+    	form.submit();
+    	window.close();
+    }
+    
+    function removeList(){
+    	${adminList} = null;
+    }
+    
+    function removeCheck(admin_id) {
+   	 if (confirm("정말 삭제하시겠습니까?") == true){    //확인
+   		 deleteAdmin(admin_id);
+   	 }else{   //취소
+   	     return false;
+   	 }
+   	}
+	</script>
 </head>
 
 <body id="page-top">
@@ -58,7 +82,7 @@
                                             <button class="btn btn-success" type="button" data-toggle="modal" data-target="#adminWriteModal">등록하기</button>
                                         </div>
     
-                                        <form class="col-lg-6" style="padding: 0;">
+                                        <form id="frm" class="col-lg-6" style="padding: 0;">
                                             <div class="searchFeild_wrap">
                                                 <select class="form-control" name="">
                                                     <option value="">관리자명</option>
@@ -69,7 +93,7 @@
                                             <div class="searchWord_wrap">
                                                 <input type="text" class="form-control bg-light border-0 small" placeholder="Search for..." aria-label="Search" aria-describedby="basic-addon2">
                                                 <div class="searchBtn">
-                                                    <button class="btn btn-dark" type="button">
+                                                    <button class="btn btn-dark" type="button" onclick="submit()">
                                                         <i class="fas fa-search fa-sm"></i>
                                                     </button>
                                                 </div>
@@ -82,10 +106,10 @@
                                     <ul class="adminList_wrap row">
                                         <li class="col-lg-3" data-toggle="modal" data-target="#adminEditModal" style="cursor: pointer;">
                                             <div>
-                                                <h6>2023-11-23</h6>
-                                                <h2>김소진</h2>
-                                                <span>E : <i>wlsdms3011@naver.com</i></span>
-                                                <span>P : <i>010-9043-8348</i></span>
+                                                <h6>${row.admin_regidate}</h6>
+                                                <h2>${row.admin_name}</h2>
+                                                <span>E : <i>${row.admin_id}</i></span>
+                                                <span>P : <i>${row.admin_phone}</i></span>
                                             </div>
                                         </li>
                                     </ul>
@@ -144,8 +168,8 @@
                     </div>
                 </div>
                 <div class="modal-footer d-inline-block">
-                    <button type="button" class="btn btn-danger">삭제</button>
-                    <button type="button" class="btn btn-success float-right">저장</button>
+                    <button type="button" class="btn btn-danger" onclick="removeCheck('${row.admin_id}')">삭제</button>
+                    <button type="button" class="btn btn-success float-right" onclick="submit()">저장</button>
                 </div>
             </div>
         </div>

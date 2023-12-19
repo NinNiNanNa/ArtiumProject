@@ -14,6 +14,12 @@
 			(#{user_id}, #{user_pass}, #{user_name}, #{user_email}, #{user_gender}, #{user_image, jdbcType=VARCHAR}, #{user_type})
 	</insert>
 	
+	<!-- 회원 삭제 -->
+	<delete id="delete"
+		parameterType="com.edu.springboot.member.MemberDTO">
+		delete from members where user_id=#{user_id}
+	</delete>
+	
 	<!-- 아이디 중복 확인 -->
 	<select id="idCheck"
 		parameterType="com.edu.springboot.member.MemberDTO">

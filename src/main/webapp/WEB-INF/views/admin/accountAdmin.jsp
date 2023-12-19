@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ taglib uri="jakarta.tags.core" prefix="c" %>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -33,15 +34,17 @@
 	function submit(){
 		alert("저장되었습니다.")
     	var form = document.getElementById('frm');
-    	removeList();
     	form.action = "/admin/accountAdmin";
     	form.method = "post";
     	form.submit();
-    	window.close();
     }
-    
-    function removeList(){
-    	${adminList} = null;
+	
+	function registFormSubmit(){
+		alert("저장되었습니다.")
+    	var form = document.getElementById('form');
+    	form.action = "/admin/accountAdmin/join";
+    	form.method = "post";
+    	form.submit();
     }
     
     function removeCheck(admin_id) {
@@ -51,6 +54,18 @@
    	     return false;
    	 }
    	}
+    
+    function deleteAdmin(admin_id){
+        $.ajax({
+            url:"/admin/accountAdmin/admindelete",
+            type:"post",
+            data:{"admin_id" : admin_id},
+            success: function(data){
+            	location.reload();
+                alert("삭제 완료되었습니다.");
+            }
+        });
+    }
 	</script>
 </head>
 
@@ -82,16 +97,16 @@
                                             <button class="btn btn-success" type="button" data-toggle="modal" data-target="#adminWriteModal">등록하기</button>
                                         </div>
     
-                                        <form id="frm" class="col-lg-6" style="padding: 0;">
+                                        <form name="form1" id="frm" method="post" action="/admin/accountAdmin" class="col-lg-6" style="padding: 0;">
                                             <div class="searchFeild_wrap">
-                                                <select class="form-control" name="">
-                                                    <option value="">관리자명</option>
-                                                    <option value="">이메일</option>
-                                                    <option value="">전화번호</option>
+                                                <select class="form-control" name="searchOption">
+                                                    <option value="admin_name">관리자명</option>
+                                                    <option value="admin_id">이메일</option>
+                                                    <option value="admin_phone">전화번호</option>
                                                 </select>
                                             </div>
                                             <div class="searchWord_wrap">
-                                                <input type="text" class="form-control bg-light border-0 small" placeholder="Search for..." aria-label="Search" aria-describedby="basic-addon2">
+                                                <input type="text" name="keyword" class="form-control bg-light border-0 small" placeholder="Search for..." aria-label="Search" aria-describedby="basic-addon2">
                                                 <div class="searchBtn">
                                                     <button class="btn btn-dark" type="button" onclick="submit()">
                                                         <i class="fas fa-search fa-sm"></i>
@@ -104,23 +119,21 @@
                                     <hr class="hr_dotted">
 
                                     <ul class="adminList_wrap row">
-                                        <li class="col-lg-3" data-toggle="modal" data-target="#adminEditModal" style="cursor: pointer;">
-                                            <div>
-                                                <h6>${row.admin_regidate}</h6>
-                                                <h2>${row.admin_name}</h2>
-                                                <span>E : <i>${row.admin_id}</i></span>
-                                                <span>P : <i>${row.admin_phone}</i></span>
-                                            </div>
-                                        </li>
+                                        <c:forEach items="${adminList}" var="row" varStatus="loop">
+	                                        <li class="col-lg-3" data-toggle="modal" data-target="#adminEditModal" style="cursor: pointer;">
+	                                            <div>
+	                                                <h6>${row.admin_regidate}</h6>
+	                                                <h2>${row.admin_name}</h2>
+	                                                <span>E : <i>${row.admin_id}</i></span>
+	                                                <span>P : <i>${row.admin_phone}</i></span>
+	                                            </div>
+	                                        </li>
+                                        </c:forEach>
                                     </ul>
-
                                 </div>
                             </div>
-
                         </div>
-
                     </div>
-
                 </div>
                 <!-- /.container-fluid -->
 
@@ -139,16 +152,16 @@
                 </div>
                 <div class="modal-body">
                     <div class="ibox-content">
-                       <form role="form">
+                       <form id="form" role="form">
                        <div class="form-group row"><label class="col-xl-2 col-form-label">관리자명</label>
-                         <div class="col-xl-10"><input type="text" class="form-control" placeholder="실명으로 입력해주세요."></div>
+                         <div class="col-xl-10"><input name ="admin_name" type="text" class="form-control" placeholder="실명으로 입력해주세요."></div>
                        </div>
                        <div class="hr-line-dashed"></div>
                         <div class="form-group row"><label class="col-xl-2 col-form-label">이메일</label>
-                            <div class="col-sm-10"><input type="text" class="form-control" placeholder="이메일을 입력해주세요."></div>
+                            <div class="col-sm-10"><input name ="admin_id" type="text" class="form-control" placeholder="이메일을 입력해주세요."></div>
                         </div>
                         <div class="form-group row"><label class="col-xl-2 col-form-label">비밀번호</label>
-                            <div class="col-xl-10"><input type="text" class="form-control" placeholder="비밀번호를 입력해주세요."></div>
+                            <div class="col-xl-10"><input name ="admin_pass" type="text" class="form-control" placeholder="비밀번호를 입력해주세요."></div>
                         </div>
                         <div class="form-group row"><label class="col-xl-2 col-form-label">비밀번호 확인<br>
                             <small class="text-danger" id="checkPwd">비밀번호 확인</small>
@@ -159,9 +172,7 @@
                         <div class="form-group row">
                             <label class="col-xl-2 col-form-label">휴대폰번호</label>
                             <div class="col-xl-10 input-group">
-                                <div class="col-xl-2"><input class="form-control" /></div>
-                                <div class="col-xl-2"><input class="form-control" /></div>
-                                <div class="col-xl-2"><input class="form-control" /></div>
+                                <div class="col-xl-2"><input name="admin_phone" class="form-control" /></div>
                             </div>
                         </div>
                        </form>
@@ -169,7 +180,7 @@
                 </div>
                 <div class="modal-footer d-inline-block">
                     <button type="button" class="btn btn-danger" onclick="removeCheck('${row.admin_id}')">삭제</button>
-                    <button type="button" class="btn btn-success float-right" onclick="submit()">저장</button>
+                    <button type="button" class="btn btn-success float-right" onclick="registFormSubmit()" >저장</button>
                 </div>
             </div>
         </div>
@@ -187,19 +198,19 @@
                     <div class="ibox-content">
                        <form role="form">
                        <div class="form-group row"><label class="col-xl-2 col-form-label">관리자명</label>
-                         <div class="col-xl-10"><input type="text" class="form-control" value="김소진"></div>
+                         <div class="col-xl-10"><input type="text" class="form-control" value=""></div>
                        </div>
                        <div class="hr-line-dashed"></div>
                         <div class="form-group row"><label class="col-xl-2 col-form-label">이메일</label>
-                            <div class="col-sm-10"><input type="text" class="form-control" value="wlsdms3011@naver.com"></div>
+                            <div class="col-sm-10"><input type="text" class="form-control" value=""></div>
                         </div>
                         <div class="form-group row"><label class="col-xl-2 col-form-label">비밀번호</label>
-                            <div class="col-xl-10"><input type="text" class="form-control" value="wlswls123"></div>
+                            <div class="col-xl-10"><input type="text" class="form-control" value=""></div>
                         </div>
                         <div class="form-group row"><label class="col-xl-2 col-form-label">비밀번호 확인<br>
                             <small class="text-danger" id="checkPwd">비밀번호 확인</small>
                         </label>
-                            <div class="col-xl-10"><input type="text" class="form-control" value="wlswls123"></div>
+                            <div class="col-xl-10"><input type="text" class="form-control" value=""></div>
                         </div>
                         <div class="hr-line-dashed"></div>
                         <div class="form-group row">

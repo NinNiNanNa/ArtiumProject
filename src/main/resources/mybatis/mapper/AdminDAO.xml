@@ -10,7 +10,7 @@
 	<select id="select"
 		parameterType="com.edu.springboot.member.MemberDTO"
 		resultType="com.edu.springboot.member.MemberDTO">
-		select * from members order by user_regidate desc
+		select user_id, user_pass, user_name, user_email, user_gender, user_image, user_type, TO_CHAR(user_regidate, 'YYYY-MM-DD') as user_regidate from members order by user_regidate desc
 	</select>
 	
 	<!-- 회원 검색 -->
@@ -25,11 +25,18 @@
 		delete from members where user_id=#{user_id}
 	</delete>
 	
+	<!-- 관리자 가입 -->
+	<insert id="admininsert"
+		parameterType="com.edu.springboot.member.AdminDTO">
+		insert into admin (admin_id, admin_pass, admin_name, admin_phone) values
+			(#{admin_id}, #{admin_pass}, #{admin_name}, #{admin_phone})
+	</insert>
+	
 	<!-- 관리자 목록 -->
 	<select id="adminselect"
 		parameterType="com.edu.springboot.member.AdminDTO"
 		resultType="com.edu.springboot.member.AdminDTO">
-		select * from admin order by admin_regidate desc
+		select admin_id, admin_pass, admin_name, admin_phone, TO_CHAR(admin_regidate, 'YYYY-MM-DD') as admin_regidate from admin order by admin_regidate desc
 	</select>
 	
 	<!-- 관리자 검색 -->

@@ -13,6 +13,8 @@ public interface IAdminService {
 	public List<MemberDTO> search(MemberDTO memberDTO);
 	//회원 삭제
 	public void delete(MemberDTO memberDTO);
+	//관리자 가입
+	public int admininsert(AdminDTO adminDTO);
 	//관리자 목록
 	public List<AdminDTO> adminselect();
 	//관리자 검색

@@ -23,6 +23,14 @@ public class AdminController {
 		return "/admin/adminMain";
 	}
 	
+	//관리자 가입
+	@RequestMapping(value="/admin/accountAdmin/join", method=RequestMethod.POST)
+	public String admininsert(AdminDTO adminDTO) throws Exception {
+		int result = dao.admininsert(adminDTO);
+		if(result==1) System.out.println("입력되었습니다.");
+		return "redirect:/admin/accountAdmin";
+	}
+	
 	//관리자 목록
 	@GetMapping("/admin/accountAdmin")
 	public String accountAdmin(Model model) {
@@ -66,6 +74,7 @@ public class AdminController {
 	//회원삭제
 	@RequestMapping(value="/admin/accountUser/delete", method=RequestMethod.POST)
 	public String adminDeleteMember(MemberDTO memberDTO) {
+		System.out.println(memberDTO.getUser_id());
 		dao.delete(memberDTO);
 		return "/admin/accountUser";
 	}

@@ -53,17 +53,12 @@
 	    
 	    function submit(){
 	    	var form = document.getElementById('frm');
-	    	
-	    	removeList();
 	    	form.action = "/admin/accountUser";
 	    	form.method = "post";
 	    	form.submit();
 	    	
 	    }
 	    
-	    function removeList(){
-	    	${memberList} = null;
-	    }
     </script>
 
 </head>

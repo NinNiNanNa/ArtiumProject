@@ -34,19 +34,27 @@
 /* 검색필드, 검색창 */
 .search_wrap { width: 100%; text-align: right; }
 .search_wrap .searchField_wrap { display: inline-block; margin-right: 15px; }
-.search_wrap .searchField_wrap select {width: 150px; }
+.search_wrap .searchField_wrap select {width: 150px; margin-bottom: 24px; }
 .search_wrap .searchWord_wrap { display: inline-block; position: relative; }
 .search_wrap .searchWord_wrap .searchBtn { position: absolute; top: 0; right: 0; border-radius: 0 5px 5px 0; }
 </style>
 <script>
-function deletePost(rv_id){
-	var confirmed = confirm("정말로 삭제하겠습니까?"); 
-	if (confirmed) {
-	    form.method = "post";  
-	    form.action = "rvDelete";
-	    form.submit();  
+	function loadFallbackImage(imgElement) {
+	    if (imgElement) {
+	        // 업로드 폴더에 이미지파일이 없어서 이미지 로딩이 실패하면 경로를 변경하여 다시 시도
+	        imgElement.src = "./img/" + imgElement.src.split('/').pop();
+	    }
 	}
-}
+	
+	function deletePost(formIndex){
+		var confirmed = confirm("정말로 삭제하겠습니까?");
+		var form = document.forms["adminRvFrm_" + formIndex];
+		if (confirmed) {
+		    form.method = "post";  
+		    form.action = "/admin/rvDelete";
+		    form.submit();  
+		}
+	}
 </script>
 <body id="page-top">
 
@@ -88,35 +96,25 @@ function deletePost(rv_id){
                                 <div id="current">
 
                                     <ul class="list_wrap row">
-                                    	<c:forEach items="${lists }" var="row" varStatus="loop">
+                                   	<c:forEach items="${lists }" var="row" varStatus="loop">
 										<li class="col-lg-3">
+										<form name="adminRvFrm_${loop.index}">
+											<input type="hidden" name="rv_id" value="${row.rv_id }" />
+										</form>
 											<div class="listInfo">
 												<div class="image_wrap">
-													<img src="../uploads/${row.rv_image }" onerror="loadFallbackImage(this)">\
+													<img src="../uploads/${row.rv_image }" onerror="loadFallbackImage(this)">
 													<ul class="listBtn_wrap">
 		                                                <li>
-		                                                    <a href="javascript:void(0);" onclick="deletePost(${ row.rv_id })" class="deleteBtn btn">
+		                                                    <a href="javascript:void(0);" onclick="deletePost(${loop.index})" class="deleteBtn btn">
 		                                                        <i class="fas fa-trash-alt"></i>
 		                                                    </a>
 		                                                </li>
 		                                            </ul>
-													<c:choose>
-														<c:when test="${not empty userId }">
-															<div class="listBtn_wrap">
-																<a href="javascript:;" class="bookMarkBtn" data-exseq-id="${row.rv_id }">
-																	<i class="fas fa-bookmark"></i>
-																	<i class="far fa-bookmark"></i>
-																</a>
-															</div>
-														</c:when>
-														<c:otherwise>
-														
-														</c:otherwise>
-													</c:choose>
 												</div>
 												<div class="title_wrap">
 													<div>
-														<a class="txtSkip" href="/rvView?rv_id=${row.rv_id }">${row.rv_title }</a>
+														<a class="txtSkip" href="/reviewView?rv_id=${row.rv_id }">${row.rv_title }</a>
 														<h6>${row.user_name }</h6>
 														<h5>${row.rv_postdate }</h5>
 														<ul class="info_wrap">

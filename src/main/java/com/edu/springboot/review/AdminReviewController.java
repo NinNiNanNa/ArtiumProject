@@ -25,7 +25,7 @@ public class AdminReviewController {
 	public String rvList(Model model, HttpServletRequest req, ParameterDTO parameterDTO) { 
 		// 리스트에 대한 총 게시물 수 계산
 		int totalCount = dao.getTotalCount(parameterDTO); 
-		System.out.println("totalCount="+ totalCount);
+//		System.out.println("totalCount="+ totalCount);
 		// 한 페이지당 게시물 수
 		int pageSize = 12; 
 		// 한 블럭당 페이지번호 수
@@ -46,7 +46,7 @@ public class AdminReviewController {
 		maps.put("pageSize", pageSize);
 		maps.put("pageNum", pageNum);
 		model.addAttribute("maps", maps);
-		System.out.println("maps="+ maps);
+//		System.out.println("maps="+ maps);
 		
 		// 데이터베이스에서 인출한 게시물의 목록을 생성
 		ArrayList<ReviewDTO> lists = dao.listPage(parameterDTO);
@@ -61,7 +61,7 @@ public class AdminReviewController {
 		}
 		// 데이터베이스에서 인출한 게시물의 목록을 Model객체에 저장한다.
 		model.addAttribute("lists", lists);
-		System.out.println("lists="+ lists);
+//		System.out.println("lists="+ lists);
 		
 
 		// 게시판 하단에 출력한 페이지번호를 String으로 반환받은 후 Model객체에 저장한다.
@@ -71,11 +71,11 @@ public class AdminReviewController {
 		return "/admin/rvList";
 	}
 	
-	@PostMapping("/rvDelete")
+	@PostMapping("/admin/rvDelete")
 	public String reviewDeletePost(HttpServletRequest req) {
 		int result = dao.delete(req.getParameter("rv_id"));
-		System.out.println("글삭제결과:"+ result);
-		return "redirect:/rvList";       
+//		System.out.println("글삭제결과:"+ result);
+		return "redirect:rvList";       
 	}
 	
 }

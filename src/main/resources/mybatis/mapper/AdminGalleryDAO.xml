@@ -10,22 +10,24 @@
 		<select id="getTotalCount" resultType="int" parameterType="com.edu.springboot.gallery.GalleryDTO">
 			SELECT COUNT(*) from(
 			SELECT g.*, g.*FROM gallery g JOIN members m ON g.user_id = m.user_id
+			WHERE g.ga_type=#{ga_type}
 			<!-- 검색어가 null, 빈값이 아닐때만 WHERE 절을 동적으로 추가한다. -->
 			<if test="searchKeyword!=null and !searchKeyword.equals('')">
-						WHERE ${searchField} LIKE '%'||#{searchKeyword}||'%'
+						AND ${searchField} LIKE '%'||#{searchKeyword}||'%'
 			</if>
 			)
 		</select>
 		
 		<select id="listPage" resultType="com.edu.springboot.gallery.GalleryDTO" parameterType="com.edu.springboot.gallery.GalleryDTO">
 		 SELECT * FROM (
-		    SELECT g.ga_ID, g.ga_TITLE, g.ga_type, g.USER_ID, g.ga_sdate, g.ga_edate, g.ga_content, g.ga_visitcount, g.ga_bmcount,
+		    SELECT g.ga_ID, g.ga_TITLE, g.ga_type, g.USER_ID, g.ga_sdate, g.ga_edate, g.ga_content, g.ga_visitcount, g.ga_bmcount, 
 		           m.USER_IMAGE, m.USER_NAME, 
-		           ROW_NUMBER() OVER (ORDER BY g.ga_id DESC) AS rNum
+		           ROW_NUMBER() OVER (ORDER BY g.ga_id DESC) AS rNum, art_image1
 		    FROM gallery g
 		    JOIN members m ON g.user_id = m.user_id
+		    WHERE g.ga_type=#{ga_type}
 				<if test="searchKeyword!=null and !searchKeyword.equals('')">
-						WHERE ${searchField} LIKE '%'||#{searchKeyword}||'%'
+						AND ${searchField} LIKE '%'||#{searchKeyword}||'%'
 				</if>
 		    )
 	     WHERE rNum<![CDATA[>=]]>#{start} AND rNum<![CDATA[<=]]>#{end}
@@ -91,19 +93,6 @@
 			)
 			WHERE rNum<![CDATA[>=]]>#{start} AND rNum<![CDATA[<=]]>#{end}
 		</select>
-		
-		<!-- 갤러리 댓글 등록 -->
-   <insert id="writeGalleryComment" parameterType="com.edu.springboot.gallery.GalleryCommentDTO">
-        INSERT INTO comments (cm_id, ga_id, user_id, cm_content, cm_postdate)
-        VALUES (seq_board_num.nextval, #{ga_id}, #{user_id}, #{cm_content}, sysdate)
-    </insert>
-    
-    <!-- 갤러리 댓글 수정 -->
-    <update id="editGalleryComment" parameterType="com.edu.springboot.gallery.GalleryCommentDTO">
-		UPDATE comments SET
-			ga_id=#{ga_id}, cm_content=#{cm_content}
-		WHERE cm_id=#{cm_id}
-		</update>
 	
     <!-- 갤러리 댓글 삭제 -->
     <delete id="deleteGalleryComment">

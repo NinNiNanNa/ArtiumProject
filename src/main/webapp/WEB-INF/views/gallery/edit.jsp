@@ -92,7 +92,7 @@ $(document).ready(function(){
 	                                        <h2>전시 유형</h2>
 	                                    </div>
 	                                    <div class="col-lg-2 write_wrap">
-	                                        <select name="galleryType" class="form-select">
+	                                        <select name="ga_type" class="form-select">
 	                                            <option value="현대미술">현대미술</option>
 	                                            <option value="순수미술">순수미술</option>
 	                                            <option value="추상화">추상화</option>

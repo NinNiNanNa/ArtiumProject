@@ -444,7 +444,7 @@ $(document).on('click', 'a.cmDeleteBtn', function(e) {
                     </form>
                         <div class="view_content">
                             <div>
-																<span class="status">${galleryDTO.ga_type }</span>
+																<span class="status" name="ga_type">${galleryDTO.ga_type }</span>
                                 <h2>${ galleryDTO.ga_title }</h2>
                                 <ul>
                                     <li>

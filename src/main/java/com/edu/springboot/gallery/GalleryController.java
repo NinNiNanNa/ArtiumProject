@@ -51,7 +51,7 @@ public class GalleryController {
 		else {
 			galleryDTO.setGa_type(ga_type);
 		}	
-		System.out.println("galleryDTO="+ galleryDTO);
+//		System.out.println("galleryDTO="+ galleryDTO);
 		
 		
 		// 게시물의 갯수를 카운트(검색어가 있는 경우 DTO객체에 자동으로 저장
@@ -80,17 +80,12 @@ public class GalleryController {
 		
 		// 데이터베이스에서 인출한 게시물의 목록을 Model객체에 저장
 		ArrayList<GalleryDTO> galleryList = dao.listPage(galleryDTO);
-		System.out.println("galleryList="+ galleryList);
+//		System.out.println("galleryList="+ galleryList);
 		
 		model.addAttribute("galleryList", galleryList);
 		
 //		System.out.println("뀨: "+galleryList);
-		
-//		String mappingName = "";
-//		if (type == 1) {
-//			mappingName = "/galleryModernArtList?";
-//		}
-//		
+				
 		// 게시판 하단에 출력한 페이지번호를 String으로 반환받은 후 Model객체에 저장
 		String pagingImg = PagingUtil.pagingImg(totalCount, pageSize, blockPage, pageNum, req.getContextPath()+"/galleryList?");
 		model.addAttribute("pagingImg", pagingImg);
@@ -159,7 +154,7 @@ public class GalleryController {
 			// 사용자 아이디를 GallerDTO에 설정
 			galleryDTO.setUser_id(userId);
 			
-			System.out.println("galleryDTO"+galleryDTO);
+//			System.out.println("galleryDTO"+galleryDTO);
 			
 			// JDBC연동			
 			dao.write(galleryDTO);
@@ -224,7 +219,7 @@ public class GalleryController {
 		model.addAttribute("userId", userId);
 		galleryDTO = dao.view(galleryDTO);
 		model.addAttribute("galleryDTO", galleryDTO);
-		System.out.println("수정 전: "+ galleryDTO);
+//		System.out.println("수정 전: "+ galleryDTO);
 		return "gallery/edit";
 	}
 	
@@ -282,15 +277,15 @@ public class GalleryController {
 			// 사용자 아이디를 GallerDTO에 설정
 			galleryDTO.setUser_id(userId);
 			
-			System.out.println("galleryDTO"+galleryDTO);
+//			System.out.println("galleryDTO"+galleryDTO);
 			
 			// JDBC연동
 			System.out.println("수정이 되는거니...?: "+ galleryDTO);
 			int result = dao.edit(galleryDTO);
-			System.out.println("수정결과: "+ result);
+//			System.out.println("수정결과: "+ result);
 		}
 		catch (Exception e) {
-			System.out.println("업로드 실패");
+//			System.out.println("업로드 실패");
 			
 			
 			e.printStackTrace();
@@ -303,7 +298,7 @@ public class GalleryController {
 	@PostMapping("/galleryList")
 	public String galleryViewDelete(HttpServletRequest req, Model model) {
 		int result = dao.delete(req.getParameter("ga_id"));
-		System.out.println("글삭제결과: "+ result);
+//		System.out.println("글삭제결과: "+ result);
 
 		return "redirect:/galleryList";
 	}
@@ -342,7 +337,7 @@ public class GalleryController {
 		
 		ArrayList<GalleryCommentDTO> lists = dao.listGalleryComment(galleryDTO);
 		
-		System.out.println(lists);
+//		System.out.println(lists);
 		
 		String pagingImg = PagingUtil.pagingImg(totalCount, pageSize, blockPage, pageNum, req.getContextPath()+"/galleryView?ga_id="+gaid+"&");
 		
@@ -368,12 +363,12 @@ public class GalleryController {
 		String userId = (String) session.getAttribute("userId");
 		galleryCommentDTO.setUser_id(userId);
 		
-		System.out.println("DTO="+ galleryCommentDTO);
+//		System.out.println("DTO="+ galleryCommentDTO);
 		
 		int result = dao.writeGalleryComment(galleryCommentDTO);
 		resultMap.put("result", result);
 		
-		System.out.println(resultMap);
+//		System.out.println(resultMap);
 		
 		return resultMap;
 	}
@@ -387,12 +382,12 @@ public class GalleryController {
 		String userId = (String) session.getAttribute("userId");
 		galleryCommentDTO.setUser_id(userId);
 		
-		System.out.println("DTO="+ galleryCommentDTO);
+//		System.out.println("DTO="+ galleryCommentDTO);
 		
 		int result = dao.editGalleryComment(galleryCommentDTO);
 		resultMap.put("result", result);
 		
-		System.out.println(resultMap);
+//		System.out.println(resultMap);
 		
 		return resultMap;
 	}

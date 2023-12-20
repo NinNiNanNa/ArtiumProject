@@ -10,10 +10,10 @@
 		<select id="getTotalCount" resultType="int" parameterType="com.edu.springboot.gallery.GalleryDTO">
 			SELECT COUNT(*) from( 
 			SELECT g.*, g.* FROM gallery g JOIN members m ON g.user_id = m.user_id			
-			WHERE g.ga_type=#{ga_type}
+			WHERE ga_type=#{ga_type}
 			<!-- 검색어가 null, 빈값이 아닐때만 WHERE 절을 동적으로 추가한다. -->
 			<if test="searchKeyword!=null and !searchKeyword.equals('')">
-						and  ${searchField} LIKE '%'||#{searchKeyword}||'%'
+						AND  ${searchField} LIKE '%'||#{searchKeyword}||'%'
 				</if>
 			)
 		</select>
@@ -25,9 +25,9 @@
 		           ROW_NUMBER() OVER (ORDER BY g.ga_id DESC) AS rNum , art_image1
 		    FROM gallery g
 		    JOIN members m ON g.user_id = m.user_id
-		    WHERE g.ga_type=#{ga_type}
+		    WHERE ga_type=#{ga_type}
 				<if test="searchKeyword!=null and !searchKeyword.equals('')">
-						and ${searchField} LIKE '%'||#{searchKeyword}||'%'
+						AND ${searchField} LIKE '%'||#{searchKeyword}||'%'
 				</if>
 		    )
 	     WHERE rNum<![CDATA[>=]]>#{start} AND rNum<![CDATA[<=]]>#{end}
@@ -44,7 +44,7 @@
     values (
         seq_board_num.nextval, 
         #{ga_title}, 
-        #{ga_type, jdbcType=VARCHAR},
+        #{ga_type},
         #{user_id}, 
         #{ga_sdate}, 
         #{ga_edate}, 
@@ -76,6 +76,7 @@
 		parameterType="com.edu.springboot.gallery.GalleryDTO">
 			SELECT
 			    g.*,
+			    g.ga_type,
 			    m.user_name,
 			    m.user_image
 			FROM

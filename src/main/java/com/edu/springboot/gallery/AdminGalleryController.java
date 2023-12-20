@@ -25,8 +25,20 @@ public class AdminGalleryController {
 	IAdminGalleryService dao;
 	
 	// 작가 갤러리 리스트 관리
-	@GetMapping("/admin/gaList")
+	@RequestMapping("/admin/gaList")
 	public String gaList(Model model, HttpServletRequest req, GalleryDTO galleryDTO) {
+		
+		String type = galleryDTO.getGa_type();
+		
+		String ga_type = req.getParameter("ga_type");
+		if(ga_type==null || ga_type.equals("")) {
+			galleryDTO.setGa_type("현대미술");	
+		}
+		else {
+			galleryDTO.setGa_type(ga_type);
+		}	
+		System.out.println("galleryDTO="+ galleryDTO);
+		
 		// 게시물의 갯수를 카운트(검색어가 있는 경우 DTO객체에 자동으로 저장
 		int totalCount = dao.getTotalCount(galleryDTO);
 		
@@ -53,10 +65,9 @@ public class AdminGalleryController {
 		
 		// 데이터베이스에서 인출한 게시물의 목록을 Model객체에 저장
 		ArrayList<GalleryDTO> gaList = dao.listPage(galleryDTO);
+		System.out.println("gaList="+ gaList);
 		
 		model.addAttribute("gaList", gaList);
-		
-//				System.out.println("뀨: "+galleryList);
 		
 		// 게시판 하단에 출력한 페이지번호를 String으로 반환받은 후 Model객체에 저장
 		String pagingImg = PagingUtil.pagingImg(totalCount, pageSize, blockPage, pageNum, req.getContextPath()+"/gaList?");
@@ -87,13 +98,12 @@ public class AdminGalleryController {
 	
 	// 작가갤러리 댓글 목록
 	@RequestMapping("/admin/gaComments")
-	@ResponseBody
-	public Map<String, Object> listGalleryComment(HttpServletRequest req, GalleryDTO galleryDTO) {
+	public Map<String, Object> listGalleryComment(Model model, HttpServletRequest req, GalleryDTO galleryDTO) {
 //			HttpSession session = req.getSession();
 //			String gaid = (String)session.getAttribute("ga_id");
 		String gaid = req.getParameter("ga_id");
 		galleryDTO.setGa_id(gaid);
-		System.out.println("이유가 뭐야: "+ gaid);
+		System.out.println(gaid);
 		
 		// 게시물의 갯수를 카운트(검색어가 있는 경우 DTO객체에 자동으로 저장)
 		int totalCount = dao.getGalleryComment(galleryDTO);
@@ -115,18 +125,17 @@ public class AdminGalleryController {
 		galleryDTO.setStart(start);
 		galleryDTO.setEnd(end);
 		
-		ArrayList<GalleryCommentDTO> lists = dao.listGalleryComment(galleryDTO);
 		
-		System.out.println(lists);
+		ArrayList<GalleryCommentDTO> cmLists = dao.listGalleryComment(galleryDTO);
+		System.out.println(cmLists);
 		
-		String pagingImg = PagingUtil.pagingImg(totalCount, pageSize, blockPage, pageNum, req.getContextPath()+"/galleryView?ga_id="+gaid+"&");
-		
+		String pagingImg = PagingUtil.pagingImg(totalCount, pageSize, blockPage, pageNum, req.getContextPath()+"/admin/gaComments?");
 		// View 게시물의 가상번호 계산을 위한 값을 Map에 저장
 		Map<String, Object> maps = new HashMap<String, Object>();
 		maps.put("totalCount", totalCount);
 		maps.put("pageSize", pageSize);
 		maps.put("pageNum", pageNum);
-		maps.put("lists", lists);
+		maps.put("cmLists", cmLists);
 		maps.put("pagingImg", pagingImg);
 		
 		System.out.println("댓글 목록 나오나요?: "+maps);
@@ -135,17 +144,17 @@ public class AdminGalleryController {
 	}
 	
 	// 갤러리 댓글 삭제
-//	@PostMapping("/admin/gaCommentsDelete")
-//	@ResponseBody
-//	public Map<String, Object> restGalleryCommentDelete(HttpServletRequest req) {
-//	    Map<String, Object> maps = new HashMap<>();
+	@PostMapping("/adminGaCommentsDelete.api")
+	@ResponseBody
+	public Map<String, Object> restGalleryCommentDelete(HttpServletRequest req) {
+	    Map<String, Object> maps = new HashMap<>();
 	    
-//	    int result = dao.deleteGalleryComment(req.getParameter("cm_id"));
-//	    maps.put("result", result);
-//		    System.out.println("한줄평삭제: "+ maps);
+	    int result = dao.deleteGalleryComment(req.getParameter("cm_id"));
+	    maps.put("result", result);
+		    System.out.println("한줄평삭제: "+ maps);
 	    
-//	    return maps;
-//	}
+	    return maps;
+	}
 
 	
 }

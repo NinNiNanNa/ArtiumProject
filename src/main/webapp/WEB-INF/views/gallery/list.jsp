@@ -56,7 +56,6 @@
          window.location.href = destination;
      }
  }
-
 </script>
 
 </head>
@@ -97,31 +96,26 @@
 
 							<!-- Content Row -->
 							<div class="row">
-								<!-- 셀렉트 걸고 포문 걸어서 돌려야된다... 어떻게하지..ㅠㅠ -->
-								<ul class="nav nav-pills mb-4" style="justify-content: left; font-size: 17px; " role="tablist">
-									<li class="nav-item">
-										<a id="modernArt" class="nav-link active tabColor" href="?ga_type=현대미술">#현대미술</a>
-									</li>
-									<li class="nav-item">
-										<a id="fineArtBtn" class="nav-link tabColor" href="?ga_type=순수미술">#순수미술</a>
-									</li>
-									<li class="nav-item">
-										<a id="portraitPaintingBtn" class="nav-link tabColor" href="?ga_type=인물화">#인물화</a>
-									</li>
-									<li class="nav-item">
-										<a id="abstractBtn" class="nav-link tabColor" href="?ga_type=추상화">#추상화</a>
-									</li>
-									<li class="nav-item">
-										<a id="soloExhibitionBtn" class="nav-link tabColor" href="?ga_type=개인전">#개인전</a>
-									</li>
-								</ul>
+							<form action="/galleryList" method="post">
+										<ul class="nav nav-pills mb-4" style="justify-content: left; font-size: 17px; " role="tablist">
+											<li class="nav-item">
+												<a id="modernArt" class="nav-link active tabColor" href="?ga_type=현대미술">#현대미술</a>
+											</li>
+											<li class="nav-item">
+												<a id="fineArtBtn" class="nav-link tabColor" href="?ga_type=순수미술">#순수미술</a>
+											</li>
+											<li class="nav-item">
+												<a id="portraitPaintingBtn" class="nav-link tabColor" href="?ga_type=인물화">#인물화</a>
+											</li>
+											<li class="nav-item">
+												<a id="abstractBtn" class="nav-link tabColor" href="?ga_type=추상화">#추상화</a>
+											</li>
+											<li class="nav-item">
+												<a id="soloExhibitionBtn" class="nav-link tabColor" href="?ga_type=개인전">#개인전</a>
+											</li>
+										</ul>								
+							</form>
 								
-									<!-- 	<a  href="?ga_type=현대미술">#현대미술</a>
-										<a  href="?ga_type=순수미술">#순수미술</a>
-										<a  href="?ga_type=인물화">#인물화</a>
-										<a  href="?ga_type=추상화">#추상화</a>
-										<a  href="?ga_type=개인전">#개인전</a> -->
-
 								<form method="get">
 								<div class="search_wrap clearfix">
 									<div class="searchField_wrap">

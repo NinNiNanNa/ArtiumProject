@@ -67,27 +67,24 @@ let deletePost = function(){
 
                 <!-- Content Row -->
                 <div class="row ">
-                		<form name="writeFrm"  action="/gaList" method="post">
-                    	<input type="hidden" name="ga_id" value="${galleryDTO.ga_id }" />
-                    </form>
 
                   <div class="col">
                       <div class="row galleryRow">
                          <ul class="col-lg-6 nav nav-pills mb-4" style="justify-content: left; font-size: 17px; " role="tablist">
 												<li class="nav-item">
-													<a class="nav-link active tabColor" data-bs-toggle="pill" href="#a">#현대미술</a>
+													<a class="nav-link active tabColor" data-bs-toggle="pill" href="?ga_type=현대미술">#현대미술</a>
 												</li>
 												<li class="nav-item">
-													<a class="nav-link tabColor" data-bs-toggle="pill" href="#b">#순수미술</a>
+													<a class="nav-link tabColor" data-bs-toggle="pill" href="?ga_type=순수미술">#순수미술</a>
 												</li>
 												<li class="nav-item">
-													<a class="nav-link tabColor" data-bs-toggle="pill" href="#c">#인물화</a>
+													<a class="nav-link tabColor" data-bs-toggle="pill" href="?ga_type=인물화">#인물화</a>
 												</li>
 												<li class="nav-item">
-													<a class="nav-link tabColor" data-bs-toggle="pill" href="#d">#추상화</a>
+													<a class="nav-link tabColor" data-bs-toggle="pill" href="?ga_type=추상화">#추상화</a>
 												</li>
 												<li class="nav-item">
-													<a class="nav-link tabColor" data-bs-toggle="pill" href="#e">#개인전</a>
+													<a class="nav-link tabColor" data-bs-toggle="pill" href="?ga_type=개인전">#개인전</a>
 												</li>
 											</ul>
                      	<form method="get" class="col-lg-6" style="padding: 0;">
@@ -107,12 +104,15 @@ let deletePost = function(){
 											
 										<div class="col">
 											<div class="tab-content">
+											<div id="#현대미술" class="tab-pane active">
                         <ul class="list_wrap row">
                         <c:forEach items="${gaList }" var="gallery" varStatus="loop">
                             <li class="col-lg-3">
                                 <div class="listInfo">
                                     <div class="image_wrap">
-                                        <img src="./uploads/${gallery.art_image1 }" alt="">
+	                                    <div>
+	                                   	 <img src="./uploads/${gallery.art_image1 }" alt="art_image">
+	                                    </div>
                                         <ul class="listBtn_wrap">
                                             <li>
                                                 <select class="form-control customSelect" name="">
@@ -121,7 +121,7 @@ let deletePost = function(){
                                                 </select>
                                             </li>
                                             <li>
-                                                <a href="#" class="deleteBtn btn" onclick="deletePost(${ galleryDTO.ga_id });">
+                                                <a href="javascript:void(0);" class="deleteBtn btn" onclick="deletePost(${ galleryDTO.ga_id });">
                                                     <i class="fas fa-trash-alt"></i>
                                                 </a>
                                             </li>
@@ -145,7 +145,8 @@ let deletePost = function(){
                                 </div>
                             </li>
                             </c:forEach>
-                        </ul>
+                       		 </ul>
+                        </div>
                         <div class="paging_wrap">
 													${ pagingImg }
 												</div>

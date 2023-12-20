@@ -30,107 +30,16 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
 
 <script>
-<!-- 댓글 등록 및 삭제 스크립트 -->
-window.onload = function(){
-	// 페이지 로드 시 댓글 가져와서 출력
-	loadComments(1);
-}
-//댓글 글자 길이 카운트 및 엔터 키 이벤트
-document.addEventListener('DOMContentLoaded', function () {
-    var cmContent = document.getElementById('cmContent');
-    var textCnts = document.getElementById('textCnts');
-
-    cmContent.addEventListener('keydown', function (e) {
-        // 엔터 키가 눌렸을 때
-        if (e.keyCode === 13) {
-        	// 기본 동작인 줄바꿈 막음
-        	e.preventDefault();
-            // 댓글 작성 함수 호출
-            postComment();
-        }
-    });
-});
-
-//페이지 로드 시 댓글 가져와서 화면에 출력하는 함수
-function loadComments(pageNum) {
-	// ga_id값 null로 입력
-	var cm_id = ${param.cm_id};
-	console.log(cm_id + "cm_id값이다.");
-	
-  $.ajax({  
-		  contentType : "text/html;charset:utf-8", 
-		  dataType : "json",
-      url: '/admin/gaComments',  // 댓글 가져올 URL
-      method: 'GET',
-      data: { pageNum: pageNum, cm_id: cm_id },  // 페이지 번호 서버에 전달 / ga_id값 null로 입력
-      success: function (data) {
-        // 가져온 댓글 데이터 사용하여 동적으로 댓글 생성
-          $('#listGalleryComment').empty(); // 기존 댓글 목록 비우기
-          // 가져온 댓글 데이터 사용하여 동적으로 댓글 생성
-          for (var i = 0; i < data.lists.length; i++) {
-              var comments = data.lists[i];
-              var buttons = '';
-              var userId = "${sessionScope.userId}"; // 세션에서 현재 로그인한 사용자 아이디 가져옴
-              if (userId && userId === comments.user_id) {
-                buttons = '<div class="btn_wrap">' +
-                      '<a href="" class="cmEditBtn" data-edit-id="'+comments.cm_id+'">수정</a>' +
-                      '<a href="" class="cmDeleteBtn" data-comment-id="'+comments.cm_id+'">삭제</a>' +
-                      '</div>';
-              }
-              
-              var commentItem = '<li id="cmList'+comments.cm_id+'">' +
-                '<input type="hidden" id="cmId" name="cm_id" value="'+comments.cm_id+'" />' +
-                '<div class="row commentBox commentBox'+comments.cm_id+'">' +
-        '<div class="col-lg-2 comImg_wrap">' +
-        '<img src="../img/'+comments.user_image+'" alt="">' +
-        '</div>' +
-        '<div class="col-lg-10 comText_wrap">' +
-        '<div class="user_wrap">' +
-        '<span>'+comments.user_name+'</span>' +
-        '<span>'+comments.cm_postdate+'</span>' +
-        '</div>' +
-        '<div class="content_wrap">' +
-        '<p>'+comments.cm_content+'</p>' +
-        '</div>' +
-        '</div>' +
-        buttons +
-        '</div>' +
-        '</li>';
-        
-              $('#listGalleryComment').append(commentItem);
-          }
-          $('.cmtotalCount').html(data.totalCount);
-          $('.paging_wrap').html(data.pagingImg);
-          
-      },
-      error: function () {
-          console.error('댓글 불러오기 실패');
-      }
-  });
-}
-
-//페이지 링크에 대한 클릭 이벤트 추가
-$(document).on('click', '.paging_wrap a', function (e) {
-    e.preventDefault(); // 기본 동작 방지 (링크 클릭 시 페이지 이동 방지)
-
-    // 클릭한 페이지 번호를 가져오기
-    var pageNum = getPageNumFromUrl($(this).attr('href'));
-
-    // 가져온 페이지 번호를 이용하여 댓글 목록 업데이트
-    loadComments(pageNum);
-});
-
-// 페이지 번호를 추출하는 함수
-function getPageNumFromUrl(url) {
-    var match = url.match(/pageNum=(\d+)/);
-    return match ? parseInt(match[1], 10) : 1;
-}
+<!-- 댓글 삭제 -->
 //갤러리 댓글 삭제
 function deleteComment(cmId) {
+	// ga_id값 null로 입력
+	var ga_id = ${param.ga_id};
+	console.log(ga_id + "ga_id값");
     $.ajax({
         type: "POST",
-        url: "/admin/gaCommentsDelete",
-        data: { cm_id: cmId },
+        url: "/adminGaCommentsDelete.api",
+        data: { cm_id: cmId, ga_id: ga_id },
         success: function(response) {
             if (response.result === 1) {	// 댓글 삭제 성공
                 alert("댓글이 삭제되었습니다.");
@@ -185,7 +94,7 @@ $(document).on('click', 'a.cmDeleteBtn', function(e) {
                     <div class="row">
                     
                     	<form name="writeFrm"  action="/admin/gaComments" method="post">
-	                    	<input type="hidden" name="cm_id" value="${galleryDTO.cm_id }" />
+	                    	<input type="hidden" name="ga_id" value="${galleryDTO.ga_id }" />
 	                    </form>
 	                    
                         <div class="col">
@@ -227,15 +136,16 @@ $(document).on('click', 'a.cmDeleteBtn', function(e) {
                                                 <th>기능</th>
                                             </tr>
                                         </thead>
-                                        <%-- <tbody>
-                                        	<c:forEach items="${galleryComment }" var="gaComment" varStatus="loop">
+                                        <tbody>
+                                        	<c:forEach items="${cmLists }" var="gaComment" varStatus="loop">
                                             <tr>
                                                 <td>${gaComment.cm_id }</td>
                                                 <td>${gaComment.user_name }</td>
                                                 <td class="txtSkip">${gaComment.cm_content }</td>
                                                 <td>${gaComment.cm_postdate }</td>
-                                                <td><button type="button" class="btn btn-danger" onclick="gacRemoveCheck('${gaComment.user_id}')">삭제</button></td>
+                                                <td><button type="button" class="btn btn-danger cmDeleteBtn" onclick="gacRemoveCheck('${gaComment.user_id}')">삭제</button></td>
                                             </tr>
+                                            </c:forEach>
                                             <!-- <tr>
                                                 <td>2</td>
                                                 <td>닌니난나</td>
@@ -243,8 +153,8 @@ $(document).on('click', 'a.cmDeleteBtn', function(e) {
                                                 <td>2023-11-23</td>
                                                 <td><button type="button" class="btn btn-danger">삭제</button></td>
                                             </tr> -->
-                                        	</c:forEach>
-                                        </tbody> --%>
+                                        	
+                                        </tbody> 
                                     </table>
 
                                 </div>

@@ -21,6 +21,66 @@
 
     <!-- Custom styles for this template-->
     <link href="../css/sb-admin-2.min.css" rel="stylesheet">
+    
+<script type="text/javascript">
+$(document).ready(function () {
+    // 페이지 로드 시 실행되는 함수
+    // 저장된 아이디가 있는지 확인
+    var savedId = getCookie("savedId");
+    if (savedId !== "") {
+        // 아이디 입력란에 저장된 아이디 설정
+        $("#id").val(savedId);
+        // 아이디 저장 체크박스 체크
+        $("#idCheck").prop("checked", true);
+    }
+   
+    // 로그인 버튼 클릭 시 이벤트 처리
+    $("#btn").click(function () {
+        loginCheck();
+    });
+});
+//쿠키를 가져오는 함수
+function getCookie(cookieName) {
+    var name = cookieName + "=";
+    var decodedCookie = decodeURIComponent(document.cookie);
+    var cookieArray = decodedCookie.split(';');
+    for (var i = 0; i < cookieArray.length; i++) {
+        var cookie = cookieArray[i].trim();
+        if (cookie.indexOf(name) === 0) {
+            return cookie.substring(name.length, cookie.length);
+        }
+    }
+    return "";
+}
+//로그인 체크 함수
+function loginCheck(){
+    $.ajax({
+        url:"/admin/loginCheck",
+        type:"post",
+        data:{"id" : $("#id").val(),
+        	"pw" : $("#pw").val()},
+        success: function(result){
+        	if(result == 0){
+        	} else{
+        		alert("로그인되었습니다.");
+        		
+        		// 아이디 저장 체크박스 확인
+                if ($('#idCheck').is(':checked')) {
+                    // 쿠키에 아이디 저장
+                    document.cookie = "savedId=" + $("#id").val() + "; expires=Thu, 01 Jan 2026 00:00:00 UTC; path=/";
+                } else {
+                    // 체크박스가 해제되면 쿠키 삭제
+                    document.cookie = "savedId=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/";
+                }
+        		
+        		window.location.href = "../";
+        	}
+        },
+        error:function(request,status,error){        alert("code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error);       }
+        
+    });
+}
+</script>
 
 </head>
 
@@ -43,23 +103,23 @@
                                     <div class="text-center">
                                         <h1 class="h4 text-gray-900 mb-5">Artium Admin</h1>
                                     </div>
-                                    <form class="user">
+                                    <form class="user" id="loginForm">
                                         <div class="form-group">
-                                            <input type="email" class="form-control form-control-user"
-                                                id="exampleInputEmail" aria-describedby="emailHelp"
+                                            <input type="text" name="id" class="form-control form-control-user"
+                                                id="id" aria-describedby="emailHelp"
                                                 placeholder="이메일을 입력해주세요.">
                                         </div>
                                         <div class="form-group">
-                                            <input type="password" class="form-control form-control-user"
-                                                id="exampleInputPassword" placeholder="비밀번호를 입력해주세요.">
+                                            <input type="password" name="pw" class="form-control form-control-user"
+                                                id="pw" placeholder="비밀번호를 입력해주세요.">
                                         </div>
                                         <div class="form-group mb-4">
                                             <div class="custom-control custom-checkbox small">
-                                                <input type="checkbox" class="custom-control-input" id="customCheck">
-                                                <label class="custom-control-label" for="customCheck">아이디 저장</label>
+                                                <input type="checkbox" class="custom-control-input" id="idCheck" name="idCheck">
+                                                <label class="custom-control-label" for="idCheck">아이디 저장</label>
                                             </div>
                                         </div>
-                                        <a href="/adminMain" class="btn btn-dark btn-user btn-block">
+                                        <a href="/adminMain" class="btn btn-dark btn-user btn-block" onclick="loginCheck()">
                                             로그인
                                         </a>
                                     </form>

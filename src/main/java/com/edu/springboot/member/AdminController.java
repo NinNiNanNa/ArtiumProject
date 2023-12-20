@@ -7,6 +7,9 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpSession;
+
 @Controller
 public class AdminController {
 
@@ -44,6 +47,23 @@ public class AdminController {
 		model.addAttribute("adminList", dao.adminsearch(adminDTO));
 		return "/admin/accountAdmin";
 	}
+	
+	//관리자정보 수정
+	@RequestMapping(value="/admin/accountAdmin/update", method=RequestMethod.POST)
+	public String modifyAdmin(AdminDTO adminDTO, HttpServletRequest req) {
+		HttpSession session = req.getSession();
+		int result = dao.update(adminDTO);
+		if(result==1) {
+			
+			System.out.println("관리자정보 수정이 완료되었습니다.");
+			session.setAttribute("adminName", adminDTO.getAdmin_name());
+			session.setAttribute("adminId", adminDTO.getAdmin_id());
+			session.setAttribute("adminPass", adminDTO.getAdmin_pass());
+			session.setAttribute("adminPhone", adminDTO.getAdmin_phone());
+		}
+		return "/admin/accountAdmin";
+	}
+	
 	
 	//관리자 삭제
 	@RequestMapping(value="/admin/accountAdmin/admindelete", method=RequestMethod.POST)

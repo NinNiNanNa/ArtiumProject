@@ -51,5 +51,10 @@
 		delete from admin where admin_id=#{admin_id}
 	</delete>
 	
+	<!-- 관리자정보 수정 -->
+	<update id="update"
+		parameterType="com.edu.springboot.member.AdminDTO">
+		update admin set admin_name = #{admin_name}, admin_pass = #{admin_pass}, admin_phone = #{admin_phone} where admin_id = #{admin_id}
+	</update>
 	
 </mapper>

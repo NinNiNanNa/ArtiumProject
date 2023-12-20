@@ -21,4 +21,6 @@ public interface IAdminService {
 	public List<MemberDTO> adminsearch(AdminDTO adminDTO);
 	//관리자 삭제
 	public void admindelete(AdminDTO adminDTO);
+	//관리자정보 수정
+	public int update(AdminDTO adminDTO);
 }

@@ -169,10 +169,9 @@
                             <div class="col-xl-10"><input type="text" class="form-control" placeholder="비밀번호를 다시 한번 입력해주세요."></div>
                         </div>
                         <div class="hr-line-dashed"></div>
-                        <div class="form-group row">
-                            <label class="col-xl-2 col-form-label">휴대폰번호</label>
+                        <div class="form-group row"><label class="col-xl-2 col-form-label">휴대폰번호</label>
                             <div class="col-xl-10 input-group">
-                                <div class="col-xl-2"><input name="admin_phone" class="form-control" /></div>
+                                <div class="col-sm-10"><input name ="admin_phone" type="text" class="form-control" placeholder="휴대폰번호를 입력해주세요."></div>
                             </div>
                         </div>
                        </form>
@@ -180,7 +179,7 @@
                 </div>
                 <div class="modal-footer d-inline-block">
                     <button type="button" class="btn btn-danger" onclick="removeCheck('${row.admin_id}')">삭제</button>
-                    <button type="button" class="btn btn-success float-right" onclick="registFormSubmit()" >저장</button>
+                    <button type="button" class="btn btn-success float-right" onclick="registFormSubmit()">저장</button>
                 </div>
             </div>
         </div>
@@ -196,37 +195,34 @@
                 </div>
                 <div class="modal-body">
                     <div class="ibox-content">
-                       <form role="form">
+                       <form id="form" role="form">
                        <div class="form-group row"><label class="col-xl-2 col-form-label">관리자명</label>
-                         <div class="col-xl-10"><input type="text" class="form-control" value=""></div>
+                         <div class="col-xl-10"><input name ="admin_name" type="text" class="form-control" value="${admin_name}"></div>
                        </div>
                        <div class="hr-line-dashed"></div>
                         <div class="form-group row"><label class="col-xl-2 col-form-label">이메일</label>
-                            <div class="col-sm-10"><input type="text" class="form-control" value=""></div>
+                            <div class="col-sm-10"><input name ="admin_id" type="text" class="form-control" value="${admin_id}"></div>
                         </div>
                         <div class="form-group row"><label class="col-xl-2 col-form-label">비밀번호</label>
-                            <div class="col-xl-10"><input type="text" class="form-control" value=""></div>
+                            <div class="col-xl-10"><input name ="admin_pass" type="text" class="form-control" value="${admin_pass}"></div>
                         </div>
                         <div class="form-group row"><label class="col-xl-2 col-form-label">비밀번호 확인<br>
                             <small class="text-danger" id="checkPwd">비밀번호 확인</small>
                         </label>
-                            <div class="col-xl-10"><input type="text" class="form-control" value=""></div>
+                            <div class="col-xl-10"><input type="text" class="form-control" value="${admin_pass}"></div>
                         </div>
                         <div class="hr-line-dashed"></div>
-                        <div class="form-group row">
-                            <label class="col-xl-2 col-form-label">휴대폰번호</label>
+                        <div class="form-group row"><label class="col-xl-2 col-form-label">휴대폰번호</label>
                             <div class="col-xl-10 input-group">
-                                <div class="col-xl-2"><input class="form-control" value=""/></div>
-                                <div class="col-xl-2"><input class="form-control" value=""/></div>
-                                <div class="col-xl-2"><input class="form-control" value=""/></div>
+                                <div class="col-sm-10"><input name="admin_phone" type="text" class="form-control" value="${admin_phone}"/></div>
                             </div>
                         </div>
                        </form>
                     </div>
                 </div>
                 <div class="modal-footer d-inline-block">
-                    <button type="button" class="btn btn-danger">삭제</button>
-                    <button type="button" class="btn btn-success float-right">저장</button>
+                    <button type="button" class="btn btn-danger" onclick="removeCheck('${row.admin_id}')">삭제</button>
+                    <button type="button" class="btn btn-success float-right" onclick="registFormSubmit()">저장</button>
                 </div>
             </div>
         </div>

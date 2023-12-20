@@ -28,6 +28,16 @@
     <!-- 부트스트랩5 CDN -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
 
+
+<style type="text/css">
+/* 검색필드, 검색창 */
+.search_wrap { width: 100%; text-align: right; }
+.search_wrap .searchField_wrap { display: inline-block; margin-right: 15px; }
+.search_wrap .searchField_wrap select {width: 150px; }
+.search_wrap .searchWord_wrap { display: inline-block; position: relative; }
+.search_wrap .searchWord_wrap .searchBtn { position: absolute; top: 0; right: 0; border-radius: 0 5px 5px 0; }
+</style>
+
 </head>
 
 <body id="page-top">
@@ -47,21 +57,25 @@
 
                     <!-- Content Row -->
                     <div class="row">
+                    <form name="writeFrm"  action="/mtList" method="post">
+                    	<input type="hidden" name="mt_id" value="${mateyDTO.mt_id }" />
+                    </form>
 
                         <div class="col">
                             <ul class="nav nav-pills mb-4" role="tablist">
                                 <li class="nav-item">
-                                    <a class="nav-link active tabColor" data-bs-toggle="pill" href="#mate_ing">모집 중</a>
+                                    <a class="nav-link active tabColor" data-bs-toggle="pill" href="/mateCurrentList">모집 중</a>
                                 </li>
                                 <li class="nav-item">
-                                    <a class="nav-link tabColor" data-bs-toggle="pill" href="#mate_com">모집완료</a>
+                                    <a class="nav-link tabColor" data-bs-toggle="pill" href="/mateFutureList">모집완료</a>
                                 </li>
                             </ul>
-
+							<div class="col">
                             <div class="tab-content">
-                                <div id="mate_ing" class="tab-pane active">
-
+                                <!-- <div id="mate_ing" class="tab-pane active"> -->
+								<div id="current">
                                     <ul class="list_wrap row">
+                                    <c:forEach items="${ mtLists }" var="row" varStatus="loop"> 
                                         <li class="col-lg-4">
                                             <div class="listInfo">
                                                 <div class="image_wrap" style="position: relative;">
@@ -77,24 +91,25 @@
                                                 <div class="title_wrap">
                                                     <div>
                                                         <div class="userInfo">
-                                                            <a class="txtSkip" href="javascript:;">메이트 모집 제목</a>
-                                                            <span>사용자 닉네임</span>
-                                                            <span>등록일 <i>2023-11-22</i></span>
-                                                            <span>조회수 <i>22</i></span>
-                                                            <span>북마크 <i>5</i></span>
+                                                            <a class="txtSkip" href="/mateView?mt_id=${row.mt_id}">${row.mt_title}</a>
+                                                            <span>${row.user_name }</span>
+                                                            <span>등록일 <i>${row.mt_postdate }</i></span>
+                                                            <span>조회수 <i>${row.mt_visitcount }</i></span>
+                                                            <span>북마크 <i>${row.mt_bmcount }</i></span>
                                                         </div>
                                                         <div class="mateDetail">
                                                             <div>
                                                                 <a class="txtSkip" href="javascript:;">전시회 제목</a>
-                                                                <span>관람예정일 <i>2023-11-22</i></span>
-                                                                <span>성별 <i>여</i></span>
-                                                                <span>나이 <i>26</i></span>
+                                                                <span>관람예정일 <i>${row.mt_viewdate }</i></span>
+                                                                <span>성별 <i>${row.mt_gender }</i></span>
+                                                                <span>나이 <i>${row.mt_age1 }</i>~<i>${row.mt_age2 }</i></span>
                                                             </div>
                                                         </div>
                                                     </div>
                                                 </div>
                                             </div>
                                         </li>
+                                        </c:forEach>
                                     </ul>
 
                                 </div>
@@ -102,11 +117,12 @@
                                 <div id="mate_com" class="tab-pane fade">
 
                                     <ul class="list_wrap row">
+                                        <c:forEach items="${ mtList }" var="row" varStatus="loop"> 
                                         <li class="col-lg-4">
                                             <div class="listInfo">
-                                                <div class="image_wrap">
-                                                    <img src="../img/imgex2.jpg" alt="">
-                                                    <ul class="listBtn_wrap mateListBtn_wrap">
+                                                <div class="image_wrap" style="position: relative;">
+                                                    <img src="../img/imgex1.jpg" alt="">
+                                                    <ul class="listBtn_wrap">
                                                         <li>
                                                             <a href="#" class="deleteBtn btn">
                                                                 <i class="fas fa-trash-alt"></i>
@@ -117,26 +133,29 @@
                                                 <div class="title_wrap">
                                                     <div>
                                                         <div class="userInfo">
-                                                            <a class="txtSkip" href="javascript:;">메이트 모집 제목</a>
-                                                            <span>사용자 닉네임</span>
-                                                            <span>등록일 <i>2023-11-22</i></span>
-                                                            <span>조회수 <i>22</i></span>
-                                                            <span>북마크 <i>5</i></span>
+                                                            <a class="txtSkip" href="/mateView?mt_id=${row.mt_id}">${row.mt_title}</a>
+                                                            <span>${row.user_name }</span>
+                                                            <span>등록일 <i>${row.mt_postdate }</i></span>
+                                                            <span>조회수 <i>${row.mt_visitcount }</i></span>
+                                                            <span>북마크 <i>${row.mt_bmcount }</i></span>
                                                         </div>
                                                         <div class="mateDetail">
                                                             <div>
                                                                 <a class="txtSkip" href="javascript:;">전시회 제목</a>
-                                                                <span>관람예정일 <i>2023-11-22</i></span>
-                                                                <span>성별 <i>여</i></span>
-                                                                <span>나이 <i>26</i></span>
+                                                                <span>관람예정일 <i>${row.mt_viewdate }</i></span>
+                                                                <span>성별 <i>${row.mt_gender }</i></span>
+                                                                <span>나이 <i>${row.mt_age1 }</i>~<i>${row.mt_age2 }</i></span>
                                                             </div>
                                                         </div>
                                                     </div>
                                                 </div>
                                             </div>
                                         </li>
+                                        </c:forEach>
                                     </ul>
-
+									<div class="paging_wrap">
+										${ pagingImg }
+									</div>
                                 </div>
                             </div>
                         </div>

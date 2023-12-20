@@ -6,7 +6,7 @@
     "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <!-- Controller에서 Mapper의 함수를 호출하기 위한 interface를 namespace 속성에 설정한다. -->
-<mapper namespace="com.edu.springboot.mate.IMateService">
+<mapper namespace="com.edu.springboot.admin.IAdminMateService">
 	<!-- 목록에서 게시물의 갯수를 카운트 하여 정수로 반환한다. <select> 엘리먼트의 경우 select한 결과를 List로 
 		반환하는것이 default이므로 정수값을 반환하기 위해 resultType을 int로 지정해야한다. -->
 	<select id="getTotalCount" resultType="int"

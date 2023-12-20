@@ -14,7 +14,8 @@ public class ParameterDTO {
 	private int end;
 	
 	// 전시상태를 구분
-	private int status;
+//	private int status;
+	private String status;
 	private String mt_id;
 	
 	

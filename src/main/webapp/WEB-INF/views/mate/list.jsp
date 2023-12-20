@@ -58,6 +58,33 @@
         }
     }
 	</script>
+	
+	
+	
+	
+    
+<!-- 모집중/모집완료 분류 -->
+<script>
+$(document).ready(function() {
+    var currentUrl = window.location.href;
+    var userId = "${sessionScope.userId}";
+
+    function handleMateButtonClick(status) {
+        $(".nav-link").removeClass("active");
+        $("#" + status + "Btn").addClass("active");
+    }
+
+    if (currentUrl.includes("/mateCurrentList")) {
+        handleMateButtonClick("current");
+    } else if (currentUrl.includes("/mateFutureList")) {
+        handleMateButtonClick("future");
+    } 
+});
+
+    
+</script>
+
+    
 </head>
 <body>
 
@@ -99,10 +126,10 @@
 							<div class="row">
 								<ul class="nav nav-pills mb-4" style="justify-content: center; font-size: 17px; " role="tablist">
 									<li class="nav-item">
-										<a class="nav-link active tabColor" data-bs-toggle="pill" href="#current">모집 중</a>
+										<a id="currentBtn" class="nav-link active tabColor" data-bs-toggle="pill" href="/mateCurrentList">모집 중</a>
 									</li>
 									<li class="nav-item">
-										<a class="nav-link tabColor" data-bs-toggle="pill" href="#future">모집완료</a>
+										<a id="futureBtn" class="nav-link tabColor" data-bs-toggle="pill" href="/mateFutureList">모집완료</a>
 									</li>
 								</ul>
 								<form method="get" id="searchForm">
@@ -127,8 +154,8 @@
 								<div class="col">
 
 									<div class="tab-content" style="padding-top:30px;">
+										<!-- <div id="current" class="tab-pane active"> -->
 										<div id="current" class="tab-pane active">
-
 											<ul class="list_wrap row">
 											<c:forEach items="${ lists }" var="row" varStatus="loop">  
 												<li class="col-lg-4">
@@ -165,33 +192,34 @@
 										<div id="future" class="tab-pane fade">
 
 											<ul class="list_wrap row">
-												<li class="col-lg-3">
+											<c:forEach items="${ lists }" var="row" varStatus="loop">  
+												<li class="col-lg-4">
 													<div class="listInfo">
-														<div class="image_wrap">
-															<img src="../img/imgex2.jpg" alt="">
-															<div class="listBtn_wrap">
-																<a href="#" class="bookMarkBtn">
-																	<i class="fas fa-bookmark"></i>
-																</a>
-															</div>
+														<div class="image_wrap" style="position: relative;">
+															<img src="./img/imgex1.jpg" alt="">
 														</div>
 														<div class="title_wrap">
 															<div>
-																<a class="txtSkip" href="javascript:;">전시회 제목</a>
-																<h6 class="txtSkip">전시회 장소</h6>
-																<h5>2023-11-01 ~ 2023-12-30</h5>
-																<ul class="info_wrap">
-																	<li>
-																		<span>조회수 <i>22</i></span>
-																	</li>
-																	<li>
-																		<span>북마크 <i>5</i></span>
-																	</li>
-																</ul>
+																<div class="userInfo">
+																	<a class="txtSkip" href="/mateView?mt_id=${row.mt_id}">${row.mt_title}</a>
+																	<span>${row.user_name }</span>
+																	<span>등록일 <i>${row.mt_postdate }</i></span>
+																	<span>조회수 <i>${row.mt_visitcount }</i></span>
+																	<span>북마크 <i>${row.mt_bmcount }</i></span>
+																</div>
+																<div class="mateDetail">
+																	<div>
+																		<a class="txtSkip" href="javascript:;">전시회 제목</a>
+																		<span>관람예정일 <i>${row.mt_viewdate }</i></span>
+																		<span>성별 <i>${row.mt_gender }</i></span>
+																		<span>나이 <i>${row.mt_age1 }</i>~<i>${row.mt_age2 }</i></span>
+																	</div>
+																</div>
 															</div>
 														</div>
 													</div>
 												</li>
+												</c:forEach>
 											</ul>
 
 										</div>

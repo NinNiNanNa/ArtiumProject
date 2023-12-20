@@ -8,7 +8,7 @@ import org.apache.ibatis.annotations.Param;
 import com.edu.springboot.mate.MtCommentDTO;
  
 @Mapper
-public interface IMateService {
+public interface IAdminMateService {
 	// Paging처리를 위해 게시물의 갯수를 카운트
 	public int getTotalCount(ParameterDTO parameterDTO);
 
@@ -16,7 +16,8 @@ public interface IMateService {
 	public ArrayList<MateDTO> listPage(ParameterDTO parameterDTO);
 	
 	//모집중, 모집완료 분류 
-	public ArrayList<MateDTO> listPageByStatus(ParameterDTO parameterDTO);
+	//public ArrayList<MateDTO> listPageByStatus(ParameterDTO parameterDTO);
+	public ArrayList<MateDTO> listPageByStatus(@Param("parameterDTO") ParameterDTO parameterDTO);
 
 	// mate 상세보기
 	public MateDTO view(MateDTO mateDTO);

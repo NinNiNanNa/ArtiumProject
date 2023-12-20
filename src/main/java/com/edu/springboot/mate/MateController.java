@@ -96,35 +96,77 @@ public class MateController {
     //리스트 출력 
     @RequestMapping("/mateList")
     public String mateList(Model model, HttpServletRequest req, ParameterDTO parameterDTO, MateDTO mateDTO) {
-        
+//    	System.out.println("mateList 메서드 호출여부 확인용");
+//    	int status = parameterDTO.getStatus();
+    	String status = String.valueOf(parameterDTO.getStatus());
+    	
+
+    	
+    	//각 리스트에 대한 총 게시물 수 계산 
         int totalCount = dao.getTotalCount(parameterDTO);
-        int pageSize = 12;
-        int blockPage = 5;
+        //System.out.println("totalCount="+ totalCount);
+        
+        int pageSize = 12;//한 페이지당 게시물 수  
+        int blockPage = 5;//한 블럭당 페이지 번호 수 
         int pageNum = (req.getParameter("pageNum") == null || req.getParameter("pageNum").equals("")) ? 1
                 : Integer.parseInt(req.getParameter("pageNum"));
         int start = (pageNum - 1) * pageSize + 1;
         int end = pageNum * pageSize;
         parameterDTO.setStart(start);
         parameterDTO.setEnd(end);
-
+        
+        //페이징 정보를 모델에 추가 
         Map<String, Object> maps = new HashMap<String, Object>();
         maps.put("totalCount", totalCount);
         maps.put("pageSize", pageSize);
         maps.put("pageNum", pageNum);
         model.addAttribute("maps", maps);
-
+        
+        //전시 목록을 가져와 모델에 추가 
         ArrayList<MateDTO> lists = dao.listPage(parameterDTO);
         model.addAttribute("lists", lists);
         
         System.out.println("Tl: "+lists);
+        
+        
+        //모집중, 모집완료 구분 
+        String mappingName = "";
+        
+    	if ("모집중".equals(status)) {
+    		mappingName = "/mateCurrentList?";
+    	} 
+    	else if ("모집완료".equals(status)) {
+    		mappingName = "/mateFutureList?";
+    	} 
+    	System.out.println("status:" + status);
 
+    	// 기존 코드에서 목록을 가져오는 dao.listPage 메서드를 dao.listPageByStatus로 변경
+//    	ArrayList<MateDTO> listsByStatus = dao.listPageByStatus(parameterDTO);
+//    	model.addAttribute("lists", listsByStatus);
+    	
         String pagingImg = PagingUtil.pagingImg(totalCount, pageSize, blockPage, pageNum,
-        		//req.getContextPath() + "/mateList?");
-                req.getContextPath() + "/mateList?list=?");
+        		//req.getContextPath() + "/mateList?list=?");
+                req.getContextPath() + mappingName);
         model.addAttribute("pagingImg", pagingImg);
-
+        System.out.println("status 상태:" + mappingName);
         return "/mate/list";
     }
+    // 모집중 
+ 	@RequestMapping("/mateCurrentList")
+ 	public String currentMtList(Model model, HttpServletRequest req, ParameterDTO parameterDTO) {
+ 		parameterDTO.setStatus("모집중");
+ 		System.out.println("나와?");
+ 		return mateList(model, req, parameterDTO, new MateDTO());
+ 	}
+ 	// 모집완료 
+ 	@RequestMapping("/mateFutureList")
+ 	public String futureMtList(Model model, HttpServletRequest req, ParameterDTO parameterDTO) {
+ 		System.out.println("DEBUG: futureMtList method called");
+ 		parameterDTO.setStatus("모집완료");
+ 		return mateList(model, req, parameterDTO, new MateDTO());
+ 	}
+    
+    
     
     //상세보기 
     @RequestMapping("/mateView")
@@ -180,11 +222,11 @@ public class MateController {
 //  		System.out.println(mtId);
   		String mtid = req.getParameter("mt_id");
   		mateDTO.setMt_id(mtid);
-  		System.out.println("이유가 뭐야?:" + mtid);
+  		System.out.println("mtid:" + mtid);
   		
   		// 게시물의 갯수를 카운트(검색어가 있는 경우 DTO객체에 자동으로 저장된다.)
   		int totalCount = dao.getMateComment(mateDTO);
-  		System.out.println("왜 안되는거야:" + totalCount);
+  		System.out.println("totalCount:" + totalCount);
   		
   		// 페이징을 위한 설정값(하드코딩)
   		int pageSize = 10;		// 한 페이지당 게시물 수

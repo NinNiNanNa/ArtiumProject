@@ -1,4 +1,4 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8"
+_<%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <!DOCTYPE HTML>
 <html lang='ko' class=''>
@@ -535,11 +535,12 @@ $(document).on('click', 'a.mtcomDeleteBtn', function(e) {
 											<c:choose>
 												<c:when test="${not empty userId }">
 												<div class="col-lg-2 comImg_wrap">
-													<img src="../img/${mateDTO.user_image}" alt="">
+													<!-- 수정필요 -->
+													<img src="../img/${userImg}" alt="">
 												</div>
 												<div class="col-lg-9 comWrite_wrap">
 													<div class="user_wrap">
-														<span>${mateDTO.user_name}</span>
+														<span>${sessionScope.userName}</span>
 													</div>
 												</c:when>
 											<c:otherwise>
@@ -573,7 +574,7 @@ $(document).on('click', 'a.mtcomDeleteBtn', function(e) {
 											</ul>
                             </div>
                             <div class="paging_wrap">
-                            	<!-- 갤러리 댓글 페이지네이션 출력 부분 -->
+                            	<!-- 메이트 댓글 페이지네이션 출력 부분 -->
                             </div>
                         </div>
 

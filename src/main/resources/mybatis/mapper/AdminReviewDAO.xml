@@ -33,4 +33,29 @@
 		DELETE FROM review WHERE rv_id=#{param1}
 	</delete>
 	
+	
+	<!-- 댓글 총 갯수 -->
+	<select id="getReviewCommentCount" resultType="int" parameterType="com.edu.springboot.review.ParameterDTO">
+		SELECT COUNT(*) FROM review_comment WHERE rv_id=#{rv_id}
+	</select>
+	
+	<!-- 댓글 목록 -->
+	<select id="listReviewComment" resultType="com.edu.springboot.review.ReviewCommentDTO"
+		parameterType="com.edu.springboot.review.ParameterDTO">
+		SELECT *
+			FROM (
+			    SELECT rc.rvc_id, rc.rv_id, rc.user_id, rc.rvc_content, rc.rvc_postdate, m.user_image, m.user_name, ROW_NUMBER() 
+			    OVER (ORDER BY rc.rvc_postdate DESC) AS rNum
+			    FROM review_comment rc
+			    JOIN members m ON rc.user_id = m.user_id
+			    WHERE rv_id=#{rv_id}
+			)
+			WHERE rNum<![CDATA[>=]]>#{start} AND rNum<![CDATA[<=]]>#{end}
+	</select>
+	
+	<!-- 댓글 삭제 -->
+	<delete id="deleteReviewComment">
+		DELETE FROM review_comment WHERE rvc_id=#{param1}
+	</delete>
+	
 </mapper>

@@ -56,6 +56,55 @@
          window.location.href = destination;
      }
  }
+ 
+ <!-- 전시유형 버튼 -->
+ /* function activeByParam(paramName, paramValue, buttonId) {
+    if (getParameterByName(paramName) === paramValue) {
+        $('.nav-link').removeClass('active');
+        $('.nav-link').parent('li').removeClass('active');
+        $(buttonId).addClass('active');
+        $(buttonId).parent('li').addClass('active');
+    }
+    
+    activeByParam('ga_type', '현대미술', '#modernArtBtn');
+    activeByParam('ga_type', '순수미술', '#fineArtBtn');
+    activeByParam('ga_type', '인물화', '#portraitPaintingBtn');
+    activeByParam('ga_type', '추상화', '#abstractBtn');
+    activeByParam('ga_type', '개인전', '#soloExhibitionBtn');
+	}
+ 
+ function getParameterByName(name) { 
+	 		name = name.replace(/[\[]/, "\\[").replace(/[\]]/, "\\]");
+	    var regex = new RegExp("[\\?&]" + name + "=([^&#]*)"), results = regex.exec(location.search);
+	    return results === null ? "" : decodeURIComponent(results[1].replace(/\+/g, " "));
+	} */
+ $(function() {
+	 let ga_type = '${param.ga_type}';
+	 switch (ga_type) {
+	 	case '현대미술':
+	 		$("#modernArtBtn").addClass("active");
+	 		break;
+	 	case '순수미술':
+	 		console.log("현미2");
+	 		$("#fineArtBtn").addClass("active");
+	 		break;
+	 	case '인물화':
+	 		console.log("현미3");
+	 		$("#portraitPaintingBtn").addClass("active");
+	 		break;
+	 	case '추상화':
+	 		console.log("현미4");
+	 		$("#abstractBtn").addClass("active");
+	 		break;
+	 	case '개인전':
+	 		console.log("현미5");
+	 		$("#soloExhibitionBtn").addClass("active");
+	 		break;
+	 	default:
+	 		console.log("null");
+	 		break;
+	 }
+ });
 </script>
 
 </head>
@@ -99,7 +148,7 @@
 							<form action="/galleryList" method="post">
 										<ul class="nav nav-pills mb-4" style="justify-content: left; font-size: 17px; " role="tablist">
 											<li class="nav-item">
-												<a id="modernArt" class="nav-link active tabColor" href="?ga_type=현대미술">#현대미술</a>
+												<a id="modernArtBtn" class="nav-link tabColor" href="?ga_type=현대미술">#현대미술</a>
 											</li>
 											<li class="nav-item">
 												<a id="fineArtBtn" class="nav-link tabColor" href="?ga_type=순수미술">#순수미술</a>
@@ -173,7 +222,7 @@
 											</ul>
 										</div>
 
-										<div id="#순수미술" class="tab-pane">
+										<div id="#순수미술" class="tab-pane fade">
 
 											<ul class="list_wrap row">
 											<c:forEach items="${ galleryList }" var="gallery" varStatus="loop">
@@ -209,7 +258,7 @@
 
 										</div>
 
-										<div id="?ga_type=인물화" class="tab-pane fade">
+										<div id="#인물화" class="tab-pane fade">
 
 											<ul class="list_wrap row">
 											<c:forEach items="${ galleryList }" var="gallery" varStatus="loop">
@@ -245,7 +294,7 @@
 
 										</div>
 
-										<div id="d" class="tab-pane fade">
+										<div id="#추상화" class="tab-pane fade">
 
 											<ul class="list_wrap row">
 											<c:forEach items="${ galleryList }" var="gallery" varStatus="loop">
@@ -281,7 +330,7 @@
 
 										</div>
 
-										<div id="e" class="tab-pane fade">
+										<div id="#개인전" class="tab-pane fade">
 
 											<ul class="list_wrap row">
 											<c:forEach items="${ galleryList }" var="gallery" varStatus="loop">

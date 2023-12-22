@@ -91,7 +91,7 @@ public class MateController {
             e.printStackTrace();
             return "redirect:/mateList";
         }
-    }
+    } 
     
     //리스트 출력 
     @RequestMapping("/mateList")

@@ -399,7 +399,7 @@ $(document).on('click', 'button#mtcomUpdateBtn', function (e) {
     });
 });
 
-// 갤러리 댓글 삭제
+// 메이트 댓글 삭제
 function deleteComment(mtcomId) {
     $.ajax({
         type: "POST",
@@ -536,7 +536,7 @@ $(document).on('click', 'a.mtcomDeleteBtn', function(e) {
 												<c:when test="${not empty userId }">
 												<div class="col-lg-2 comImg_wrap">
 													<!-- 수정필요 -->
-													<img src="../img/${userImg}" alt="">
+													<img src="../img/${userImg }" alt="">
 												</div>
 												<div class="col-lg-9 comWrite_wrap">
 													<div class="user_wrap">

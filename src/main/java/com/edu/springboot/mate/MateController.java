@@ -95,10 +95,9 @@ public class MateController {
     
     //리스트 출력 
     @RequestMapping("/mateList")
-    public String mateList(Model model, HttpServletRequest req, ParameterDTO parameterDTO, MateDTO mateDTO) {
+    public String mateList(Model model, HttpServletRequest req, ParameterDTO parameterDTO) {
 //    	System.out.println("mateList 메서드 호출여부 확인용");
-//    	int status = parameterDTO.getStatus();
-    	String status = String.valueOf(parameterDTO.getStatus());
+    	int status = parameterDTO.getStatus();
     	
 
     	
@@ -126,16 +125,15 @@ public class MateController {
         ArrayList<MateDTO> lists = dao.listPage(parameterDTO);
         model.addAttribute("lists", lists);
         
-        System.out.println("Tl: "+lists);
+        System.out.println("lists: "+lists);
         
         
         //모집중, 모집완료 구분 
         String mappingName = "";
         
-    	if ("모집중".equals(status)) {
+        if (status == 1) {
     		mappingName = "/mateCurrentList?";
-    	} 
-    	else if ("모집완료".equals(status)) {
+    	} else if (status == 2) {
     		mappingName = "/mateFutureList?";
     	} 
     	System.out.println("status:" + status);
@@ -154,16 +152,16 @@ public class MateController {
     // 모집중 
  	@RequestMapping("/mateCurrentList")
  	public String currentMtList(Model model, HttpServletRequest req, ParameterDTO parameterDTO) {
- 		parameterDTO.setStatus("모집중");
+ 		parameterDTO.setStatus(1);
  		System.out.println("나와?");
- 		return mateList(model, req, parameterDTO, new MateDTO());
+ 		return mateList(model, req, parameterDTO);
  	}
- 	// 모집완료 
+ 	// 모집완료
  	@RequestMapping("/mateFutureList")
  	public String futureMtList(Model model, HttpServletRequest req, ParameterDTO parameterDTO) {
  		System.out.println("DEBUG: futureMtList method called");
- 		parameterDTO.setStatus("모집완료");
- 		return mateList(model, req, parameterDTO, new MateDTO());
+ 		parameterDTO.setStatus(2);
+ 		return mateList(model, req, parameterDTO);
  	}
     
     
@@ -283,7 +281,7 @@ public class MateController {
  		
  		return resultMap;
  	}
- // 갤러리 댓글 수정
+ // 메이트 댓글 수정
  	@PostMapping("/mateCommentEdit.api")
  	@ResponseBody
  	public Map<String, Object> restMateCommentEdit(@RequestBody MtCommentDTO mtCommentDTO, HttpSession session) {
@@ -302,7 +300,7 @@ public class MateController {
  		return resultMap;
  	}
  	
- 	// 갤러리 댓글 삭제
+ 	// 메이트 댓글 삭제
  	@PostMapping("/mateCommentDelete.api")
  	@ResponseBody
  	public Map<String, Object> restMateCommentDelete(HttpServletRequest req) {

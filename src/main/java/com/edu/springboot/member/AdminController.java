@@ -107,12 +107,14 @@ public class AdminController {
 	public String exList() {
 		return "/admin/exList";
 	}
-	@GetMapping("/admin/mtComments")
-	public String mtComments() {
-		return "/admin/mtComments";
-	}
-	@GetMapping("/admin/mtList")
-	public String mtList() {
-		return "/admin/mtList";
-	}
+	
+// 구현 완료 후 삭제예정 +_+
+//	@GetMapping("/admin/mtComments")
+//	public String mtComments() {
+//		return "/admin/mtComments";
+//	}
+//	@GetMapping("/admin/mtList")
+//	public String mtList() {
+//		return "/admin/mtList";
+//	}
 }

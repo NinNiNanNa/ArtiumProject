@@ -67,9 +67,8 @@
 <script>
 $(document).ready(function() {
     var currentUrl = window.location.href;
-    var userId = "${sessionScope.userId}";
 
-    function handleMateButtonClick(status) {
+    function handlMateButtonClick(status) {
         $(".nav-link").removeClass("active");
         $("#" + status + "Btn").addClass("active");
     }
@@ -78,11 +77,13 @@ $(document).ready(function() {
         handleMateButtonClick("current");
     } else if (currentUrl.includes("/mateFutureList")) {
         handleMateButtonClick("future");
-    } 
+    }
+    
 });
 
-    
-</script>
+
+
+
 
     
 </head>
@@ -126,10 +127,10 @@ $(document).ready(function() {
 							<div class="row">
 								<ul class="nav nav-pills mb-4" style="justify-content: center; font-size: 17px; " role="tablist">
 									<li class="nav-item">
-										<a id="currentBtn" class="nav-link active tabColor" data-bs-toggle="pill" href="/mateCurrentList">모집 중</a>
+										<a id="currentBtn" class="nav-link active tabColor" href="/mateCurrentList">모집 중</a>
 									</li>
 									<li class="nav-item">
-										<a id="futureBtn" class="nav-link tabColor" data-bs-toggle="pill" href="/mateFutureList">모집완료</a>
+										<a id="futureBtn" class="nav-link tabColor" href="/mateFutureList">모집완료</a>
 									</li>
 								</ul>
 								<form method="get" id="searchForm">

@@ -6,9 +6,10 @@
     "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <!-- Controller에서 Mapper의 함수를 호출하기 위한 interface를 namespace 속성에 설정한다. -->
-<mapper namespace="com.edu.springboot.admin.IAdminMateService">
+<mapper namespace="com.edu.springboot.mate.IAdminMateService">
 	<!-- 목록에서 게시물의 갯수를 카운트 하여 정수로 반환한다. <select> 엘리먼트의 경우 select한 결과를 List로 
 		반환하는것이 default이므로 정수값을 반환하기 위해 resultType을 int로 지정해야한다. -->
+	
 	<select id="getTotalCount" resultType="int"
 		parameterType="com.edu.springboot.mate.ParameterDTO">
 		SELECT COUNT(*) from(
@@ -20,15 +21,17 @@
 		)
 	</select>
 	
-	<!-- 모집중/모집완료 구분 -->
-	<select id="listPageByStatus" resultType="int" parameterType="com.edu.springboot.mate.ParameterDTO">
-    SELECT COUNT(*) FROM mate WHERE
-    <choose>
-        <when test='status.equals("모집중")'>mt_sdate <![CDATA[<=]]> sysdate AND mt_edate <![CDATA[>=]]> sysdate</when>
-        <when test='status.equals("모집완료")'>mt_sdate <![CDATA[>]]> sysdate</when>
-    </choose>
-	</select>
-
+	<!-- <select id="listPage2"
+		resultType="com.edu.springboot.mate.MateDTO"
+		parameterType="com.edu.springboot.mate.ParameterDTO">
+		SELECT mt.MT_ID, mt.MT_TITLE, mt.USER_ID,
+		mt.MT_STATUS, mt.MT_VIEWDATE, mt.MT_GENDER, mt.MT_AGE1, mt.MT_AGE2, mt.MT_VISITCOUNT,
+		mt.MT_CONTENT, mt.MT_POSTDATE, m.USER_IMAGE, m.USER_NAME, ROW_NUMBER()
+		OVER (ORDER BY mt.MT_POSTDATE DESC) AS rNum FROM mate mt JOIN 
+		members m ON mt.user_id = m.user_id
+	
+	</select> -->
+	
 	<!-- 리스트 출력 -->
 	<select id="listPage"
 		resultType="com.edu.springboot.mate.MateDTO"
@@ -48,21 +51,12 @@
 		<![CDATA[ <= ]]>
 		#{end}
 	
-	
-	
 		<!-- SELECT * FROM ( SELECT Tb.*, rownum rNum FROM ( SELECT * FROM mate 
 			<if test="searchKeyword!=null and !searchKeyword.equals('')"> WHERE ${searchField} 
 			LIKE '%'||#{searchKeyword}||'%' </if> ORDER BY mt_id DESC ) Tb ) WHERE rNum<![CDATA[>=]]>#{start} 
 			AND rNum<![CDATA[<=]]>#{end} -->
 	</select>
-	<!-- 작성하기 -->
-	<insert id="write">
-		INSERT INTO mate (mt_id, mt_status, mt_title, mt_viewdate, mt_gender,
-		mt_age1, mt_age2, mt_content, mt_postdate, user_id)
-		VALUES(seq_board_num.nextval, #{mt_status}, #{mt_title},
-		#{mt_viewdate}, #{mt_gender}, #{mt_age1}, #{mt_age2}, #{mt_content},
-		sysdate, #{user_id})
-	</insert>
+	
 	<!-- 상세보기 -->
 	<select id="view" resultType="com.edu.springboot.mate.MateDTO"
 		parameterType="com.edu.springboot.mate.MateDTO">
@@ -71,19 +65,8 @@
 		m.USER_IMAGE, m.USER_NAME FROM mate mt JOIN members m ON mt.user_id =
 		m.user_id WHERE mt.MT_ID = #{mt_id}
 	</select>
-	<!-- 조회수 -->
-	<update id="visitCount"
-		parameterType="com.edu.springboot.mate.MateDTO">
-		UPDATE mate SET mt_visitcount=mt_visitcount+1 WHERE mt_id=#{mt_id}
-	</update>
-	<!-- 수정하기 -->
-	<update id="edit"
-		parameterType="com.edu.springboot.mate.MateDTO">
-		UPDATE mate SET mt_status=#{mt_status}, mt_title=#{mt_title},
-		mt_viewdate=#{mt_viewdate}, mt_gender=#{mt_gender},
-		mt_age1=#{mt_age1}, mt_age2=#{mt_age2}, mt_content=#{mt_content} WHERE
-		mt_id=#{mt_id}
-	</update>
+	
+	
 	<!-- 삭제하기 --> 
 	<delete id="delete">DELETE FROM mate WHERE mt_id=#{mt_id}</delete>
 	
@@ -122,20 +105,7 @@
 	</select>	
 	
 	
-	<!-- 메이트 댓글 등록 -->
-   <insert id="writeMateComment" parameterType="com.edu.springboot.mate.MtCommentDTO">
-        INSERT INTO mt_comment (mtcom_id, mt_id, user_id, mtcom_content, mtcom_postdate)
-        VALUES (seq_board_num.nextval, #{mt_id}, #{user_id}, #{mtcom_content}, sysdate)
-    </insert>	
-    
-    <!-- 메이트 댓글 수정 -->
-    <update id="editMateComment" parameterType="com.edu.springboot.mate.MtCommentDTO">
-		UPDATE mt_comment SET
-			mt_id=#{mt_id}, mtcom_content=#{mtcom_content}
-		WHERE mtcom_id=#{mtcom_id}
-	</update>
-	
-	 <!-- 갤러리 댓글 삭제 -->
+	 <!-- 메이트 댓글 삭제 -->
     <delete id="deleteMateComment">
 		DELETE FROM mt_comment WHERE mtcom_id=#{param1}
 	</delete>

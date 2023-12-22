@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="jakarta.tags.core" %>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -38,6 +39,19 @@
 .search_wrap .searchWord_wrap .searchBtn { position: absolute; top: 0; right: 0; border-radius: 0 5px 5px 0; }
 </style>
 
+<!-- 게시글 삭제하기 -->
+<script>
+function deletePost(formIndex){
+	var confirmed = confirm("정말로 삭제하겠습니까?");
+	var form = document.forms["adminMtFrm_" + formIndex];
+	if (confirmed) {
+	    form.method = "post";  
+	    form.action = "/admin/mtDelete";
+	    form.submit();  
+	}
+}
+</script>
+
 </head>
 
 <body id="page-top">
@@ -57,9 +71,6 @@
 
                     <!-- Content Row -->
                     <div class="row">
-                    <form name="writeFrm"  action="/mtList" method="post">
-                    	<input type="hidden" name="mt_id" value="${mateyDTO.mt_id }" />
-                    </form>
 
                         <div class="col">
                             <ul class="nav nav-pills mb-4" role="tablist">
@@ -70,19 +81,42 @@
                                     <a class="nav-link tabColor" data-bs-toggle="pill" href="/mateFutureList">모집완료</a>
                                 </li>
                             </ul>
+                            <!-- 검색 -->
+                            <div class="row" style="margin: 0;">
+		                       	<form method="get" class="col-lg" style="padding: 0;">
+								<div class="search_wrap clearfix">
+									<div class="searchField_wrap">
+										<select class="form-control" name="searchField">
+											<option value="mt_title">제목</option>
+											<option value="user_name">작성자</option>
+										</select>
+									</div>
+									<div class="searchWord_wrap" style="position: relative;">
+										<input type="text" class="form-control" name="searchKeyword" placeholder="제목 또는 작성자를 입력하세요.">
+										<button type="submit" class="btn btn-dark searchBtn"><i class="fas fa-search"></i></button>
+									</div>
+								</div>
+								</form>
+                        	</div>
+                            
+                            
 							<div class="col">
                             <div class="tab-content">
                                 <!-- <div id="mate_ing" class="tab-pane active"> -->
 								<div id="current">
                                     <ul class="list_wrap row">
-                                    <c:forEach items="${ mtLists }" var="row" varStatus="loop"> 
+                                    <%-- <c:forEach items="${ not empty lists ? lists : '999' }" var="row" varStatus="loop"> --%>
+                                    <c:forEach items="${lists}" var="row" varStatus="loop">  
                                         <li class="col-lg-4">
+                                        <form name="adminMtFrm_${loop.index}">
+											<input type="hidden" name="mt_id" value="${row.mt_id }" />
+										</form>
                                             <div class="listInfo">
                                                 <div class="image_wrap" style="position: relative;">
                                                     <img src="../img/imgex1.jpg" alt="">
                                                     <ul class="listBtn_wrap">
                                                         <li>
-                                                            <a href="#" class="deleteBtn btn">
+                                                            <a href="javascript:void(0);" onclick="deletePost(${loop.index})" class="deleteBtn btn">
                                                                 <i class="fas fa-trash-alt"></i>
                                                             </a>
                                                         </li>
@@ -114,10 +148,10 @@
 
                                 </div>
 
-                                <div id="mate_com" class="tab-pane fade">
+                                <div id="future" class="tab-pane fade">
 
                                     <ul class="list_wrap row">
-                                        <c:forEach items="${ mtList }" var="row" varStatus="loop"> 
+                                        <c:forEach items="${lists}" var="row" varStatus="loop">  
                                         <li class="col-lg-4">
                                             <div class="listInfo">
                                                 <div class="image_wrap" style="position: relative;">

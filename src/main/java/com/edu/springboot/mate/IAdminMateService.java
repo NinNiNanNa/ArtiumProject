@@ -14,6 +14,7 @@ public interface IAdminMateService {
 
 	// 게시판 목록(페이징 기능 추가)
 	public ArrayList<MateDTO> listPage(ParameterDTO parameterDTO);
+//	public ArrayList<MateDTO> listPage2(ParameterDTO parameterDTO);
 	
 	//모집중, 모집완료 분류 
 	//public ArrayList<MateDTO> listPageByStatus(ParameterDTO parameterDTO);

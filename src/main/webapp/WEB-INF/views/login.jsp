@@ -143,10 +143,10 @@ function loginCheck(){
 										</div>
 									</li>
 									<li>
-	                  <label for='idCheck' class="clearfix">
-	                      <input type='checkbox' name='idCheck' id='idCheck' class=''>
-	                      <span>아이디 저장</span>
-	                  </label>
+					                  <label for='idCheck' class="clearfix">
+					                      <input type='checkbox' name='idCheck' id='idCheck' class=''>
+					                      <span>아이디 저장</span>
+					                  </label>
 									</li>
 									<li>
 										<a href="javascript:void(0);" class="buttons loginBtn" onclick="loginCheck()">로그인</a>

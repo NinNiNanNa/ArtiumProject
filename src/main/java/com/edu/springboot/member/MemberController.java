@@ -115,15 +115,26 @@ public class MemberController {
         return code;
     }
 	
+	//회원정보 수정
+//	@RequestMapping(value="/mypage", method=RequestMethod.GET)
+//	public String modifygetMember(MemberDTO memberDTO, Model model) {
+//		memberDTO = dao.selectOne(memberDTO);
+//		model.addAttribute("memberDTO", memberDTO);
+//		
+//		System.out.println("불러? : "+memberDTO);
+//		
+//		return "mypage";
+//	}
 	
 	//회원정보 수정
 	@RequestMapping(value="/mypage", method=RequestMethod.POST)
-	public String modifyMember(MemberDTO memberDTO, HttpServletRequest req) {
+	public String modifyMember(MemberDTO memberDTO, HttpServletRequest req, Model model) {
 		HttpSession session = req.getSession();
 		int result = dao.update(memberDTO);
 		if(result==1) {
 			
 			System.out.println("회원정보 수정이 완료되었습니다.");
+			System.out.println("fffffffff"+memberDTO);
 			session.setAttribute("userPass", memberDTO.getUser_pass());
 			session.setAttribute("userName", memberDTO.getUser_name());
 			session.setAttribute("userEmail", memberDTO.getUser_email());

@@ -22,6 +22,9 @@
     <!-- Custom styles for this template-->
     <link href="../css/sb-admin-2.min.css" rel="stylesheet">
     
+    <!-- jQuery 라이브러리 로드 -->
+   <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+    
 <script type="text/javascript">
 $(document).ready(function () {
     // 페이지 로드 시 실행되는 함수
@@ -35,7 +38,7 @@ $(document).ready(function () {
     }
    
     // 로그인 버튼 클릭 시 이벤트 처리
-    $("#btn").click(function () {
+    $("#loginBtn").click(function () {
         loginCheck();
     });
 });
@@ -55,25 +58,26 @@ function getCookie(cookieName) {
 //로그인 체크 함수
 function loginCheck(){
     $.ajax({
-        url:"/admin/loginCheck",
+        url:"/admin/adminLogin",
         type:"post",
         data:{"id" : $("#id").val(),
         	"pw" : $("#pw").val()},
-        success: function(result){
+        success: function(result){  
         	if(result == 0){
+        		alert("로그인에 실패하였습니다.");
         	} else{
         		alert("로그인되었습니다.");
         		
         		// 아이디 저장 체크박스 확인
                 if ($('#idCheck').is(':checked')) {
                     // 쿠키에 아이디 저장
-                    document.cookie = "savedId=" + $("#id").val() + "; expires=Thu, 01 Jan 2026 00:00:00 UTC; path=/";
+                    document.cookie = "savedId=" + $("#id").val() + "; expires=Thu, 01 Jan 2026 00:00:00 UTC; path=/admin";
                 } else {
                     // 체크박스가 해제되면 쿠키 삭제
-                    document.cookie = "savedId=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/";
+                    document.cookie = "savedId=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/admin";
                 }
         		
-        		window.location.href = "../";
+        		window.location.href ="/adminMain";
         	}
         },
         error:function(request,status,error){        alert("code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error);       }
@@ -103,7 +107,7 @@ function loginCheck(){
                                     <div class="text-center">
                                         <h1 class="h4 text-gray-900 mb-5">Artium Admin</h1>
                                     </div>
-                                    <form class="user" id="loginForm">
+                                    <form class="admin" id="loginForm">
                                         <div class="form-group">
                                             <input type="text" name="id" class="form-control form-control-user"
                                                 id="id" aria-describedby="emailHelp"
@@ -119,7 +123,7 @@ function loginCheck(){
                                                 <label class="custom-control-label" for="idCheck">아이디 저장</label>
                                             </div>
                                         </div>
-                                        <a href="/adminMain" class="btn btn-dark btn-user btn-block" onclick="loginCheck()">
+                                        <a class="btn btn-dark btn-user btn-block" onclick="loginCheck()">
                                             로그인
                                         </a>
                                     </form>

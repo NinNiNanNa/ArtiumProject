@@ -23,4 +23,8 @@ public interface IAdminService {
 	public void admindelete(AdminDTO adminDTO);
 	//관리자정보 수정
 	public int update(AdminDTO adminDTO);
+	//관리자 로그인
+	public int loginCheck(AdminDTO adminDTO);
+	//관리자 조회
+	public AdminDTO selectOne(AdminDTO adminDTO);
 }

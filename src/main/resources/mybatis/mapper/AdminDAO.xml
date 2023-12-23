@@ -57,4 +57,16 @@
 		update admin set admin_name = #{admin_name}, admin_pass = #{admin_pass}, admin_phone = #{admin_phone} where admin_id = #{admin_id}
 	</update>
 	
+	<!-- 관리자 로그인 -->
+	<select id="loginCheck"
+		parameterType="com.edu.springboot.member.AdminDTO">
+		select count(*) from admin where admin_id = #{admin_id} and admin_pass = #{admin_pass} 
+	</select>
+	
+	<!-- 기존 회원정보 인출하기 -->
+	<select id="selectOne"
+		parameterType="com.edu.springboot.member.AdminDTO"
+		resultType="com.edu.springboot.member.AdminDTO">
+		select * from admin where admin_id = #{admin_id}
+	</select>
 </mapper>

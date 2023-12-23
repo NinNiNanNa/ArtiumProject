@@ -28,8 +28,30 @@
 
     <!-- 부트스트랩5 CDN -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    
+    <!-- jQuery 라이브러리 로드 -->
+   <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
 	
 	<script type="text/javascript">
+	
+    $(document).on('click', '#modal', function(e) {
+    	var admin_id = $(this).data('admin-id');
+        $.ajax({
+            url:"/adminInfoEdit.api",
+            type:"post",
+            data:{"admin_id" : admin_id},
+            success: function(data){  
+            	document.getElementById('update_admin_name').value = data.admin_name;
+            	document.getElementById('update_admin_pass').value = data.admin_pass;
+            	document.getElementById('update_admin_pass_check').value = data.admin_pass;
+            	document.getElementById('update_admin_phone').value = data.admin_phone;
+            	document.getElementById('update_admin_id').value = data.admin_id;
+            },
+            error:function(request,status,error){        alert("code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error); 
+        	},
+       	});
+    	}
+	);
 	
 	function submit(){
 		alert("저장되었습니다.")
@@ -41,8 +63,16 @@
 	
 	function registFormSubmit(){
 		alert("저장되었습니다.")
-    	var form = document.getElementById('form');
+    	var form = document.getElementById('registForm');
     	form.action = "/admin/accountAdmin/join";
+    	form.method = "post";
+    	form.submit();
+    }
+	
+	function updateFormSubmit(){
+		alert("수정되었습니다.")
+    	var form = document.getElementById('updateForm');
+    	form.action = "/admin/accountAdmin";
     	form.method = "post";
     	form.submit();
     }
@@ -62,10 +92,12 @@
             data:{"admin_id" : admin_id},
             success: function(data){
             	location.reload();
-                alert("삭제 완료되었습니다.");
+                alert("삭제되었습니다.");
             }
         });
     }
+    
+    
 	</script>
 </head>
 
@@ -78,6 +110,10 @@
 
                 <!-- Begin Page Content -->
                 <div class="container-fluid">
+	                <%-- <c:set var="adminName" value="${sessionScope.}"></c:set>
+	                <c:set var="adminId" value="${sessionScope.adminId}"></c:set>
+					<c:set var="adminPass" value="${sessionScope.adminPass}"></c:set>
+					<c:set var="adminPhone" value="${sessionScope.adminPhone}"></c:set> --%>
 
                     <!-- Page Heading -->
                     <div class="d-sm-flex align-items-center justify-content-between mb-4">
@@ -120,7 +156,7 @@
 
                                     <ul class="adminList_wrap row">
                                         <c:forEach items="${adminList}" var="row" varStatus="loop">
-	                                        <li class="col-lg-3" data-toggle="modal" data-target="#adminEditModal" style="cursor: pointer;">
+	                                        <li class="col-lg-3" id="modal" data-toggle="modal" data-target="#adminEditModal" data-admin-id="${row.admin_id}"  style="cursor: pointer;">
 	                                            <div>
 	                                                <h6>${row.admin_regidate}</h6>
 	                                                <h2>${row.admin_name}</h2>
@@ -152,33 +188,32 @@
                 </div>
                 <div class="modal-body">
                     <div class="ibox-content">
-                       <form id="form" role="form">
+                       <form id="registForm" role="form">
                        <div class="form-group row"><label class="col-xl-2 col-form-label">관리자명</label>
-                         <div class="col-xl-10"><input name ="admin_name" type="text" class="form-control" placeholder="실명으로 입력해주세요."></div>
+                         <div class="col-xl-10"><input name ="admin_name" id="name" type="text" class="form-control" placeholder="실명으로 입력해주세요."></div>
                        </div>
                        <div class="hr-line-dashed"></div>
                         <div class="form-group row"><label class="col-xl-2 col-form-label">이메일</label>
-                            <div class="col-sm-10"><input name ="admin_id" type="text" class="form-control" placeholder="이메일을 입력해주세요."></div>
+                            <div class="col-sm-10"><input name ="admin_id" id="id" type="text" class="form-control" placeholder="이메일을 입력해주세요."></div>
                         </div>
                         <div class="form-group row"><label class="col-xl-2 col-form-label">비밀번호</label>
-                            <div class="col-xl-10"><input name ="admin_pass" type="text" class="form-control" placeholder="비밀번호를 입력해주세요."></div>
+                            <div class="col-xl-10"><input name ="admin_pass" id="pw" type="text" class="form-control" placeholder="비밀번호를 입력해주세요."></div>
                         </div>
                         <div class="form-group row"><label class="col-xl-2 col-form-label">비밀번호 확인<br>
                             <small class="text-danger" id="checkPwd">비밀번호 확인</small>
                         </label>
-                            <div class="col-xl-10"><input type="text" class="form-control" placeholder="비밀번호를 다시 한번 입력해주세요."></div>
+                            <div class="col-xl-10"><input type="text" name ="admin_pass2" class="form-control" placeholder="비밀번호를 다시 한번 입력해주세요."></div>
                         </div>
                         <div class="hr-line-dashed"></div>
                         <div class="form-group row"><label class="col-xl-2 col-form-label">휴대폰번호</label>
                             <div class="col-xl-10 input-group">
-                                <div class="col-sm-10"><input name ="admin_phone" type="text" class="form-control" placeholder="휴대폰번호를 입력해주세요."></div>
+                                <div class="col-sm-10"><input name ="admin_phone" id="phone" type="text" class="form-control" placeholder="휴대폰번호를 입력해주세요."></div>
                             </div>
                         </div>
                        </form>
                     </div>
                 </div>
                 <div class="modal-footer d-inline-block">
-                    <button type="button" class="btn btn-danger" onclick="removeCheck('${row.admin_id}')">삭제</button>
                     <button type="button" class="btn btn-success float-right" onclick="registFormSubmit()">저장</button>
                 </div>
             </div>
@@ -195,26 +230,26 @@
                 </div>
                 <div class="modal-body">
                     <div class="ibox-content">
-                       <form id="form" role="form">
+                       <form id="updateForm" role="form">
                        <div class="form-group row"><label class="col-xl-2 col-form-label">관리자명</label>
-                         <div class="col-xl-10"><input name ="admin_name" type="text" class="form-control" value="${admin_name}"></div>
+                         <div class="col-xl-10"><input name ="admin_name" id="update_admin_name" type="text" class="form-control"></div>
                        </div>
                        <div class="hr-line-dashed"></div>
                         <div class="form-group row"><label class="col-xl-2 col-form-label">이메일</label>
-                            <div class="col-sm-10"><input name ="admin_id" type="text" class="form-control" value="${admin_id}"></div>
+                            <div class="col-sm-10"><input name ="admin_id" id="update_admin_id" type="text" class="form-control"></div>
                         </div>
                         <div class="form-group row"><label class="col-xl-2 col-form-label">비밀번호</label>
-                            <div class="col-xl-10"><input name ="admin_pass" type="text" class="form-control" value="${admin_pass}"></div>
+                            <div class="col-xl-10"><input name ="admin_pass" id="update_admin_pass" type="text" class="form-control"></div>
                         </div>
                         <div class="form-group row"><label class="col-xl-2 col-form-label">비밀번호 확인<br>
                             <small class="text-danger" id="checkPwd">비밀번호 확인</small>
                         </label>
-                            <div class="col-xl-10"><input type="text" class="form-control" value="${admin_pass}"></div>
+                            <div class="col-xl-10"><input type="text" id="update_admin_pass_check" class="form-control"></div>
                         </div>
                         <div class="hr-line-dashed"></div>
                         <div class="form-group row"><label class="col-xl-2 col-form-label">휴대폰번호</label>
                             <div class="col-xl-10 input-group">
-                                <div class="col-sm-10"><input name="admin_phone" type="text" class="form-control" value="${admin_phone}"/></div>
+                                <div class="col-sm-10"><input name="admin_phone" id="update_admin_phone" type="text" class="form-control"/></div>
                             </div>
                         </div>
                        </form>
@@ -222,7 +257,7 @@
                 </div>
                 <div class="modal-footer d-inline-block">
                     <button type="button" class="btn btn-danger" onclick="removeCheck('${row.admin_id}')">삭제</button>
-                    <button type="button" class="btn btn-success float-right" onclick="registFormSubmit()">저장</button>
+                    <button type="button" class="btn btn-success float-right" onclick="updateFormSubmit()">저장</button>
                 </div>
             </div>
         </div>

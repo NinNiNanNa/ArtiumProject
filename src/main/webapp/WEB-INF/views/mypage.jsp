@@ -191,7 +191,8 @@
 			<div class="tab-content">
 				<div id="mypage1" class="tab-pane active">
 					
-					<form action="mypage" method="post" id="frm">
+					<form action="mypage" method="post" id="frm" enctype="multipart/form-data">
+					<input type="hidden" name="preview_img" value="${userImg}" />
 					<div class="wrap470">
 						<div class="content_wrap">
 							<ul class="inputText_wrap">

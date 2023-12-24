@@ -1,8 +1,11 @@
 package com.edu.springboot.member;
 
+import java.io.File;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.util.ResourceUtils;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -18,6 +21,8 @@ import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
+import jakarta.servlet.http.Part;
+import utils.MyFunctions;
 
 
 @Controller
@@ -130,11 +135,42 @@ public class MemberController {
 	@RequestMapping(value="/mypage", method=RequestMethod.POST)
 	public String modifyMember(MemberDTO memberDTO, HttpServletRequest req, Model model) {
 		HttpSession session = req.getSession();
+		try {
+			//업로드 디렉토리의 물리적경로 얻어오기 
+			String uploadDir = ResourceUtils
+				.getFile("classpath:static/uploads/").toPath().toString();
+			System.out.println("물리적경로:"+uploadDir);
+			
+			//전송된 첨부파일을 Part객체를 통해 얻어온다. 
+			Part part = req.getPart("user_image");
+			//파일명 확인을 위해 헤더값을 얻어온다. 
+			String partHeader = part.getHeader("content-disposition");
+		    System.out.println("partHeader="+ partHeader);
+		    //헤더값에서 파일명 추출을 위해 문자열을 split()한다. 
+		    String[] phArr = partHeader.split("filename=");
+		    //따옴표를 제거한 후 원본파일명을 추출한다. 
+		    String originalFileName = phArr[1].trim().replace("\"", "");
+		    //전송된 파일이 있다면 서버에 저장한다. 
+		    if (!originalFileName.isEmpty()) {				
+				part.write(uploadDir+ File.separator +originalFileName);
+			    //서버에 저장된 파일명을 중복되지 않는 이름으로 변경한다. 
+			    String savedFileName = 
+			    	MyFunctions.renameFile(uploadDir, originalFileName);
+			    memberDTO.setUser_image(originalFileName);
+			} else {
+				 // 파일을 수정하지 않은 경우
+    	        String savedFileName = req.getParameter("preview_img");
+    	        memberDTO.setUser_image(savedFileName);
+			}		
+		}
+		catch (Exception e) {
+			System.out.println("업로드 실패");
+		}
+
 		int result = dao.update(memberDTO);
 		if(result==1) {
 			
 			System.out.println("회원정보 수정이 완료되었습니다.");
-			System.out.println("fffffffff"+memberDTO);
 			session.setAttribute("userPass", memberDTO.getUser_pass());
 			session.setAttribute("userName", memberDTO.getUser_name());
 			session.setAttribute("userEmail", memberDTO.getUser_email());
@@ -206,7 +242,7 @@ public class MemberController {
 		
 		return code;
 	}
-	
+
 	
 	
 

@@ -10,7 +10,7 @@ public class MemberDTO {
 	private String user_name;
 	private String user_email;
 	private String user_gender;
-	private String user_image;
+	private Object user_image;
 	private String user_type;
 	private String user_regidate;
 	

@@ -72,7 +72,7 @@
 	function updateFormSubmit(){
 		alert("수정되었습니다.")
     	var form = document.getElementById('updateForm');
-    	form.action = "/admin/accountAdmin";
+    	form.action = "/admin/accountAdmin/update";
     	form.method = "post";
     	form.submit();
     }

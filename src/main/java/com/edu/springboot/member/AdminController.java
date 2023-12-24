@@ -1,11 +1,13 @@
 package com.edu.springboot.member;
 
+import java.io.File;
 import java.util.HashMap;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.util.ResourceUtils;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -17,6 +19,8 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
+import jakarta.servlet.http.Part;
+import utils.MyFunctions;
 
 @Controller
 public class AdminController {
@@ -71,11 +75,11 @@ public class AdminController {
 	}
 	
 	//관리자 검색
-//	@RequestMapping(value="/admin/accountAdmin", method=RequestMethod.POST)
-//	public String adminsearch(AdminDTO adminDTO, Model model) throws Exception {
-//		model.addAttribute("adminList", dao.adminsearch(adminDTO));
-//		return "/admin/accountAdmin";
-//	}
+	@RequestMapping(value="/admin/accountAdmin", method=RequestMethod.POST)
+	public String adminsearch(AdminDTO adminDTO, Model model) throws Exception {
+		model.addAttribute("adminList", dao.adminsearch(adminDTO));
+		return "/admin/accountAdmin";
+	}
 	
 	//관리자정보 수정페이지
 	@RequestMapping("/adminInfoEdit.api")
@@ -94,22 +98,8 @@ public class AdminController {
 		return maps;
 	}
 	
-	//관리자정보 수정페이지
-//	@RequestMapping(value="/admin/accountAdmin", method=RequestMethod.POST)
-//	public String modifyAdminPage(@RequestParam("admin_id") String admin_id, Model model) throws Exception {
-//		AdminDTO adminDTO = new AdminDTO();
-//		adminDTO.setAdmin_id(admin_id);
-//		adminDTO = dao.selectOne(adminDTO);
-//		model.addAttribute("admin_id", adminDTO.getAdmin_id());
-//		model.addAttribute("admin_pass", adminDTO.getAdmin_pass());
-//		model.addAttribute("admin_name", adminDTO.getAdmin_name());
-//		model.addAttribute("admin_phone", adminDTO.getAdmin_phone());
-//		model.addAttribute("admin_regidate", adminDTO.getAdmin_regidate());
-//		return "/admin/accountAdmin";
-//	}
-//	
 	//관리자정보 수정
-	@RequestMapping(value="/admin/accountAdmin", method=RequestMethod.POST)
+	@RequestMapping(value="/admin/accountAdmin/update", method=RequestMethod.POST)
 	public String modifyAdmin(AdminDTO adminDTO, HttpServletRequest req) {
 		HttpSession session = req.getSession();
 		int result = dao.update(adminDTO);
@@ -158,14 +148,4 @@ public class AdminController {
 		dao.delete(memberDTO);
 		return "/admin/accountUser";
 	}
-	
-//	@GetMapping("/admin/exComments")
-//	public String exComments() {
-//		return "/admin/exComments";
-//	}
-//	@GetMapping("/admin/exList")
-//	public String exList() {
-//		return "/admin/exList";
-//	}
-
 }

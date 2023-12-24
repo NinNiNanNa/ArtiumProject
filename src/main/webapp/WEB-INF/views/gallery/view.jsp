@@ -439,7 +439,7 @@ $(document).on('click', 'a.cmDeleteBtn', function(e) {
                 <div class="gap1440">
                     <div class="container1440">
                     
-                    <form name="writeFrm"  action="/galleryList" method="post">
+                    <form name="writeFrm" action="/galleryList" method="post">
                     	<input type="hidden" name="ga_id" value="${galleryDTO.ga_id }" />
                     </form>
                         <div class="view_content">

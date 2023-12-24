@@ -58,26 +58,6 @@
  }
  
  <!-- 전시유형 버튼 -->
- /* function activeByParam(paramName, paramValue, buttonId) {
-    if (getParameterByName(paramName) === paramValue) {
-        $('.nav-link').removeClass('active');
-        $('.nav-link').parent('li').removeClass('active');
-        $(buttonId).addClass('active');
-        $(buttonId).parent('li').addClass('active');
-    }
-    
-    activeByParam('ga_type', '현대미술', '#modernArtBtn');
-    activeByParam('ga_type', '순수미술', '#fineArtBtn');
-    activeByParam('ga_type', '인물화', '#portraitPaintingBtn');
-    activeByParam('ga_type', '추상화', '#abstractBtn');
-    activeByParam('ga_type', '개인전', '#soloExhibitionBtn');
-	}
- 
- function getParameterByName(name) { 
-	 		name = name.replace(/[\[]/, "\\[").replace(/[\]]/, "\\]");
-	    var regex = new RegExp("[\\?&]" + name + "=([^&#]*)"), results = regex.exec(location.search);
-	    return results === null ? "" : decodeURIComponent(results[1].replace(/\+/g, " "));
-	} */
  $(function() {
 	 let ga_type = '${param.ga_type}';
 	 switch (ga_type) {

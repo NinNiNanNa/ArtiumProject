@@ -141,7 +141,7 @@ $(document).ready(function(){
 	                                            <option value="현대미술">현대미술</option>
 	                                            <option value="순수미술">순수미술</option>
 	                                            <option value="추상화">추상화</option>
-	                                            <option value="인물전">인물전</option>
+	                                            <option value="인물화">인물화</option>
 	                                            <option value="개인전">개인전</option>
 	                                        </select>
 	                                    </div>

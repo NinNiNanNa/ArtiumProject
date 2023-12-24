@@ -12,7 +12,7 @@ public class MyFunctions {
 	public static String getUuid() {
 		String uuid = UUID.randomUUID().toString();
 		uuid = uuid.replaceAll("-", "");
-		System.out.println("생성된UUID : " + uuid);
+//		System.out.println("생성된UUID : " + uuid);
 		return uuid;
 	}
 		

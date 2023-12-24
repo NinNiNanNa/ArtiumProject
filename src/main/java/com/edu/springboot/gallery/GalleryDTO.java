@@ -43,6 +43,7 @@ public class GalleryDTO {
 	private String num;
 	private String pageNum;
 	private String searchField;
+	private String searchOption;
 	private String searchKeyword;
 	private int start;
 	private int end;

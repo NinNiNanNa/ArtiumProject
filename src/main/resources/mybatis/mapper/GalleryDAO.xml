@@ -31,7 +31,6 @@
 				</if>
 		    )
 	     WHERE rNum<![CDATA[>=]]>#{start} AND rNum<![CDATA[<=]]>#{end}
-			
 		</select>
 		
 		<insert id="write" parameterType="com.edu.springboot.gallery.GalleryDTO">

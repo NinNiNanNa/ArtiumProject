@@ -29,48 +29,47 @@
     <!-- 부트스트랩5 CDN -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
 
+		<!-- jQuery 라이브러리 로드 -->
+	  <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+		
 <script>
 <!-- 댓글 삭제 -->
 //갤러리 댓글 삭제
 function deleteComment(cmId) {
-	// ga_id값 null로 입력
-	var ga_id = ${param.ga_id};
-	console.log(ga_id + "ga_id값");
-    $.ajax({
-        type: "POST",
-        url: "/adminGaCommentsDelete.api",
-        data: { cm_id: cmId, ga_id: ga_id },
-        success: function(response) {
-            if (response.result === 1) {	// 댓글 삭제 성공
-                alert("댓글이 삭제되었습니다.");
-                // 삭제 후 댓글 목록을 업데이트하는 함수 호출
-                loadComments();
-            } else {	// 댓글 삭제 실패
-                alert("댓글 삭제에 실패하였습니다.");
-            }
-        },
-        error: function(error) {
-            // 에러 처리
-            console.log(error);
-        }
-    });
+  $.ajax({
+      type: "POST", 
+      url: "/adminGaCommentsDelete.api",
+      data: { cm_id: cmId },
+      success: function(response) {
+          if (response.result === 1) {	// 댓글 삭제 성공
+              alert("댓글이 삭제되었습니다.");
+              location.reload();
+          } else {	// 댓글 삭제 실패
+              alert("댓글 삭제에 실패하였습니다.");
+              console.log(error);
+          }
+      },
+      error: function(error) {
+          // 에러 처리
+          console.log(error);
+      }
+  });
 }
 
 //삭제 버튼 클릭 시 이벤트 처리
-$(document).on('click', 'a.cmDeleteBtn', function(e) {
-    e.preventDefault();
+$(document).on('click', '.cmDeleteBtn', function(e) {
+  e.preventDefault();
 
-    var cmId = $(this).data('comment-id');
-    
- 	// 확인 창 띄우기
-    var isConfirmed = confirm('댓글을 삭제하시겠습니까?');
- 	
- 	// 확인이 눌렸을 경우에만 삭제 요청
-    if (isConfirmed) {
-        // 서버로 삭제 요청을 보냄
-        deleteComment(cmId);
-    }
-    
+  var cmId = $(this).data('comment-id');
+  
+// 확인 창 띄우기
+  var isConfirmed = confirm('댓글을 삭제하시겠습니까?');
+
+// 확인이 눌렸을 경우에만 삭제 요청
+  if (isConfirmed) {
+      // 서버로 삭제 요청을 보냄
+      deleteComment(cmId);
+  }    
 });
 </script>
 </head>
@@ -93,16 +92,16 @@ $(document).on('click', 'a.cmDeleteBtn', function(e) {
                     <!-- Content Row -->
                     <div class="row">
                     
-                    	<form name="writeFrm"  action="/admin/gaComments" method="post">
+                    	<%-- <form name="writeFrm"  action="/admin/gaComments" method="post">
 	                    	<input type="hidden" name="ga_id" value="${galleryDTO.ga_id }" />
-	                    </form>
+	                    </form> --%>
 	                    
                         <div class="col">
                              
                             <div class="table_wrap">
                                 <div class="table_gap">
 
-                                    <form name="gaCmAdmin" id="gaCmAdmin" method="post" action="/admin/gaComments">
+                                    <form method="get">
                                         <div class="searchFeild_wrap">
                                             <select class="form-control" name="searchOption">
                                                 <option value="user_name">닉네임</option>
@@ -110,9 +109,11 @@ $(document).on('click', 'a.cmDeleteBtn', function(e) {
                                             </select>
                                         </div>
                                         <div class="searchWord_wrap">
-                                            <input type="text" name="keyword" class="form-control bg-light border-0 small" placeholder="Search for..." aria-label="Search" aria-describedby="basic-addon2">
+                                            <input type="text" name="searchKeyword" class="form-control bg-light border-0 small" placeholder="닉네임 또는 제목을 임력해주세요." aria-label="Search" aria-describedby="basic-addon2">
+                                            <!-- <input type="text" name="keyword" class="form-control bg-light border-0 small" placeholder="닉네임 또는 제목을 임력해주세요." aria-label="Search" aria-describedby="basic-addon2"> -->
                                             <div class="searchBtn">
-                                                <button class="btn btn-dark" type="button" onclick="submit()">
+                                                <button class="btn btn-dark" type="submit" >
+                                                <!-- <button class="btn btn-dark" type="button" onclick="submit()"> -->
                                                     <i class="fas fa-search fa-sm"></i>
                                                 </button>
                                             </div>
@@ -143,20 +144,15 @@ $(document).on('click', 'a.cmDeleteBtn', function(e) {
                                                 <td>${gaComment.user_name }</td>
                                                 <td class="txtSkip">${gaComment.cm_content }</td>
                                                 <td>${gaComment.cm_postdate }</td>
-                                                <td><button type="button" class="btn btn-danger cmDeleteBtn" onclick="gacRemoveCheck('${gaComment.user_id}')">삭제</button></td>
+                                                <td><button type="button" class="btn btn-danger cmDeleteBtn" data-comment-id="${gaComment.cm_id }">삭제</button></td>
                                             </tr>
                                             </c:forEach>
-                                            <!-- <tr>
-                                                <td>2</td>
-                                                <td>닌니난나</td>
-                                                <td class="txtSkip">어디까지 작성할 수 있을까?어디까지 작성할 수 있을까?어디까지 작성할 수 있을까?어디까지 작성할 수 있을까</td>
-                                                <td>2023-11-23</td>
-                                                <td><button type="button" class="btn btn-danger">삭제</button></td>
-                                            </tr> -->
                                         	
                                         </tbody> 
-                                    </table>
-
+                                    </table>                                    
+                                	<div class="paging_wrap" >
+																			${ pagingImg }
+																</div>
                                 </div>
                             </div>
 

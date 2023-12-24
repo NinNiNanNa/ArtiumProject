@@ -1,6 +1,7 @@
 package com.edu.springboot.gallery;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import org.apache.ibatis.annotations.Mapper;
 
@@ -12,18 +13,12 @@ public interface IAdminGalleryService {
 	
 	// 게시판 목록 (페이징 기능 추가)
 	public ArrayList<GalleryDTO> listPage(GalleryDTO galleryDTO);
-    
-	// 작성하기(받은 폼값은 이름을 변경한 후 매퍼로 전달)
-//	public int write(GalleryDTO galleryDTO);
 	
-	// 내용보기
+	// 상세보기
 	public GalleryDTO view(GalleryDTO galleryDTO);
 	
 	// 온라인 갤러리
 	public GalleryDTO onlineGallery(GalleryDTO galleryDTO);
-	
-	// 수정하기
-//	public int edit(GalleryDTO galleryDTO);
 	
 	// 삭제하기
 	public int delete(String ga_id);
@@ -41,16 +36,13 @@ public interface IAdminGalleryService {
 	
 	// 갤러리 댓글 목록 조회
     public ArrayList<GalleryCommentDTO> listGalleryComment(GalleryDTO galleryDTO);
+
+    // 갤러리 댓글 검색
+    public List<GalleryCommentDTO> galleryCmSearch(GalleryCommentDTO galleryCommentDTO);
     
     // 갤러리 댓글 내용
-    public GalleryCommentDTO viewGalleryComments(GalleryCommentDTO galleryCommentDTO);
-    
-    // 갤러리 댓글 작성
-//	public int writeGalleryComment(GalleryCommentDTO galleryCommentDTO);
-    
-    // 갤러리 댓글 수정
-//	public int editGalleryComment(GalleryCommentDTO galleryCommentDTO);
-    
+    public GalleryCommentDTO viewGalleryComments(GalleryCommentDTO galleryCommentDTO);    
+  	
     // 갤러리 댓글 삭제
 	public int deleteGalleryComment(String cm_id);
 		

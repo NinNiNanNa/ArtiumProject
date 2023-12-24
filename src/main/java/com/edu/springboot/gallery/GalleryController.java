@@ -116,7 +116,7 @@ public class GalleryController {
     	try {
     		// 업로드 디렉토리의 물리적 경로 얻어오기
     		String uploadDir = ResourceUtils.getFile("classpath:static/uploads/").toPath().toString();
-    		System.out.println("물리적경로:"+uploadDir);
+//    		System.out.println("물리적경로:"+uploadDir);
     		
     		// 파일명 저장을 위한 Map생성. Key는 원본파일명, value는 서버에 저장된 파일명을 저장한다.
     		Map<String, String> saveFileMaps  = new HashMap<>();
@@ -126,7 +126,7 @@ public class GalleryController {
 	    		Part part = req.getPart("art_image"+ i);
 	    		// 파일명 확인을 위해 해더값 얻어오기 
 				String partHeader = part.getHeader("content-disposition");
-	    		System.out.println("partHeader="+ partHeader);
+//	    		System.out.println("partHeader="+ partHeader);
 	    		// 헤더값에서 파일명 추출을 위해 문자열을 split()하기
 	    		String[] phArr = partHeader.split("filename=");
 	    		// 따옴표를 제거한 후 원본 파일명 추출.
@@ -229,7 +229,7 @@ public class GalleryController {
 		try {
     		// 업로드 디렉토리의 물리적 경로 얻어오기
     		String uploadDir = ResourceUtils.getFile("classpath:static/uploads/").toPath().toString();
-    		System.out.println("물리적경로:"+uploadDir);
+//    		System.out.println("물리적경로:"+uploadDir);
     		
     		// 파일명 저장을 위한 Map생성. Key는 원본파일명, value는 서버에 저장된 파일명을 저장
     		Map<String, String> saveFileMaps  = new HashMap<>();
@@ -239,7 +239,7 @@ public class GalleryController {
 	    		Part part = req.getPart("art_image"+ i);
 	    		// 파일명 확인을 위해 해더값 얻어오기 
 				String partHeader = part.getHeader("content-disposition");
-	    		System.out.println("partHeader="+ partHeader);
+//	    		System.out.println("partHeader="+ partHeader);
 	    		// 헤더값에서 파일명 추출을 위해 문자열 split()하기
 	    		String[] phArr = partHeader.split("filename=");
 	    		// 따옴표를 제거한 후 원본 파일명 추출
@@ -280,14 +280,12 @@ public class GalleryController {
 //			System.out.println("galleryDTO"+galleryDTO);
 			
 			// JDBC연동
-			System.out.println("수정이 되는거니...?: "+ galleryDTO);
+//			System.out.println("수정이 되는거니...?: "+ galleryDTO);
 			int result = dao.edit(galleryDTO);
 //			System.out.println("수정결과: "+ result);
 		}
 		catch (Exception e) {
 //			System.out.println("업로드 실패");
-			
-			
 			e.printStackTrace();
 		}
 		

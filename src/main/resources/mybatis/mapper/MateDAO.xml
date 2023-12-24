@@ -24,8 +24,8 @@
 	<select id="listPageByStatus" resultType="int" parameterType="com.edu.springboot.mate.ParameterDTO">
     SELECT COUNT(*) FROM mate WHERE
     <choose>
-        <when test='status.equals("모집중")'>mt_sdate <![CDATA[<=]]> sysdate AND mt_edate <![CDATA[>=]]> sysdate</when>
-        <when test='status.equals("모집완료")'>mt_sdate <![CDATA[>]]> sysdate</when>
+        <when test="status == 1">mt_status <![CDATA[<=]]> sysdate AND mt_viewdate <![CDATA[>=]]> sysdate</when>
+        <when test="status == 2">mt_status <![CDATA[>]]> sysdate</when>
     </choose>
 	</select>
 

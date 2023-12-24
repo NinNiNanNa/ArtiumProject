@@ -84,8 +84,8 @@
 		
 	
 	<!-- 한줄평 총 갯수 -->
-	<select id="getMateComment" resultType="int" parameterType="com.edu.springboot.mate.MateDTO">
-		SELECT COUNT(*) FROM mt_comment WHERE mt_id=#{mt_id}
+	<select id="getMateComment" resultType="int">
+		SELECT COUNT(*) FROM mt_comment 
 	</select>
 	
 	<!-- 한줄평 목록 -->
@@ -99,7 +99,9 @@
 			           ROW_NUMBER() OVER (ORDER BY mtc.mtcom_postdate DESC) AS rNum
 			    FROM mt_comment mtc
 			    JOIN members m ON mtc.user_id = m.user_id
-			    WHERE mt_id=#{mt_id}
+			    <if test="searchKeyword!=null and !searchKeyword.equals('')">
+				WHERE ${searchField} LIKE '%'||#{searchKeyword}||'%'
+				</if>
 			)
 			WHERE rNum<![CDATA[>=]]>#{start} AND rNum<![CDATA[<=]]>#{end}
 	</select>	

@@ -2,6 +2,7 @@ package com.edu.springboot.mate;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,6 +15,9 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.edu.springboot.exhibition.ExhibitionDTO;
+import com.edu.springboot.exhibition.IExhibitionService;
+
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 import utils.PagingUtil;
@@ -23,6 +27,8 @@ public class MateController {
 
     @Autowired
     IMateService dao;
+    
+
 
 //    @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
 //    private LocalDate mt_viewdate;
@@ -93,12 +99,19 @@ public class MateController {
         }
     } 
     
+ 
+
+
+    
+    
     //리스트 출력 
     @RequestMapping("/mateList")
     public String mateList(Model model, HttpServletRequest req, ParameterDTO parameterDTO) {
 //    	System.out.println("mateList 메서드 호출여부 확인용");
     	int status = parameterDTO.getStatus();
     	
+    	// status 값을 모델에 추가
+        model.addAttribute("status", parameterDTO.getStatus());
 
     	
     	//각 리스트에 대한 총 게시물 수 계산 
@@ -137,7 +150,12 @@ public class MateController {
     		mappingName = "/mateFutureList?";
     	} 
     	System.out.println("status:" + status);
-
+    	
+    	// 상태가 설정되어 있지 않으면 기본적으로 모집중으로 설정
+        if (status == 0) {
+            parameterDTO.setStatus(1);
+        }
+    	
     	// 기존 코드에서 목록을 가져오는 dao.listPage 메서드를 dao.listPageByStatus로 변경
 //    	ArrayList<MateDTO> listsByStatus = dao.listPageByStatus(parameterDTO);
 //    	model.addAttribute("lists", listsByStatus);
@@ -150,19 +168,36 @@ public class MateController {
         return "/mate/list";
     }
     // 모집중 
- 	@RequestMapping("/mateCurrentList")
- 	public String currentMtList(Model model, HttpServletRequest req, ParameterDTO parameterDTO) {
- 		parameterDTO.setStatus(1);
- 		System.out.println("나와?");
- 		return mateList(model, req, parameterDTO);
- 	}
+// 	@RequestMapping("/mateCurrentList")
+// 	public String currentMtList(Model model, HttpServletRequest req, ParameterDTO parameterDTO) {
+// 		parameterDTO.setStatus(1);
+// 		System.out.println("모집중");
+// 		return mateList(model, req, parameterDTO);
+// 	}
  	// 모집완료
- 	@RequestMapping("/mateFutureList")
- 	public String futureMtList(Model model, HttpServletRequest req, ParameterDTO parameterDTO) {
- 		System.out.println("DEBUG: futureMtList method called");
- 		parameterDTO.setStatus(2);
- 		return mateList(model, req, parameterDTO);
- 	}
+// 	@RequestMapping("/mateFutureList")
+// 	public String futureMtList(Model model, HttpServletRequest req, ParameterDTO parameterDTO) {
+// 		System.out.println("모집완료:" + parameterDTO);
+// 		parameterDTO.setStatus(2);
+// 		return mateList(model, req, parameterDTO);
+// 	}
+    
+ // 모집중
+    @RequestMapping("/mateCurrentList")
+    public String currentMtList(Model model, HttpServletRequest req, ParameterDTO parameterDTO) {
+        parameterDTO.setStatus(1);
+        return mateList(model, req, parameterDTO);
+    }
+
+    // 모집완료
+    @RequestMapping("/mateFutureList")
+    public String futureMtList(Model model, HttpServletRequest req, ParameterDTO parameterDTO) {
+        parameterDTO.setStatus(2);
+        return mateList(model, req, parameterDTO);
+    }
+
+
+    
     
     
     
@@ -320,7 +355,6 @@ public class MateController {
 
 
  
-
 
 
 

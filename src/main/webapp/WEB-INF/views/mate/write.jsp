@@ -52,6 +52,55 @@ $(document).ready(function(){
 	});
 
 </script>
+<!-- 전시회 모달창 -->
+<script>
+$(document).ready(function() {
+    // 모달 열기
+    $("#exhibitionModalBtn").click(function() {
+        // 전시회 리스트를 가져오는 비동기 호출
+        $.ajax({
+            type: 'GET',
+            url: '여기에_컨트롤러_또는_서비스_매핑_URL_입력',
+            dataType: 'json', // 반환되는 데이터 타입에 맞게 설정
+            success: function(data) {
+                // 모달에 전시회 리스트를 추가
+                var modalBody = $("#modalExhibition .modal-body .row");
+                modalBody.empty(); // 기존 리스트 비우기
+                
+                for (var i = 0; i < data.length; i++) {
+                    var exhibition = data[i];
+                    var exhibitionBtn = '<div class="col-md-6"><button class="btn btn-secondary exhibitionBtn" data-ex-title="' + exhibition.title + '" data-exhibition-id="' + exhibition.id + '">' + exhibition.title + '</button></div>';
+                    modalBody.append(exhibitionBtn);
+                }
+            },
+            error: function(error) {
+                console.error('전시회 리스트를 불러오지 못했습니다.', error);
+            }
+        });
+
+        // 모달 열기
+        $("#exhibitionModal").modal("show");
+    });
+
+    // 전시회 선택 시
+    $(".exhibitionBtn").click(function() {
+        var exTitle = $(this).data("ex-title");
+        var exId = $(this).data("exhibition-id");
+
+        // 선택한 전시회 정보를 표시
+        $("#selectedExhibition").html("선택한 전시회: " + exTitle);
+
+        // ex_title 값을 숨겨진 필드에 저장
+        $("input[name='ex_title']").val(exTitle);
+
+        // 모달 닫기
+        $("#exhibitionModal").modal("hide");
+    });
+});
+</script>
+
+
+
 </head>
 <body>
 <div id='wrap'>
@@ -98,10 +147,10 @@ $(document).ready(function(){
                                         <h2>전시회정보</h2>
                                     </div>
                                     <div class="col-lg-10 write_wrap">
-                                    	<button type="button" class="btn btn-dark" data-bs-toggle="modal" data-bs-target="#exhibitionModal" name="">전시회 선택하기</button>
+                                    	<!-- <button type="button" class="btn btn-dark" data-bs-toggle="modal" data-bs-target="#exhibitionModal" name="">전시회 선택하기</button> -->
                                         <!-- <button type="button" class="btn btn-dark">전시회 선택하기</button> -->
+                                        <button type="button" class="btn btn-dark" data-bs-toggle="modal" data-bs-target="#modalExhibition">전시회 선택하기</button>
                                     </div>
-                                   <!-- 전시회 정보 모달 -->
                                 </li>
                                 <li class="row">
                                     <div class="col-lg-2 title_wrap">
@@ -190,6 +239,38 @@ $(document).ready(function(){
 	<span class='goTop'>
 		<a href='#wrap' class='smoothBtn goTopBtn'><i class='fas fa-angle-up'><span class='blind'>goTop</span></i></a>
 	</span>
+	 <!-- 전시회 정보 모달 -->
+                                   <!-- Modal 버튼 -->
+	<div class="modal fade" id="modalExhibition" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1">
+		<div class="modal-dialog modal-dialog-centered">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h1 class="model-title fs-5">전시회 목록</h1>
+					<button class="btn-close" data-bs-dismiss="modal"></button>
+				</div>
+				<div class="modal-body">
+					<h1 style="font-size:18px; font-weight:bold;">제목/장소</h1>
+					<div class="container-fluid">
+						<div class="row">
+							
+						</div>
+					</div>
+					<hr>
+				</div>
+				<div class="modal-footer">
+					<div class="container-fluid">
+						<div class="row">
+							<div style="width:100%; float:left;">
+								<div class="modal-footer" style="justify-content:center;">
+									<a href="javascript:void(0);" class="buttons exhibitionBtn">전시회 선택 완료</a>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
 	
 	<!-- 커스텀 JS -->
 	<script src='../js/fixed.js'></script>

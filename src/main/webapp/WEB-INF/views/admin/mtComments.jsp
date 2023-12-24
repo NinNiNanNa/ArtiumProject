@@ -28,84 +28,28 @@
 
     <!-- 부트스트랩5 CDN -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
-
+	
+	<script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
 <script>
-<!-- 댓글 리스트 불러오기 -->
-window.onload = function(){
-	// 페이지 로드 시 댓글 가져와서 출력
-	loadMt_Comment(1);
-	
-}
-
-
-
-//페이지 로드 시 댓글을 가져와서 화면에 출력하는 함수
-function loadMt_Comment(pageNum) {
-	var mt_id = ${param.mt_id};
-	console.log(mt_id + "mt_id값이다.");
-	
-    $.ajax({  
-		contentType: "text/html;charset:utf-8", 
-		dataType: "json",
-        url: '/admin/mtComments',  // 댓글을 가져올 URL
-        method: 'GET',
-        data: { pageNum: pageNum, mt_id: mt_id },  // 페이지 번호를 서버에 전달
-        success: function (data) {
-        	// 가져온 댓글 데이터를 사용하여 동적으로 댓글을 생성
-            $('#listMateComment').empty(); // 기존 댓글 목록 비우기
-            // 가져온 댓글 데이터를 사용하여 동적으로 댓글을 생성
-            for (var i = 0; i < data.lists.length; i++) {
-                var mt_comment = data.lists[i];
-                
-                var buttons = '';
-                var commentItem = '<li id="mtcomList'+mt_comment.mtcom_id+'">' +
-                	'<input type="hidden" id="mtcomId" name="mtcom_id" value="'+mt_comment.mtcom_id+'" />' +
-                	'<div class="row commentBox commentBox'+mt_comment.mtcom_id+'">' +
-					'<div class="col-lg-2 comImg_wrap">' +
-					'<img src="../img/'+mt_comment.user_image+'" alt="">' +
-					'</div>' +
-					'<div class="col-lg-10 comText_wrap">' +
-					'<div class="user_wrap">' +
-					'<span>'+mt_comment.user_name+'</span>' +
-					'<span>'+mt_comment.mtcom_postdate+'</span>' +
-					'</div>' +
-					'<div class="content_wrap">' +
-					'<p>'+mt_comment.mtcom_content+'</p>' +
-					'</div>' +
-					'</div>' +
-					buttons +
-					'</div>' +
-					'</li>';
-					
-                $('#listMateComment').append(commentItem);
-            }
-            $('.mtcomtotalCount').html(data.totalCount);
-            $('.paging_wrap').html(data.pagingImg);
-            
-        },
-        error: function () {
-            console.error('댓글 불러오기 실패');
-        }
-    });
-}
-
-
-
-
 
 //메이트 댓글 삭제
 function deleteComment(mtcomId) {
+	//var mt_id = ${param.mt_id};
+	//console.log(mt_id + "mt_id값")
     $.ajax({
         type: "POST",
-        url: "/admin/mtCommentDelete",
-        data: { mtcom_id: mtcomId },
+        url: "/adminMateCommentDelete.api",
+        data: { mtcom_id: mtcomId},
         success: function(response) {
             if (response.result === 1) {	// 댓글 삭제 성공
                 alert("댓글이 삭제되었습니다.");
                 // 삭제 후 댓글 목록을 업데이트하는 함수 호출
-                loadMt_Comment();
-            } else {	// 댓글 삭제 실패
+                //loadMt_Comment();
+                location.reload();
+            } 
+            else {	// 댓글 삭제 실패
                 alert("댓글 삭제에 실패하였습니다.");
+                console.log(error);
             }
         },
         error: function(error) {
@@ -116,7 +60,7 @@ function deleteComment(mtcomId) {
 }
 
 //삭제 버튼 클릭 시 이벤트 처리
-$(document).on('click', 'a.mtcomDeleteBtn', function(e) {
+$(document).on('click', '.mtcomDeleteBtn', function(e) {
     e.preventDefault();
 
     var mtcomId = $(this).data('comment-id');
@@ -158,15 +102,15 @@ $(document).on('click', 'a.mtcomDeleteBtn', function(e) {
                             <div class="table_wrap">
                                 <div class="table_gap">
 
-                                    <form>
+                                    <form method="get">
                                         <div class="searchFeild_wrap">
-                                            <select class="form-control" name="">
-                                                <option value="닉네임">${userName }</option>
-                                                <option value="">내용</option>
+                                            <select class="form-control" name="searchField">
+                                                <option value="user_name">닉네임</option>
+                                                <option value="mtcom_content">내용</option>
                                             </select>
                                         </div>
                                         <div class="searchWord_wrap">
-                                            <input type="text" class="form-control bg-light border-0 small" placeholder="Search for..." aria-label="Search" aria-describedby="basic-addon2">
+                                            <input type="text" class="form-control bg-light border-0 small" name="searchKeyword" placeholder="닉네임 또는 내용을 입력해주세요." aria-label="Search" aria-describedby="basic-addon2">
                                             <div class="searchBtn">
                                                 <button class="btn btn-dark" type="button">
                                                     <i class="fas fa-search fa-sm"></i>
@@ -183,7 +127,25 @@ $(document).on('click', 'a.mtcomDeleteBtn', function(e) {
                                             <col width="150px"/>
                                             <col width="150px"/>
                                         </colgroup>
-                                        <li>
+                                        <thead>
+                                            <tr>
+                                                <th>번호</th>
+                                                <th>닉네임</th>
+                                                <th>내용</th>
+                                                <th>게시글 일련번호</th>
+                                                <th>작성일</th>
+                                                <th>기능</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                        <c:forEach items="${lists }" var="row" varStatus="loop">
+                                            <tr>
+                                                <td>${ maps.totalCount - (((maps.pageNum-1) * maps.pageSize) + loop.index) + 1}</td>
+                                                <td>${row.user_name }</td>
+                                                <td class="txtSkip">${row.mtcom_content }</td>
+                                                <td>${row.mt_id }</td>
+                                                <td>${row.mtcom_postdate }</td>
+                                        <%-- <li>
 										<div id="listMateComment">
 										<!-- 메이트 댓글 목록 출력 부분 -->
 										<c:forEach var="comment" items="${lists}">
@@ -192,39 +154,16 @@ $(document).on('click', 'a.mtcomDeleteBtn', function(e) {
                 <td>${comment.user_name}</td>
                 <td>${comment.mtcom_content}</td>
                 <td>${comment.mtcom_postdate}</td>
-                <td>
-                    <button type="button" class="btn btn-danger mtcomDeleteBtn" data-comment-id="${comment.mtcom_id}">삭제</button>
-                </td>
+                <td> --%>
+                    <td><button type="button" class="btn btn-danger mtcomDeleteBtn" data-comment-id="${row.mtcom_id }">삭제</button></td>
             </tr>
         </c:forEach>
-										</div>
-										</li>
-                                        <thead>
-                                            <tr>
-                                                <th>번호</th>
-                                                <th>닉네임</th>
-                                                <th>내용</th>
-                                                <th>작성일</th>
-                                                <th>기능</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            <tr>
-                                                <td>1</td>
-                                                <td>닌니난나</td>
-                                                <td class="txtSkip">어디까지 작성할 수 있을까?어디까지 작성할 수 있을까?어디까지 작성할 수 있을까?어디까지 작성할 수 있을까</td>
-                                                <td>2023-11-23</td>
-                                                <td><button type="button" class="btn btn-danger">삭제</button></td>
-                                            </tr>
-                                            <tr>
-                                                <td>2</td>
-                                                <td>닌니난나</td>
-                                                <td class="txtSkip">어디까지 작성할 수 있을까?어디까지 작성할 수 있을까?어디까지 작성할 수 있을까?어디까지 작성할 수 있을까</td>
-                                                <td>2023-11-23</td>
-                                                <td><button type="button" class="btn btn-danger">삭제</button></td>
-                                            </tr>
-                                        </tbody>
-                                    </table>
+        </tbody>
+        </table>
+        <div class="paging_wrap" style="margin-top: 20px">
+										${ pagingImg }
+									</div>
+										
 
                                 </div>
                             </div>

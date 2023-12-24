@@ -29,6 +29,7 @@ public class MateDTO {
 	private String user_id;
 	private String user_name;
 	private String user_image;
+	
 	 
 	 
 

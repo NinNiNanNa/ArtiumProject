@@ -16,7 +16,9 @@ public interface IMateService {
 	public ArrayList<MateDTO> listPage(ParameterDTO parameterDTO);
 	
 	//모집중, 모집완료 분류 
-	public ArrayList<MateDTO> listPageByStatus(ParameterDTO parameterDTO);
+	public ArrayList<MateDTO> listPageByCurrentStatus(ParameterDTO parameterDTO);
+	
+	public ArrayList<MateDTO> listPageByFutureStatus(ParameterDTO parameterDTO);
 
 	// mate 상세보기
 	public MateDTO view(MateDTO mateDTO);

@@ -58,12 +58,6 @@ public interface IAdminMateService {
 
 	// 한줄평 내용
 	public MtCommentDTO viewMateMt_Comment(MtCommentDTO mtCommentDTO);
-
-	// 메이트 댓글 작성
-	public int writeMateComment(MtCommentDTO mtCommentDTO);
-	
-	// 한줄평 수정
-	public int editMateComment(MtCommentDTO mtCommentDTO);
 		
 	// 한줄평 삭제
 	public int deleteMateComment(String mtcom_id);

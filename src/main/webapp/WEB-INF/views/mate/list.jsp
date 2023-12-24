@@ -68,7 +68,31 @@
 $(document).ready(function() {
     var currentUrl = window.location.href;
 
-    function handlMateButtonClick(status) {
+    function handleMateButtonClick(status) {
+        $(".nav-link").removeClass("active");
+        $("#" + status + "Btn").addClass("active");
+    }
+
+    // 페이지 로드 시 현재 URL에 따라 버튼 활성화 상태를 설정
+    if (currentUrl.includes("/mateCurrentList")) {
+        handleMateButtonClick("current");
+    } else if (currentUrl.includes("/mateFutureList")) {
+        handleMateButtonClick("future");
+    }
+
+    // 버튼 클릭 시 해당 페이지로 이동
+    $(document).on('click', '#currentBtn', function() {
+        window.location.href = "/mateCurrentList";
+    });
+
+    $(document).on('click', '#futureBtn', function() {
+        window.location.href = "/mateFutureList";
+    });
+});
+/* $(document).ready(function() {
+    var currentUrl = window.location.href;
+
+    function handleMateButtonClick(status) {
         $(".nav-link").removeClass("active");
         $("#" + status + "Btn").addClass("active");
     }
@@ -78,9 +102,24 @@ $(document).ready(function() {
     } else if (currentUrl.includes("/mateFutureList")) {
         handleMateButtonClick("future");
     }
-    
-});
+});  */
 
+/* $(function() {
+	 let ga_type = '${param.mt_status}';
+	 switch (ga_type) {
+	 	case '모집중':
+	 		$("#currentBtn").addClass("active");
+	 		break;
+	 	case '모집완료':
+	 		console.log("모집완료");
+	 		$("#futureBtn").addClass("active");
+	 		break;
+	 	default:
+	 		console.log("null");
+	 		break;
+	 }
+}); */
+</script>
 
 
 
@@ -158,7 +197,9 @@ $(document).ready(function() {
 										<!-- <div id="current" class="tab-pane active"> -->
 										<div id="current" class="tab-pane active">
 											<ul class="list_wrap row">
-											<c:forEach items="${ lists }" var="row" varStatus="loop">  
+											<c:forEach items="${ lists }" var="row" varStatus="loop"> 
+											 <c:choose>
+											<c:when test="${row.mt_status eq '모집중'}">
 												<li class="col-lg-4">
 													<div class="listInfo">
 														<div class="image_wrap" style="position: relative;">
@@ -185,6 +226,8 @@ $(document).ready(function() {
 														</div>
 													</div>
 												</li>
+												</c:when>
+												</c:choose>
 												</c:forEach>
 											</ul>
 
@@ -193,7 +236,10 @@ $(document).ready(function() {
 										<div id="future" class="tab-pane fade">
 
 											<ul class="list_wrap row">
-											<c:forEach items="${ lists }" var="row" varStatus="loop">  
+											<c:forEach items="${ lists }" var="row" varStatus="loop">
+											<c:out value="${row.mt_status}" />
+											<c:choose>
+												<c:when test="${row.mt_status eq '모집완료'}"> 
 												<li class="col-lg-4">
 													<div class="listInfo">
 														<div class="image_wrap" style="position: relative;">
@@ -220,6 +266,8 @@ $(document).ready(function() {
 														</div>
 													</div>
 												</li>
+												</c:when>
+												</c:choose>
 												</c:forEach>
 											</ul>
 

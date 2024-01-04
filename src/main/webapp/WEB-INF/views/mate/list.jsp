@@ -33,6 +33,7 @@
 	<script src='../js/lib/jquery-1.12.4.min.js'></script>
 	<script src='../js/lib/jquery.easing.1.3.js'></script>
 	<script src='../js/lib/jquery.touchSwipe.js'></script>
+	
 
 	<!-- 브라우저별 접두사 쓸 필요 없음 -->
 	<script src='../js/lib/prefixfree.min.js'></script>
@@ -65,7 +66,7 @@
     
 <!-- 모집중/모집완료 분류 -->
 <script>
-$(document).ready(function() {
+/* $(document).ready(function() {
     var currentUrl = window.location.href;
 
     function handleMateButtonClick(status) {
@@ -89,42 +90,46 @@ $(document).ready(function() {
         window.location.href = "/mateFutureList";
     });
 });
-/* $(document).ready(function() {
-    var currentUrl = window.location.href;
+ */
 
-    function handleMateButtonClick(status) {
-        $(".nav-link").removeClass("active");
-        $("#" + status + "Btn").addClass("active");
-    }
+ $(document).ready(function() {
+	    // 버튼 클릭 및 해당 리스트 표시/숨기기를 처리하는 함수
+	    function handleMateButtonClick(status) {
+	        // 모든 nav 링크에서 'active' 클래스 제거
+	        $(".nav-link").removeClass("active");
+	        // 클릭된 버튼에 'active' 클래스 추가
+	        $("#" + status + "Btn").addClass("active");
+	        // 클릭된 버튼에 따라 해당 리스트 표시/숨기기
+	        if (status === "current") {
+	            $("#current").addClass("active");
+	            $("#future").removeClass("active");
+	        } else if (status === "future") {
+	            $("#future").addClass("active");
+	            $("#current").removeClass("active");
+	        }
+	    }
 
-    if (currentUrl.includes("/mateCurrentList")) {
-        handleMateButtonClick("current");
-    } else if (currentUrl.includes("/mateFutureList")) {
-        handleMateButtonClick("future");
-    }
-});  */
+	    // URL 기반의 초기 확인
+	    var currentUrl = window.location.href;
+	    if (currentUrl.includes("/mateCurrentList")) {
+	        handleMateButtonClick("current");
+	    } else if (currentUrl.includes("/mateFutureList")) {
+	        handleMateButtonClick("future");
+	    }
 
-/* $(function() {
-	 let ga_type = '${param.mt_status}';
-	 switch (ga_type) {
-	 	case '모집중':
-	 		$("#currentBtn").addClass("active");
-	 		break;
-	 	case '모집완료':
-	 		console.log("모집완료");
-	 		$("#futureBtn").addClass("active");
-	 		break;
-	 	default:
-	 		console.log("null");
-	 		break;
-	 }
-}); */
+	    // 버튼 클릭 이벤트 핸들러
+	    $(document).on('click', '#currentBtn', function() {
+	        handleMateButtonClick("current");
+	    });
+
+	    $(document).on('click', '#futureBtn', function() {
+	        handleMateButtonClick("future");
+	    });
+	});
+ 
+
 </script>
 
-
-
-
-    
 </head>
 <body>
 
@@ -194,7 +199,6 @@ $(document).ready(function() {
 								<div class="col">
 
 									<div class="tab-content" style="padding-top:30px;">
-										<!-- <div id="current" class="tab-pane active"> -->
 										<div id="current" class="tab-pane active">
 											<ul class="list_wrap row">
 											<c:forEach items="${ lists }" var="row" varStatus="loop"> 
@@ -233,11 +237,12 @@ $(document).ready(function() {
 
 										</div>
 
-										<div id="future" class="tab-pane fade">
+										<!-- <div id="future" class="tab-pane fade"> -->
+										<div id="future" class="tab-pane show">
 
 											<ul class="list_wrap row">
 											<c:forEach items="${ lists }" var="row" varStatus="loop">
-											<c:out value="${row.mt_status}" />
+											<%-- <c:out value="${row.mt_status}" /> --%>
 											<c:choose>
 												<c:when test="${row.mt_status eq '모집완료'}"> 
 												<li class="col-lg-4">

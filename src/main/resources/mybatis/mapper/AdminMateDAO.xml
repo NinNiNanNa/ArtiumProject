@@ -31,6 +31,14 @@
 		members m ON mt.user_id = m.user_id
 	
 	</select> -->
+	<!-- 모집중/모집완료 구분 -->
+	<select id="listPageByStatus" resultType="int" parameterType="com.edu.springboot.mate.ParameterDTO">
+    SELECT COUNT(*) FROM mate WHERE
+    <choose>
+        <when test="status == 1">mt_status <![CDATA[<=]]> sysdate AND mt_viewdate <![CDATA[>=]]> sysdate</when>
+        <when test="status == 2">mt_status <![CDATA[>]]> sysdate</when>
+    </choose>
+	</select>
 	
 	<!-- 리스트 출력 -->
 	<select id="listPage"

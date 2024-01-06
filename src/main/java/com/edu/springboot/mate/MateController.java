@@ -122,7 +122,7 @@ public class MateController {
         int blockPage = 5;//한 블럭당 페이지 번호 수 
         int pageNum = (req.getParameter("pageNum") == null || req.getParameter("pageNum").equals("")) ? 1
                 : Integer.parseInt(req.getParameter("pageNum"));
-        int start = (pageNum - 1) * pageSize + 1;
+        int start = (pageNum-1) * pageSize + 1;
         int end = pageNum * pageSize;
         parameterDTO.setStart(start);
         parameterDTO.setEnd(end);
@@ -160,11 +160,14 @@ public class MateController {
 //    	ArrayList<MateDTO> listsByStatus = dao.listPageByStatus(parameterDTO);
 //    	model.addAttribute("lists", listsByStatus);
     	
+        // 게시판 하단에 출력한 페이지번호를 String으로 반환받은 후 Model객체에 저장한다.
         String pagingImg = PagingUtil.pagingImg(totalCount, pageSize, blockPage, pageNum,
+        		//req.getContextPath()+"/mateList?");
         		//req.getContextPath() + "/mateList?list=?");
                 req.getContextPath() + mappingName);
         model.addAttribute("pagingImg", pagingImg);
         System.out.println("status 상태:" + mappingName);
+        //view로 포워드한다. 
         return "/mate/list";
     }
     // 모집중 

@@ -28,6 +28,11 @@
 
     <!-- 부트스트랩5 CDN -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    
+    <!-- 제이쿼리 로컬 -->
+	<script src='../js/lib/jquery-1.12.4.min.js'></script>
+	<script src='../js/lib/jquery.easing.1.3.js'></script>
+	<script src='../js/lib/jquery.touchSwipe.js'></script>
 
 
 <style type="text/css">
@@ -50,6 +55,45 @@ function deletePost(formIndex){
 	    form.submit();  
 	}
 }
+
+//모집중 / 모집완료 분류
+$(document).ready(function() {
+	    // 버튼 클릭 및 해당 리스트 표시/숨기기를 처리하는 함수
+	    function handleMateButtonClick(status) {
+	        // 모든 nav 링크에서 'active' 클래스 제거
+	        $(".nav-link").removeClass("active");
+	        // 클릭된 버튼에 'active' 클래스 추가
+	        $("#" + status + "Btn").addClass("active");
+	        // 클릭된 버튼에 따라 해당 리스트 표시/숨기기
+	        if (status === "current") {
+	            $("#current").addClass("active");
+	            $("#future").removeClass("active");
+	        } else if (status === "future") {
+	            $("#future").addClass("active");
+	            $("#current").removeClass("active");
+	        }
+	    }
+
+	    // URL 기반의 초기 확인
+	    var currentUrl = window.location.href;
+	    if (currentUrl.includes("/admin/mtCurrentList")) {
+	        handleMateButtonClick("current");
+	    } else if (currentUrl.includes("/admin/mtFutureList")) {
+	        handleMateButtonClick("future");
+	    }
+
+	    // 버튼 클릭 이벤트 핸들러
+	    $(document).on('click', '#currentBtn', function() {
+	        handleMateButtonClick("current");
+	    });
+
+	    $(document).on('click', '#futureBtn', function() {
+	        handleMateButtonClick("future");
+	    });
+	});
+ 
+
+
 </script>
 
 </head>
@@ -75,10 +119,10 @@ function deletePost(formIndex){
                         <div class="col">
                             <ul class="nav nav-pills mb-4" role="tablist">
                                 <li class="nav-item">
-                                    <a class="nav-link active tabColor" data-bs-toggle="pill" href="/mateCurrentList">모집 중</a>
+                                    <a id="currentBtn" class="nav-link active tabColor" href="/admin/mtCurrentList">모집 중</a>
                                 </li>
                                 <li class="nav-item">
-                                    <a class="nav-link tabColor" data-bs-toggle="pill" href="/mateFutureList">모집완료</a>
+                                    <a id="futureBtn" class="nav-link tabColor" href="/admin/mtFutureList">모집완료</a>
                                 </li>
                             </ul>
                             <!-- 검색 -->
@@ -98,15 +142,17 @@ function deletePost(formIndex){
 								</div>
 								</form>
                         	</div>
-                            
+                            <br/>
                             
 							<div class="col">
                             <div class="tab-content">
                                 <!-- <div id="mate_ing" class="tab-pane active"> -->
-								<div id="current">
+								<div id="current" class="tab-pane active">
                                     <ul class="list_wrap row">
                                     <%-- <c:forEach items="${ not empty lists ? lists : '999' }" var="row" varStatus="loop"> --%>
-                                    <c:forEach items="${lists}" var="row" varStatus="loop">  
+                                    <c:forEach items="${lists}" var="row" varStatus="loop">
+                                    <c:choose>
+										<c:when test="${row.mt_status eq '모집중'}">  
                                         <li class="col-lg-4">
                                         <form name="adminMtFrm_${loop.index}">
 											<input type="hidden" name="mt_id" value="${row.mt_id }" />
@@ -143,22 +189,29 @@ function deletePost(formIndex){
                                                 </div>
                                             </div>
                                         </li>
+                                        </c:when>
+										</c:choose>
                                         </c:forEach>
                                     </ul>
 
                                 </div>
 
-                                <div id="future" class="tab-pane fade">
+                                <div id="future" class="tab-pane show">
 
                                     <ul class="list_wrap row">
-                                        <c:forEach items="${lists}" var="row" varStatus="loop">  
+                                        <c:forEach items="${lists}" var="row" varStatus="loop"> 
+                                        <c:choose>
+										<c:when test="${row.mt_status eq '모집완료'}">  
                                         <li class="col-lg-4">
+                                        <form name="adminMtFrm_${loop.index}">
+											<input type="hidden" name="mt_id" value="${row.mt_id }" />
+										</form>
                                             <div class="listInfo">
                                                 <div class="image_wrap" style="position: relative;">
                                                     <img src="../img/imgex1.jpg" alt="">
                                                     <ul class="listBtn_wrap">
                                                         <li>
-                                                            <a href="#" class="deleteBtn btn">
+                                                            <a href="javascript:void(0);" onclick="deletePost(${loop.index})" class="deleteBtn btn">
                                                                 <i class="fas fa-trash-alt"></i>
                                                             </a>
                                                         </li>
@@ -185,6 +238,8 @@ function deletePost(formIndex){
                                                 </div>
                                             </div>
                                         </li>
+                                        </c:when>
+										</c:choose>
                                         </c:forEach>
                                     </ul>
 									<div class="paging_wrap">

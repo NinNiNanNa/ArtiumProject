@@ -24,10 +24,14 @@ public class AdminMateController {
     public String mtList(Model model, HttpServletRequest req, ParameterDTO parameterDTO, MateDTO mateDTO) {
     	
     	System.out.println("페이지접근");
+    	int status = parameterDTO.getStatus();
+    	
+    	// status 값을 모델에 추가
+        model.addAttribute("status", parameterDTO.getStatus());
     	
     	//각 리스트에 대한 총 게시물 수 계산 
         int totalCount = dao.getTotalCount(parameterDTO);
-        System.out.println("totalCount="+ totalCount);
+        //System.out.println("totalCount="+ totalCount);
         
         int pageSize = 12;//한 페이지당 게시물 수  
         int blockPage = 5;//한 블럭당 페이지 번호 수 
@@ -44,24 +48,58 @@ public class AdminMateController {
         maps.put("pageSize", pageSize);
         maps.put("pageNum", pageNum);
         model.addAttribute("maps", maps);
-        System.out.println(maps);
+        //System.out.println(maps);
         //전시 목록을 가져와 모델에 추가 
         ArrayList<MateDTO> lists = dao.listPage(parameterDTO);
         model.addAttribute("lists", lists);
         
-        System.out.println("Tl: "+lists);
+        //System.out.println("Tl: "+lists);
         
         //mt_id를 model에 추가
 //        for (MateDTO mt : lists) {
 //            model.addAttribute("mt_id_" + mt.getMt_id(), mt.getMt_id());
 //        }
         for (MateDTO mt : lists) {
-            System.out.println("mt_id: " + mt.getMt_id());
+            //System.out.println("mt_id: " + mt.getMt_id());
+        }
+      //모집중, 모집완료 구분 
+        String mappingName = "";
+        
+        if (status == 1) {
+    		mappingName = "/admin/mtCurrentList?";
+    	} else if (status == 2) {
+    		mappingName = "/admin/mtFutureList?";
+    	} 
+    	System.out.println("status:" + status);
+    	
+    	// 상태가 설정되어 있지 않으면 기본적으로 모집중으로 설정
+        if (status == 0) {
+            parameterDTO.setStatus(1);
         }
         
+        String pagingImg = PagingUtil.pagingImg(totalCount, pageSize, blockPage, pageNum,
+        		//req.getContextPath()+"/mateList?");
+        		//req.getContextPath() + "/mateList?list=?");
+                req.getContextPath() + mappingName);
+        model.addAttribute("pagingImg", pagingImg);
+        System.out.println("status 상태:" + mappingName);
     	
         return "/admin/mtList";
  	}
+ // 모집중
+    @RequestMapping("/admin/mtCurrentList")
+    public String currentMtList(Model model, HttpServletRequest req, ParameterDTO parameterDTO, MateDTO mateDTO) {
+        parameterDTO.setStatus(1);
+        return mtList(model, req, parameterDTO, mateDTO);
+    }
+
+    // 모집완료
+    @RequestMapping("/admin/mtFutureList")
+    public String futureMtList(Model model, HttpServletRequest req, ParameterDTO parameterDTO, MateDTO mateDTO) {
+        parameterDTO.setStatus(2);
+        return mtList(model, req, parameterDTO, mateDTO);
+    }
+
     
     //삭제하기
     @PostMapping("/admin/mtDelete")
